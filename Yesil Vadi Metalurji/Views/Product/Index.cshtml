@@ -1,0 +1,526 @@
+﻿@using Entity.Concrete
+@using Yesil_Vadi_Metalurji.Dto
+@using System.ComponentModel
+@using Newtonsoft.Json
+@model ProductsViewModel
+
+@{
+    ViewData["Title"] = "Ürünler";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<h1>Ürün Listesi</h1>
+
+@await Html.PartialAsync("_ScriptImports")
+
+@using (Html.BeginForm("Filter", "Product", FormMethod.Post, new { id = "filterForm" }))
+{
+    var statusList = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "0", Text = "TÜMÜ" },
+        new SelectListItem { Value = "1", Text = "SATIŞTA" },
+        new SelectListItem { Value = "2", Text = "KALDIRILDI" },
+        new SelectListItem { Value = "3", Text = "ONAY BEKLİYOR" }
+    };
+    var activeList = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "0", Text = "TÜMÜ" },
+        new SelectListItem { Value = "1", Text = "AKTİF" },
+        new SelectListItem { Value = "2", Text = "AKTİF DEĞİL" },
+    };
+    var imageList = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "0", Text = "TÜMÜ" },
+        new SelectListItem { Value = "1", Text = "VAR" },
+        new SelectListItem { Value = "2", Text = "YOK" },
+    };
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-filter"></i>
+            Filtrele
+        </h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.CategoryID, "Kategori:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.CategoryID, new SelectList(Model.FilterDto.Categories, "ID", "Name"), "TÜMÜ", new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Status, "Durum:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Active, "Aktiflik:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.Active, activeList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Image, "Resim:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.Image, imageList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Name, "Ürün Adı:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Name, new { @class = "form-control", placeholder = "Ürün Adı" })
+            </div>
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Material, "Malzeme:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Material, new { @class = "form-control", placeholder = "Malzeme" })
+            </div>
+            <div class="col-sm-3">
+                <dt>@Html.LabelFor(m => m.FilterDto.Price, "Fiyat:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Price, new { @class = "form-control", placeholder = "Fiyat", type = "number", step = "0.01" })
+            </div>
+            <div class="col-sm-1">
+                <dt>@Html.LabelFor(m => m.FilterDto.Piece, "Adet:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Piece, new { @class = "form-control", placeholder = "Adet", type = "number" })
+            </div>
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Description, "Açıklama:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Description, new { @class = "form-control", placeholder = "Açıklama" })
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-cubes"></i>
+            Ürünler
+        </h3>
+    </div>
+
+    <div class="card-body">
+        <button class="btn btn-primary" onclick="openYeniUrunModal()">Yeni Ürün</button>
+        <br />
+
+        <div id="productTable" class="table-responsive">
+            <table id="productGrid" class="table table-bordered table-striped"></table>
+            <div id="productGridPager"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    var firstModal = null;
+
+    $(document).ready(function () {
+        filterProducts();
+
+        $('#filterForm select, #filterForm input[type="text"], #filterForm input[type="number"]').on('change', function () {
+            filterProducts();
+        });
+    });
+
+    function categoryFormatter(cellValue, options, rowObject) {
+        return rowObject.category && rowObject.category.name ? rowObject.category.name : '';
+    }
+
+
+    function showDatas(data) {
+        var productGrid = $('#productGrid');
+
+        if (productGrid.length) {
+            productGrid.jqGrid('GridUnload');
+
+            productGrid.jqGrid({
+                data: data,
+                colModel: [
+                    { name: 'id', label: 'ID', width: 40 },
+                    { name: 'category', label: 'Kategori', width: 100, formatter: categoryFormatter },
+                    { name: 'name', label: 'Ürün Adı', width: 110 },
+                    { name: 'material', label: 'Malzeme', width: 80 },
+                    {
+                        name: 'status', label: 'Durum', width: 100,
+                        formatter: function (cellValue) {
+                            switch (cellValue) {
+                                case 1:
+                                    return 'SATIŞTA';
+                                case 2:
+                                    return 'KALDIRILDI';
+                                case 3:
+                                    return 'ONAY BEKLİYOR';
+                                default:
+                                    return '';
+                            }
+                        }
+                    },
+                    {
+                        name: 'active', label: 'Aktiflik', width: 100,
+                        formatter: function (cellValue) {
+                            switch (cellValue) {
+                                case true:
+                                    return 'AKTİF';
+                                case false:
+                                    return 'AKTİF DEĞİL';
+                                default:
+                                    return '';
+                            }
+                        }
+                    },
+                    { name: 'description', label: 'Açıklama', width: 100 },
+                    { name: 'price', label: 'Fiyat', width: 80 },
+                    { name: 'piece', label: 'Adet', width: 80 },
+                    {
+                        name: 'actions', label: '', width: 200,
+                        formatter: function (cellValue, options, rowObject) {
+                            if (rowObject.status === 1) {
+                                var buttons = '<button class="btn btn-primary open-edit-modal" ' +
+                                    'data-productid="' + rowObject.id + '" ' +
+                                    'data-productname="' + rowObject.name + '" ' +
+                                    'data-productmaterial="' + rowObject.material + '" ' +
+                                    'data-productprice="' + rowObject.price + '" ' +
+                                    'data-productpiece="' + rowObject.piece + '" ' +
+                                    'data-productdescription="' + rowObject.description + '" ' +
+                                    'data-productstatus="' + rowObject.status + '" ' +
+                                    'data-productactive="' + rowObject.active + '" ' +
+                                    'data-productimageurl="' + rowObject.imageurl + '" ' +
+                                    'data-productcategory="' + (rowObject.category ? rowObject.category.id : '') + '">Düzenle</button>' +
+                                    '<button class="btn btn-warning open-delete-modal" ' +
+                                    'data-productid="' + rowObject.id + '">Kaldır</button>';
+                            }
+                            if (rowObject.status === 2) {
+                                var buttons = '<button class="btn btn-primary open-edit-modal" ' +
+                                    'data-productid="' + rowObject.id + '" ' +
+                                    'data-productname="' + rowObject.name + '" ' +
+                                    'data-productmaterial="' + rowObject.material + '" ' +
+                                    'data-productprice="' + rowObject.price + '" ' +
+                                    'data-productpiece="' + rowObject.piece + '" ' +
+                                    'data-productdescription="' + rowObject.description + '" ' +
+                                    'data-productstatus="' + rowObject.status + '" ' +
+                                    'data-productactive="' + rowObject.active + '" ' +
+                                    'data-productimageurl="' + rowObject.imageurl + '" ' +
+                                    'data-productcategory="' + (rowObject.category ? rowObject.category.id : '') + '">Düzenle</button>' +
+                                    '<button class="btn btn-success open-approve-modal" ' +
+                                    'data-productid="' + rowObject.id + '">Onayla</button>';
+                            }
+                            
+                            return buttons;
+                        }
+                    }
+                ],
+                pager: '#productGridPager',
+                rowNum: 10,
+                rowList: [10, 20, 30, 40, 50],
+                sortname: 'id',
+                viewrecords: true,
+                autoheight: true,
+                autoWidth: true,
+                responsive: true,
+
+                footerrow: true,
+                userDataOnFooter: true,
+                gridComplete: function () {
+                    var sumPrice = productGrid.jqGrid('getCol', 'price', false, 'sum');
+                    var sumPiece = productGrid.jqGrid('getCol', 'piece', false, 'sum');
+
+                    sumPiece = Math.floor(sumPiece);
+
+                    productGrid.jqGrid('footerData', 'set', {
+                        id: 'Toplam:',
+                        price: sumPrice.toFixed(2),
+                        piece: sumPiece.toString(),
+                    });
+                }
+
+            });
+        }
+    }
+
+    function filterProducts() {
+        var formData = $('#filterForm').serialize();
+        console.log(formData);
+
+        var productGrid = $('#productGrid');
+
+        $.ajax({
+            url: '@Url.Action("Filter", "Product")',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (response) {
+                var data = response;
+                console.log(data);
+                showDatas(data);
+            },
+            error: function (error) {
+                console.log("Listeleme esnasında hata oluştu: ", error);
+            }
+        });
+    }
+
+
+    function openDeleteUrunModal(button) {
+        var data = button.dataset;
+
+        firstModal = $.dialog({
+        title: 'Ürün Kaldır',
+        content: `
+        <!-- ${JSON.stringify(data)} -->
+        <form method="post" action="@Url.Action("RemoveProduct", "Product")">
+
+            <div class="form-group">
+                <label>Kaldırmak istiyor musunuz ?</label>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="ID" name="ID" class="form-control" value="${data.productid}" required hidden />
+
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Kaldır" class="btn btn-warning w-100" />
+            </div>
+
+        </form>
+        `
+        });
+        }
+
+    function openApproveUrunModal(button) {
+        var data = button.dataset;
+        firstModal = $.dialog({
+        title: 'Ürün Onayla',
+        content: `
+        <!-- ${JSON.stringify(data)} -->
+        <form method="post" action="@Url.Action("ApproveProduct", "Product")">
+
+            <div class="form-group">
+                <label>Onaylamak istiyor musunuz ?</label>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="ID" name="ID" class="form-control" value="${data.productid}" required hidden />
+
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Onayla" class="btn btn-primary w-100" />
+            </div>
+
+        </form>
+        `
+        });
+        }
+
+    function openEditUrunModal(button) {
+        var data = button.dataset;
+        var categoryOptions = @Html.Raw(JsonConvert.SerializeObject(Model.FilterDto.Categories));
+        data.productcategory = parseInt(data.productcategory);
+
+        console.log(data);
+        console.log(data.productcategory);
+        console.log(categoryOptions);
+
+        firstModal = $.dialog({
+        title: 'Ürün Düzenle',
+        content: `
+        <form method="post" action="@Url.Action("AddEditProduct", "Product")">
+
+            <div class="form-group">
+                <input type="text" id="ID" name="ID" class="form-control" value="${data.productid}" required hidden />
+
+            </div>
+
+            <div class="form-group">
+                <label for="Name">Ürün Adı</label>
+                <input type="text" id="Name" name="Name" class="form-control" value="${data.productname}" required />
+            </div>
+
+            <div class="form-group">
+                <label for="Material">Malzeme</label>
+                <input type="text" id="Material" name="Material" class="form-control" value="${data.productmaterial}" required />
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl">Resim</label>
+                <input type="text" id="ImageUrl" name="ImageUrl" class="form-control" value="${data.productimageurl}" />
+            </div>
+
+            <div class="form-group">
+                <label for="Price">Fiyat</label>
+                <input type="number" id="Price" name="Price" class="form-control" step="0.01" value="${data.productprice.replace(",", "." )}" required />
+            </div>
+
+            <div class="form-group">
+                <label for="Piece">Adet : </label>
+                <input type="number" id="Piece" name="Piece" class="form-control" value="${data.productpiece}" required />
+            </div>
+
+            <div class="form-group">
+                <label for="Status">Durum :</label>
+                <select id="Status" name="Status" class="form-control" data="${data.productstatus}" required>
+                    <option value="1" ${data.productstatus == '1' ? 'selected' : '' }>SATIŞTA</option>
+                    <option value="2" ${data.productstatus == '2' ? 'selected' : '' }>KALDIRILDI</option>
+                    <option value="3" ${data.productstatus == '3' ? 'selected' : '' }>ONAY BEKLİYOR</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Active">Aktiflik :</label>
+                <select id="Active" name="Active" class="form-control" data="${data.productactive}" required>
+                    <option value=true ${data.productactive == "true" ? 'selected' : '' }>AKTİF</option>
+                    <option value=false ${data.productactive == "false" ? 'selected' : '' }>AKTİF DEĞİL</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Description">Açıklama :</label>
+                <textarea id="Description" name="Description" class="form-control" rows="3">${data.productdescription}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="CategoryID">Kategori :</label>
+                <select id="CategoryID" name="CategoryID" class="form-control">
+                    ${categoryOptions.map(category => `
+                    <option value="${category.ID}" ${parseInt(data.productcategory) === category.ID ? 'selected' : ''}>${category.Name}</option>`).join('')}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Düzenle" class="btn btn-primary w-100" />
+            </div>
+
+        </form>
+        `
+        });
+
+        }
+
+    function openYeniUrunModal() {
+        firstModal = $.dialog({
+        title: 'Ürün Oluştur',
+        content: `
+        <form method="post" action="@Url.Action("AddEditProduct", "Product")">
+            <div class="form-group">
+                <label for="Name">Ürün Adı</label>
+                <input type="text" id="Name" name="Name" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="Material">Malzeme : </label>
+                <input type="text" id="Material" name="Material" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl">Resim (LINK): </label>
+                <input type="text" id="ImageUrl" name="ImageUrl" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label for="Price">Fiyat : </label>
+                <input type="number" id="Price" name="Price" class="form-control" step="0.01" required />
+            </div>
+
+            <div class="form-group">
+                <label for="Piece">Adet : </label>
+                <input type="number" id="Piece" name="Piece" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="Status">Durum : </label>
+                <select id="Status" name="Status" class="form-control" required>
+                    <option value="1">SATIŞTA</option>
+                    <option value="2">KALDIRILDI</option>
+                    <option value="3">ONAY BEKLİYOR</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Active">Aktiflik : </label>
+                <select id="Active" name="Active" class="form-control" required>
+                    <option value=true>AKTİF</option>
+                    <option value=false>AKTİF DEĞİL</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Description">Açıklama : </label>
+                <textarea id="Description" name="Description" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="CategoryID">Kategori : </label>
+                <select id="CategoryID" name="CategoryID" class="form-control" required>
+                    @foreach (var category in Model.FilterDto.Categories)
+                    {
+                        <option value="@category.ID">@category.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Oluştur" class="btn btn-primary w-100" />
+            </div>
+
+        </form>
+
+    `
+    });
+
+    }
+
+
+
+    $(document).on('click', '.open-delete-modal', function () {
+        openDeleteUrunModal(this);
+    });
+
+    $(document).on('click', '.open-approve-modal', function () {
+        openApproveUrunModal(this);
+    });
+
+    $(document).on('click', '.open-edit-modal', function () {
+        openEditUrunModal(this);
+    });
+
+    $(document).on('click', '#yeniUrunButton', function () {
+        openYeniUrunModal();
+    });
+
+
+    $(document).on('submit', 'form', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        form.find('.decimal-input').each(function () {
+            var value = $(this).val();
+            value = parseFloat(value.replace(',', '.'), CultureInfo.InvariantCulture).toFixed(2);
+            $(this).val(value);
+        });
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+                success: function (response) {
+                    var message = response;
+                    mesajDialog = $.dialog({
+                        title: 'İşlem Sonucu',
+                        content: message,
+                        closeButton: false
+                    });
+
+                    setTimeout(function () {
+                        mesajDialog.close();
+                        if (firstModal) {
+                            firstModal.close();
+                        }
+                        filterProducts();
+                    }, 1500);
+                },
+                error: function (error) {
+                    alert("Başarısız");
+                }
+            });
+
+    });
+
+
+
+
+</script>
+
+

@@ -1,0 +1,687 @@
+﻿@using Entity.Concrete
+@using Yesil_Vadi_Metalurji.Dto
+@using System.ComponentModel
+@using Newtonsoft.Json
+@model OffersViewModel
+@{
+    ViewData["Title"] = "Teklifler";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h1>Teklif Listesi</h1>
+
+@await Html.PartialAsync("_ScriptImports")
+
+@using (Html.BeginForm("Filter", "Offer", FormMethod.Post, new { id = "filterForm" }))
+{
+    var statusList = new List<SelectListItem>
+{
+        new SelectListItem { Value = "0", Text = "TÜMÜ" },
+        new SelectListItem { Value = "1", Text = "TEKLİFTE" },
+        new SelectListItem { Value = "2", Text = "KALDIRILDI" },
+        new SelectListItem { Value = "3", Text = "TEKLİF İPTAL EDİLDİ" },
+        new SelectListItem { Value = "4", Text = "SİPARİŞE GEÇİLDİ" },
+        new SelectListItem { Value = "5", Text = "BEKLEMEDE" }
+    };
+    var activeList = new List<SelectListItem>
+{
+        new SelectListItem { Value = "0", Text = "TÜMÜ" },
+        new SelectListItem { Value = "1", Text = "AKTİF" },
+        new SelectListItem { Value = "2", Text = "AKTİF DEĞİL" },
+    };
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-filter"></i>
+            Filtrele
+        </h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Status, "Durum:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Active, "Aktiflik:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.Active, activeList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-3">
+                <dt>@Html.LabelFor(m => m.FilterDto.Name, "İsim:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Name, new { @class = "form-control", placeholder = "İsim" })
+            </div>
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.LastName, "Soyisim:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.LastName, new { @class = "form-control", placeholder = "Soyisim" })
+            </div>
+            <div class="col-sm-3">
+                <dt>@Html.LabelFor(m => m.FilterDto.Mail, "E-Mail:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Mail, new { @class = "form-control", placeholder = "E-Mail" })
+            </div>
+            <div class="col-sm-3">
+                <dt>@Html.LabelFor(m => m.FilterDto.PhoneNumber, "Tel. No:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.PhoneNumber, new { @class = "form-control", placeholder = "Tel. No" })
+            </div>
+            <div class="col-sm-3">
+                <dt>@Html.LabelFor(m => m.FilterDto.TotalPrice, "Toplam Fiyat:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.TotalPrice, new { @class = "form-control", placeholder = "Toplam Fiyat", type = "number", step = "0.01" })
+            </div>
+            <div class="col-sm-3">
+                <dt>@Html.LabelFor(m => m.FilterDto.TotalPiece, "Toplam Adet:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.TotalPiece, new { @class = "form-control", placeholder = "Toplam Adet", type = "number" })
+            </div>
+            <div class="col-sm-3">
+                <dt>@Html.LabelFor(m => m.FilterDto.ProductPiece, "Ürün Adeti:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.ProductPiece, new { @class = "form-control", placeholder = "Ürün Adeti", type = "number" })
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-cubes"></i>
+            Teklifler
+        </h3>
+    </div>
+
+    <div class="card-body">
+        <button id="openYeniTeklifModalButton" class="btn btn-primary">Yeni Teklif</button>
+        <br />
+
+        <div id="offerTable" class="table-responsive">
+            <table id="offerGrid" class="table table-bordered table-striped"></table>
+            <div id="offerGridPager"></div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        filterOffers();
+        $('#filterForm select, #filterForm input[type="text"], #filterForm input[type="number"]').on('change', function () {
+            filterOffers();
+        });
+    });
+
+    var firstModal = null;
+
+    var dropdownOptions = {};
+
+    var adet;
+    var products = [];
+
+    function addNewProductDropdown() {
+        var newProductButton = document.getElementById("newProductButton");
+        var removeProductButtonContainer = document.getElementById("removeProductButtonContainer");
+        var dropdownContainer = document.getElementById("ProductDropdownContainer");
+
+        adet++;
+        var newProductHTML = `
+            <div class="form-group">
+              <label for="Product${adet}">Ürün ${adet} :</label>
+              <select id="Product${adet}" name="Product${adet}" class="form-control" required>
+                <option value="">Seçiniz</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="ProductPrice${adet}">Fiyat ${adet} :</label>
+              <input type="number" id="ProductPrice${adet}" name="ProductPrice${adet}" class="form-control" step="0.01" required />
+            </div>
+            <div class="form-group">
+              <label for="ProductPiece${adet}">Adet ${adet} :</label>
+              <input type="number" id="ProductPiece${adet}" name="ProductPiece${adet}" class="form-control" required />
+            </div>
+            `;
+
+
+        var newDiv = document.createElement("div");
+        newDiv.innerHTML = newProductHTML;
+        dropdownContainer.appendChild(newDiv);
+
+        var newProductDropdown = document.getElementById(`Product${adet}`);
+        var newProductPrice = document.getElementById(`ProductPrice${adet}`);
+
+        if (adet > 0) {
+            removeProductButtonContainer.style.display = "block";
+        }
+
+
+        updateProductDropdowns();
+
+        getProductOptions(newProductDropdown, newProductPrice);
+    }
+
+    function getProductOptions(productDropdown, productPrice) {
+        var adetValue = adet;
+        var adetInput = document.getElementById('adet');
+
+        if (adetInput) {
+            adetInput.value = adetValue;
+        }
+
+        console.log(adet);
+
+        if (productDropdown) {
+                if (dropdownOptions['allProducts']) {
+                    productDropdown.innerHTML = dropdownOptions['allProducts'];
+                } else {
+                    $.ajax({
+                        url: "/Offer/GetProducts",
+                        method: "GET",
+                        success: function (response) {
+                            var optionItems = "";
+                            products = response;
+                            console.log("GELEN ÜRÜNLER:");
+                            console.log(response);
+
+                            if (products && products.length > 0) {
+                                products.forEach(function (product) {
+                                    optionItems += `<option value="${product.id}">${product.name}</option>`;
+                                });
+                            }
+
+                            dropdownOptions['allProducts'] = `<option value="">Seçiniz</option>` + optionItems;
+
+                            productDropdown.innerHTML = dropdownOptions['allProducts'];
+                        },
+                        error: function (error) {
+                            console.error(error);
+                        }
+                    });
+                }
+
+            productDropdown.addEventListener('change', function () {
+                var selectedProductId = productDropdown.value;
+                console.log("product değişti");
+                console.log(selectedProductId);
+                productDropdown.value = selectedProductId;
+
+                var selectedProduct = products.find(function (product) {
+                    return product.id == selectedProductId;
+                    productDropdown.value = product.name;
+                });
+
+                if (selectedProduct) {
+                    productPrice.value = selectedProduct.price;
+                }
+            });
+
+        }
+    }
+
+
+    function updateProductDropdowns() {
+        console.log(adet);
+        var productDropdownContainer = document.getElementById("ProductDropdownContainer");
+
+        if (adet && productDropdownContainer) {
+            for (var i = 0; i < adet; i++) {
+                var productDropdown = document.getElementById(`Product${i + 1}`);
+                var productPrice = document.getElementById(`ProductPrice${i + 1}`);
+                getProductOptions(productDropdown, productPrice);
+            }
+        }
+
+        var adetValue = adet;
+        var adetInput = document.getElementById('adet');
+        adetInput.value = adetValue;
+        console.log(adet);
+    }
+
+
+    function removeLastProductDropdown() {
+
+        if (adet > 0) {
+            adet--;
+            var dropdownContainer = document.getElementById("ProductDropdownContainer");
+            var lastDropdownGroup = dropdownContainer.lastElementChild;
+            if (lastDropdownGroup) {
+                dropdownContainer.removeChild(lastDropdownGroup);
+            }
+            updateProductDropdowns();
+        }
+        if (adet === 0) {
+            var removeProductButtonContainer = document.getElementById("removeProductButtonContainer");
+            removeProductButtonContainer.style.display = "none";
+        }
+    }
+
+    function openYeniTeklifModal() {
+        adet = 0;
+        console.log("adet:", adet);
+
+        var dropdownHTML = '';
+
+
+            firstModal = $.dialog({
+                title: 'Teklif Oluştur',
+                content: `
+                    <form id="offerForm" method="post" action="@Url.Action("AddOffer", "Offer")">
+
+                    <input type="hidden" name="adet" id="adet" value="${adet}" />
+
+                    <div class="form-group">
+                      <button id="newProductButton" class="btn btn-primary w-100" type="button" onclick="addNewProductDropdown()">Yeni Ürün</button>
+                    </div>
+
+                    <div class="form-group" id="removeProductButtonContainer" style="display: none;">
+                        <button class="btn btn-danger w-100" type="button" onclick="removeLastProductDropdown()">Ürün Kaldır</button>
+                    </div>
+
+                     <div class="form-group">
+                        <label for="Name">İsim</label>
+                        <input type="text" id="Name" name="Name" class="form-control" required />
+                    </div>
+
+                     <div class="form-group">
+                        <label for="Lastname">Soyisim</label>
+                        <input type="text" id="Lastname" name="Lastname" class="form-control" required />
+                    </div>
+
+                     <div class="form-group">
+                        <label for="Mail">E-Mail</label>
+                        <input type="text" id="Mail" name="Mail" class="form-control" required />
+                    </div>
+
+                     <div class="form-group">
+                        <label for="Phonenumber">Telefon Numarası</label>
+                        <input type="text" id="Phonenumber" name="Phonenumber" class="form-control" required />
+                    </div>
+
+                    <div id="ProductDropdownContainer">${dropdownHTML}</div>
+
+                        <div class="form-group">
+                            <select id="Status" name="Status" class="form-control" required hidden>
+                                <option value="0">Beklemede</option>
+                                <option value="1">Teklifte</option>
+                                <option value="2">KALDIRILDI</option>
+                                <option value="3">Teklif İptal Edildi</option>
+                                <option value="4">Siparişe Geçildi</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <select id="Active" name="Active" class="form-control" required hidden>
+                                <option value="1">AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <input id="createTeklif" type="submit" value="Oluştur" class="btn btn-primary w-100" />
+                        </div>
+                    </form>
+                `
+            });
+
+        firstModal.onOpen(function () {
+            updateProductDropdowns();
+        });
+    }
+
+
+
+
+
+    function filterOffers() {
+        var formData = $('#filterForm').serialize();
+        console.log(formData);
+
+        var offerGrid = $('#offerGrid');
+
+        $.ajax({
+            url: '@Url.Action("Filter", "Offer")',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (response) {
+                var data = response;
+                console.log(data);
+                showDatas(data);
+            },
+            error: function (error) {
+                console.log("Listeleme esnasında hata oluştu: ", error);
+            }
+        });
+    }
+
+    function showDatas(data) {
+        var offerGrid = $('#offerGrid');
+
+        if (offerGrid.length) {
+            offerGrid.jqGrid('GridUnload');
+
+            offerGrid.jqGrid({
+                data: data,
+                colModel: [
+                    { name: 'id', label: 'ID', width: 40 },
+                    { name: 'name', label: 'İsim', width: 80 },
+                    { name: 'lastname', label: 'Soyisim', width: 80 },
+                    { name: 'mail', label: 'E-Mail', width: 150 },
+                    { name: 'phonenumber', label: 'Telefon Numarası', width: 100 },
+                    {
+                        name: 'status', label: 'Durum', width: 80,
+                        formatter: function (cellValue) {
+                            switch (cellValue) {
+                                case 1:
+                                    return 'Teklifte';
+                                case 2:
+                                    return 'KALDIRILDI';
+                                case 3:
+                                    return 'Teklif İptal Edildi';
+                                case 4:
+                                    return 'Siparişe Geçildi';
+                                case 5:
+                                    return 'Beklemede';
+                                default:
+                                    return '';
+                            }
+                        }
+                    },
+                    {
+                        name: 'active', label: 'Aktiflik', width: 100,
+                        formatter: function (cellValue) {
+                            switch (cellValue) {
+                                case true:
+                                    return 'AKTİF';
+                                case false:
+                                    return 'AKTİF DEĞİL';
+                                default:
+                                    return '';
+                            }
+                        }
+                    },
+                    { name: 'totalprice', label: 'Toplam Fiyat', width: 80 },
+                    { name: 'totalpiece', label: 'Toplam Adet', width: 80 },
+                    { name: 'productpiece', label: 'Ürün Adeti', width: 80 },
+                    {
+                        name: 'actions', label: '', width: 300,
+                        formatter: function (cellValue, options, rowObject) {
+                            if (rowObject.status === 1) {
+                                var buttons = '<button class="btn btn-success open-offertoorder-modal" ' +
+                                    'data-offerid="' + rowObject.id + '">Siparişe Geç</button>' +
+                                    '<button class="btn btn-warning open-delete-modal" ' +
+                                    'data-offerid="' + rowObject.id + '">Kaldır</button>' +
+                                    '<button class="btn btn-warning open-detail-modal" ' +
+                                    'data-offerid="' + rowObject.id + '">Detaylar</button>';
+                            }
+                            if (rowObject.status === 2) {
+                                return '';
+                            }
+                            if (rowObject.status === 3) {
+                                var buttons = '<button class="btn btn-success open-approve-modal" ' +
+                                    'data-offerid="' + rowObject.id + '">Onayla</button>' +
+                                    '<button class="btn btn-warning open-detail-modal" ' +
+                                    'data-offerid="' + rowObject.id + '">Detaylar</button>';
+
+                            }
+                            if (rowObject.status === 4) {
+                                var buttons = '<button class="btn btn-warning open-detail-modal" ' +
+                                    'data-offerid="' + rowObject.id + '">Detaylar</button>';
+                            }
+                            if (rowObject.status === 5) {
+                                var buttons = '<button class="btn btn-success open-approve-modal" ' +
+                                    'data-offerid="' + rowObject.id + '">Onayla</button>' +
+                                    '<button class="btn btn-warning open-delete-modal" ' +
+                                    'data-offerid="' + rowObject.id + '">Kaldır</button>'+
+                                    '<button class="btn btn-warning open-detail-modal" ' +
+                                    'data-offerid="' + rowObject.id + '">Detaylar</button>';
+                            }
+                            return buttons;
+                        }
+                    }
+                ],
+                pager: '#offerGridPager',
+                rowNum: 10,
+                rowList: [10, 20, 30, 40, 50],
+                sortname: 'id',
+                viewrecords: true,
+                autoheight: true,
+                autoWidth: true,
+                responsive: true,
+
+                footerrow: true,
+                userDataOnFooter: true,
+                gridComplete: function () {
+                    var sumTotalPrice = offerGrid.jqGrid('getCol', 'totalprice', false, 'sum');
+                    var sumTotalPiece = offerGrid.jqGrid('getCol', 'totalpiece', false, 'sum');
+                    var sumProductPiece = offerGrid.jqGrid('getCol', 'productpiece', false, 'sum');
+
+                    sumTotalPiece = Math.floor(sumTotalPiece);
+                    sumProductPiece = Math.floor(sumProductPiece);
+
+                    offerGrid.jqGrid('footerData', 'set', {
+                        id: 'Toplam:',
+                        totalprice: sumTotalPrice.toFixed(2),
+                        totalpiece: sumTotalPiece.toString(),
+                        productpiece: sumProductPiece.toString()
+                    });
+                }
+            });
+        }
+    }
+
+
+    function openDeleteTeklifModal(button) {
+    var data = button.dataset;
+        firstModal = $.dialog({
+    title: 'Teklif Kaldır',
+    content: `
+    <!-- ${JSON.stringify(data)} -->
+    <form method="post" action="@Url.Action("RemoveOffer", "Offer")">
+
+        <div class="form-group">
+            <label>Kaldırmak istiyor musunuz ?</label>
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="ID" name="ID" class="form-control" value="${data.offerid}" required hidden />
+
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Kaldır" class="btn btn-warning w-100" />
+        </div>
+
+    </form>
+    `
+    });
+    }
+
+
+    function openOrderTeklifModal(button) {
+    var data = button.dataset;
+        firstModal = $.dialog({
+    title: 'Siparişe Geç',
+    content: `
+    <!-- ${JSON.stringify(data)} -->
+    <form method="post" action="@Url.Action("GoToOrder", "Offer")">
+
+        <div class="form-group">
+            <label>Siparişe geçmek istiyor musunuz ?</label>
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="ID" name="ID" class="form-control" value="${data.offerid}" required hidden />
+
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Onayla" class="btn btn-primary w-100" />
+        </div>
+
+    </form>
+    `
+    });
+    }
+
+
+    function openApproveTeklifModal(button) {
+    var data = button.dataset;
+        firstModal = $.dialog({
+    title: 'Teklif Onayla',
+    content: `
+    <!-- ${JSON.stringify(data)} -->
+    <form method="post" action="@Url.Action("ApproveOffer", "Offer")">
+
+        <div class="form-group">
+            <label>Onaylamak istiyor musunuz ?</label>
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="ID" name="ID" class="form-control" value="${data.offerid}" required hidden />
+
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Onayla" class="btn btn-primary w-100" />
+        </div>
+
+    </form>
+    `
+    });
+    }
+
+
+    function generateDetailHtml(details) {
+        if (!details || details.length === 0) {
+            return `
+            <div class="error-message">Bir sorun oluştu.</div>
+        `;
+        } else {
+            const firstDetail = details[0];
+            const detailsHtml = details.slice(1).map(detail => {
+                return `
+                <div class="detail">
+                    <div class="title">Ürün Adı:</div>
+                    <div class="value">${detail.Productname}</div>
+                </div>
+                <div class="detail">
+                    <div class="title">Ürün Adeti:</div>
+                    <div class="value">${detail.Productpiece}</div>
+                </div>
+                <div class="detail">
+                    <div class="title">Ürün Fiyatı:</div>
+                    <div class="value">${detail.Productprice}</div>
+                </div>
+                <hr class="divider">
+            `;
+            }).join('');
+
+            return `
+            <div class="detail">
+                <div class="title">İsim:</div>
+                <div class="value">${firstDetail.Name}</div>
+            </div>
+            <div class="detail">
+                <div class="title">Soyisim:</div>
+                <div class="value">${firstDetail.Lastname}</div>
+            </div>
+            <div class="detail">
+                <div class="title">E-Mail:</div>
+                <div class="value">${firstDetail.Mail}</div>
+            </div>
+            <div class="detail">
+                <div class="title">Telefon Numarası:</div>
+                <div class="value">${firstDetail.Phonenumber}</div>
+            </div>
+            <hr class="divider">
+            ${detailsHtml}
+        `;
+        }
+    }
+
+    function openDetailModal(button) {
+        var data = button.dataset;
+        firstModal = $.dialog({
+            title: 'Teklif Detayları',
+            content: `<div id="offerDetailsContainer">Teklif detayları yükleniyor...</div>`,
+            onOpen: function () {
+                $.ajax({
+                    url: '@Url.Action("GetOfferDetails", "Offer")',
+                    method: 'GET',
+                    data: { offerId: data.offerid },
+                    success: function (response) {
+                        console.log(response);
+                        const detailHtml = generateDetailHtml(response);
+                        const htmlContent = `<div class="offer-details">${detailHtml}</div>`;
+                        $('#offerDetailsContainer').html(htmlContent);
+                    },
+                    error: function (error) {
+                        console.error(error);
+                    }
+                });
+            }
+        });
+    }
+
+
+
+
+    $(document).on('click', '.open-delete-modal', function () {
+        openDeleteTeklifModal(this);
+    });
+
+    $(document).on('click', '.open-approve-modal', function () {
+        openApproveTeklifModal(this);
+    });
+
+    $(document).on('click', '.open-offertoorder-modal', function () {
+        openOrderTeklifModal(this);
+    });
+
+    $(document).on('click', '#openYeniTeklifModalButton', function () {
+        openYeniTeklifModal();
+    });
+
+    $(document).on('submit', 'form', function (e) {
+        e.preventDefault();
+        var form = $(this);
+
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            success: function (response) {
+                var message = response;
+                mesajDialog = $.dialog({
+                    title: 'İşlem Sonucu',
+                    content: message,
+                    closeButton: false
+                });
+                setTimeout(function () {
+                    mesajDialog.close();
+                    if (firstModal) {
+                        firstModal.close();
+                    }
+                    filterOffers();
+                }, 1500);
+            },
+            error: function (error) {
+                alert("Başarısız");
+            }
+        });
+    });
+
+    $(document).on('click', '.open-detail-modal', function () {
+        openDetailModal(this);
+    });
+
+
+    $(document).ajaxError(function () {
+        adet = 0;
+    });
+
+
+</script>
+
