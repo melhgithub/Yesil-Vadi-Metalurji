@@ -5,14 +5,14 @@
 @model OffersViewModel
 @{
     ViewData["Title"] = "Teklifler";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/AdminTestLayout.cshtml";
 }
 
 <h1>Teklif Listesi</h1>
 
 @await Html.PartialAsync("_ScriptImports")
 
-@using (Html.BeginForm("Filter", "Offer", FormMethod.Post, new { id = "filterForm" }))
+@using (Html.BeginForm("Filter", "OfferTest", FormMethod.Post, new { id = "filterForm" }))
 {
     var statusList = new List<SelectListItem>
 {
@@ -22,6 +22,12 @@
         new SelectListItem { Value = "3", Text = "TEKLİF İPTAL EDİLDİ" },
         new SelectListItem { Value = "4", Text = "SİPARİŞE GEÇİLDİ" },
         new SelectListItem { Value = "5", Text = "BEKLEMEDE" }
+    };
+    var activeList = new List<SelectListItem>
+{
+        new SelectListItem { Value = "0", Text = "TÜMÜ" },
+        new SelectListItem { Value = "1", Text = "AKTİF" },
+        new SelectListItem { Value = "2", Text = "AKTİF DEĞİL" },
     };
 
 <div class="card">
@@ -38,6 +44,10 @@
                 @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
             </div>
             <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Active, "Aktiflik:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.Active, activeList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Name, "İsim:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Name, new { @class = "form-control", placeholder = "İsim" })
             </div>
@@ -166,7 +176,7 @@
                     productDropdown.innerHTML = dropdownOptions['allProducts'];
                 } else {
                     $.ajax({
-                        url: "/Offer/GetProducts",
+                        url: "/OfferTest/GetProducts",
                         method: "GET",
                         success: function (response) {
                             var optionItems = "";
@@ -256,7 +266,7 @@
             firstModal = $.dialog({
                 title: 'Teklif Oluştur',
                 content: `
-                    <form id="offerForm" method="post" action="@Url.Action("AddOffer", "Offer")">
+                    <form id="offerForm" method="post" action="@Url.Action("AddOffer", "OfferTest")">
 
                     <input type="hidden" name="adet" id="adet" value="${adet}" />
 
@@ -291,8 +301,8 @@
                     <div id="ProductDropdownContainer">${dropdownHTML}</div>
 
                         <div class="form-group">
-                            <select id="Status" name="Status" class="form-control" required hidden>
-                                <option value="0">Beklemede</option>
+                            <select id="Status" name="Status" class="form-control" required>
+                                <option value="5">Beklemede</option>
                                 <option value="1">Teklifte</option>
                                 <option value="2">KALDIRILDI</option>
                                 <option value="3">Teklif İptal Edildi</option>
@@ -301,7 +311,7 @@
                         </div>
 
                         <div class="form-group">
-                            <select id="Active" name="Active" class="form-control" required hidden>
+                            <select id="Active" name="Active" class="form-control" required>
                                 <option value="1">AKTİF</option>
                                 <option value="2">AKTİF DEĞİL</option>
                             </select>
@@ -330,7 +340,7 @@
         var offerGrid = $('#offerGrid');
 
         $.ajax({
-            url: '@Url.Action("Filter", "Offer")',
+            url: '@Url.Action("Filter", "OfferTest")',
             type: 'POST',
             data: formData,
             dataType: 'json',
@@ -354,6 +364,7 @@
             offerGrid.jqGrid({
                 data: data,
                 colModel: [
+                    { name: 'id', label: 'ID', width: 40 },
                     { name: 'name', label: 'İsim', width: 80 },
                     { name: 'lastname', label: 'Soyisim', width: 80 },
                     { name: 'mail', label: 'E-Mail', width: 150 },
@@ -372,6 +383,19 @@
                                     return 'Siparişe Geçildi';
                                 case 5:
                                     return 'Beklemede';
+                                default:
+                                    return '';
+                            }
+                        }
+                    },
+                    {
+                        name: 'active', label: 'Aktiflik', width: 100,
+                        formatter: function (cellValue) {
+                            switch (cellValue) {
+                                case true:
+                                    return 'AKTİF';
+                                case false:
+                                    return 'AKTİF DEĞİL';
                                 default:
                                     return '';
                             }
@@ -453,7 +477,7 @@
         var data = button.dataset;
 
         $.ajax({
-            url: '@Url.Action("GetOfferDetails", "Offer")',
+            url: '@Url.Action("GetOfferDetails", "OfferTest")',
             type: 'GET',
             data: { offerId: data.offerid },
             dataType: 'json',
@@ -506,14 +530,14 @@
     title: 'Teklif Kaldır',
     content: `
     <!-- ${JSON.stringify(data)} -->
-    <form method="post" action="@Url.Action("RemoveOffer", "Offer")">
+    <form method="post" action="@Url.Action("RemoveOffer", "OfferTest")">
 
         <div class="form-group">
             <label>Kaldırmak istiyor musunuz ?</label>
         </div>
 
         <div class="form-group">
-            <input type="text" id="ID" name="ID" class="form-control" value="${data.offerid}" required hidden />
+            <input type="text" id="ID" name="ID" class="form-control" value="${data.offerid}" required/>
 
         </div>
 
@@ -533,14 +557,14 @@
     title: 'Siparişe Geç',
     content: `
     <!-- ${JSON.stringify(data)} -->
-    <form method="post" action="@Url.Action("GoToOrder", "Offer")">
+    <form method="post" action="@Url.Action("GoToOrder", "OfferTest")">
 
         <div class="form-group">
             <label>Siparişe geçmek istiyor musunuz ?</label>
         </div>
 
         <div class="form-group">
-            <input type="text" id="ID" name="ID" class="form-control" value="${data.offerid}" required hidden />
+            <input type="text" id="ID" name="ID" class="form-control" value="${data.offerid}" required/>
 
         </div>
 
@@ -560,14 +584,14 @@
     title: 'Teklif Onayla',
     content: `
     <!-- ${JSON.stringify(data)} -->
-    <form method="post" action="@Url.Action("ApproveOffer", "Offer")">
+    <form method="post" action="@Url.Action("ApproveOffer", "OfferTest")">
 
         <div class="form-group">
             <label>Onaylamak istiyor musunuz ?</label>
         </div>
 
         <div class="form-group">
-            <input type="text" id="ID" name="ID" class="form-control" value="${data.offerid}" required hidden />
+            <input type="text" id="ID" name="ID" class="form-control" value="${data.offerid}" required/>
 
         </div>
 

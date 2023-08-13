@@ -14,6 +14,12 @@ namespace Business.Concrete
 
         IAdminDal _adminDal;
 
+
+        public AdminManager(IAdminDal adminDal)
+        {
+            _adminDal = adminDal;
+        }
+
         public async Task AdminAdd(Admin admin)
         {
             await _adminDal.Insert(admin);

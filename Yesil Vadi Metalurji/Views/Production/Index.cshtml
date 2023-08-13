@@ -22,12 +22,6 @@
         new SelectListItem { Value = "3", Text = "ÜRETİM İPTAL EDİLDİ" },
         new SelectListItem { Value = "4", Text = "ÜRETİM TAMAMLANDI" }
     };
-    var activeList = new List<SelectListItem>
-{
-        new SelectListItem { Value = "0", Text = "TÜMÜ" },
-        new SelectListItem { Value = "1", Text = "AKTİF" },
-        new SelectListItem { Value = "2", Text = "AKTİF DEĞİL" },
-    };
 
 <div class="card">
     <div class="card-header">
@@ -43,10 +37,6 @@
                 @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
             </div>
             <div class="col-sm-2">
-                <dt>@Html.LabelFor(m => m.FilterDto.Active, "Aktiflik:")</dt>
-                @Html.DropDownListFor(m => m.FilterDto.Active, activeList, new { @class = "form-control" })
-            </div>
-            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Name, "İsim:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Name, new { @class = "form-control", placeholder = "İsim" })
             </div>
@@ -144,7 +134,6 @@
             productionGrid.jqGrid({
                 data: data,
                 colModel: [
-                    { name: 'id', label: 'ID', width: 40 },
                     { name: 'name', label: 'İsim', width: 80 },
                     { name: 'lastname', label: 'Soyisim', width: 80 },
                     { name: 'mail', label: 'E-Mail', width: 150 },
@@ -163,19 +152,6 @@
                                     return 'Üretim Tamamlandı';
                                 case 5:
                                     return 'Beklemede';
-                                default:
-                                    return '';
-                            }
-                        }
-                    },
-                    {
-                        name: 'active', label: 'Aktiflik', width: 100,
-                        formatter: function (cellValue) {
-                            switch (cellValue) {
-                                case true:
-                                    return 'AKTİF';
-                                case false:
-                                    return 'AKTİF DEĞİL';
                                 default:
                                     return '';
                             }

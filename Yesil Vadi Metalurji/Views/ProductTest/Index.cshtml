@@ -6,7 +6,7 @@
 
 @{
     ViewData["Title"] = "Ürünler";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/AdminTestLayout.cshtml";
 }
 <h1>Ürün Listesi</h1>
 
@@ -268,7 +268,7 @@
             </div>
 
             <div class="form-group">
-                <input type="text" id="ID" name="ID" class="form-control" value="${data.productid}" required hidden />
+                <input type="text" id="ID" name="ID" class="form-control" value="${data.productid}" required/>
 
             </div>
 
@@ -294,7 +294,7 @@
             </div>
 
             <div class="form-group">
-                <input type="text" id="ID" name="ID" class="form-control" value="${data.productid}" required hidden />
+                <input type="text" id="ID" name="ID" class="form-control" value="${data.productid}" required/>
 
             </div>
 
@@ -322,7 +322,7 @@
         <form method="post" action="@Url.Action("AddEditProduct", "ProductTest")">
 
             <div class="form-group">
-                <input type="text" id="ID" name="ID" class="form-control" value="${data.productid}" required hidden />
+                <input type="text" id="ID" name="ID" class="form-control" value="${data.productid}" required/>
 
             </div>
 

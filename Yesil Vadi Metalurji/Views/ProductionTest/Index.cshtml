@@ -2,25 +2,31 @@
 @using Yesil_Vadi_Metalurji.Dto
 @using System.ComponentModel
 @using Newtonsoft.Json
-@model OrdersViewModel
+@model ProductionsViewModel
 @{
-    ViewData["Title"] = "Siparişler";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    ViewData["Title"] = "Üretimler";
+    Layout = "~/Views/Shared/AdminTestLayout.cshtml";
 }
 
-<h1>Sipariş Listesi</h1>
+<h1>Üretim Listesi</h1>
 
 @await Html.PartialAsync("_ScriptImports")
 
-@using (Html.BeginForm("Filter", "Order", FormMethod.Post, new { id = "filterForm" }))
+@using (Html.BeginForm("Filter", "ProductionTest", FormMethod.Post, new { id = "filterForm" }))
 {
     var statusList = new List<SelectListItem>
 {
         new SelectListItem { Value = "0", Text = "TÜMÜ" },
-        new SelectListItem { Value = "1", Text = "SİPARİŞTE" },
+        new SelectListItem { Value = "1", Text = "ÜRETİMDE" },
         new SelectListItem { Value = "2", Text = "KALDIRILDI" },
-        new SelectListItem { Value = "3", Text = "SİPARİŞ İPTAL EDİLDİ" },
-        new SelectListItem { Value = "4", Text = "ÜRETİME GEÇİLDİ" }
+        new SelectListItem { Value = "3", Text = "ÜRETİM İPTAL EDİLDİ" },
+        new SelectListItem { Value = "4", Text = "ÜRETİM TAMAMLANDI" }
+    };
+    var activeList = new List<SelectListItem>
+{
+        new SelectListItem { Value = "0", Text = "TÜMÜ" },
+        new SelectListItem { Value = "1", Text = "AKTİF" },
+        new SelectListItem { Value = "2", Text = "AKTİF DEĞİL" },
     };
 
 <div class="card">
@@ -37,6 +43,10 @@
                 @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
             </div>
             <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Active, "Aktiflik:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.Active, activeList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Name, "İsim:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Name, new { @class = "form-control", placeholder = "İsim" })
             </div>
@@ -75,15 +85,15 @@
     <div class="card-header">
         <h3 class="card-title">
             <i class="fas fa-cubes"></i>
-            Siparişler
+            Üretimler
         </h3>
     </div>
 
     <div class="card-body">
 
-        <div id="orderTable" class="table-responsive">
-            <table id="orderGrid" class="table table-bordered table-striped"></table>
-            <div id="orderGridPager"></div>
+        <div id="productionTable" class="table-responsive">
+            <table id="productionGrid" class="table table-bordered table-striped"></table>
+            <div id="productionGridPager"></div>
         </div>
 
     </div>
@@ -94,23 +104,23 @@
 
 <script>
     $(document).ready(function () {
-        filterOrders();
+        filterProductions();
         $('#filterForm select, #filterForm input[type="text"], #filterForm input[type="number"]').on('change', function () {
-            filterOrders();
+            filterProductions();
         });
     });
 
     var firstModal = null;
 
 
-    function filterOrders() {
+    function filterProductions() {
         var formData = $('#filterForm').serialize();
         console.log(formData);
 
-        var orderGrid = $('#orderGrid');
+        var productionGrid = $('#productionGrid');
 
         $.ajax({
-            url: '@Url.Action("Filter", "Order")',
+            url: '@Url.Action("Filter", "ProductionTest")',
             type: 'POST',
             data: formData,
             dataType: 'json',
@@ -126,14 +136,15 @@
     }
 
     function showDatas(data) {
-        var orderGrid = $('#orderGrid');
+        var productionGrid = $('#productionGrid');
 
-        if (orderGrid.length) {
-            orderGrid.jqGrid('GridUnload');
+        if (productionGrid.length) {
+            productionGrid.jqGrid('GridUnload');
 
-            orderGrid.jqGrid({
+            productionGrid.jqGrid({
                 data: data,
                 colModel: [
+                    { name: 'id', label: 'ID', width: 40 },
                     { name: 'name', label: 'İsim', width: 80 },
                     { name: 'lastname', label: 'Soyisim', width: 80 },
                     { name: 'mail', label: 'E-Mail', width: 150 },
@@ -143,15 +154,28 @@
                         formatter: function (cellValue) {
                             switch (cellValue) {
                                 case 1:
-                                    return 'Siparişte';
+                                    return 'Üretimde';
                                 case 2:
                                     return 'KALDIRILDI';
                                 case 3:
-                                    return 'Sipariş İptal Edildi';
+                                    return 'Üretim İptal Edildi';
                                 case 4:
-                                    return 'Üretime Geçildi';
+                                    return 'Üretim Tamamlandı';
                                 case 5:
                                     return 'Beklemede';
+                                default:
+                                    return '';
+                            }
+                        }
+                    },
+                    {
+                        name: 'active', label: 'Aktiflik', width: 100,
+                        formatter: function (cellValue) {
+                            switch (cellValue) {
+                                case true:
+                                    return 'AKTİF';
+                                case false:
+                                    return 'AKTİF DEĞİL';
                                 default:
                                     return '';
                             }
@@ -164,40 +188,40 @@
                         name: 'actions', label: '', width: 300,
                         formatter: function (cellValue, options, rowObject) {
                             if (rowObject.status === 1) {
-                                var buttons = '<button class="btn btn-success open-ordertoproduction-modal" ' +
-                                    'data-orderid="' + rowObject.id + '">Üretime Geç</button>' +
+                                var buttons = '<button class="btn btn-success open-finishproduction-modal" ' +
+                                    'data-productionid="' + rowObject.id + '">Üretimi Tamamla</button>' +
                                     '<button class="btn btn-warning open-delete-modal" ' +
-                                    'data-orderid="' + rowObject.id + '">İptal Et</button>' +
+                                    'data-productionid="' + rowObject.id + '">İptal Et</button>' +
                                     '<button class="btn btn-warning open-detail-modal" ' +
-                                    'data-orderid="' + rowObject.id + '">Detaylar</button>';
+                                    'data-productionid="' + rowObject.id + '">Detaylar</button>';
                             }
                             if (rowObject.status === 2) {
                                 return '';
                             }
                             if (rowObject.status === 3) {
                                 var buttons = '<button class="btn btn-success open-approve-modal" ' +
-                                    'data-orderid="' + rowObject.id + '">Onayla</button>' +
+                                    'data-productionid="' + rowObject.id + '">Onayla</button>' +
                                     '<button class="btn btn-warning open-detail-modal" ' +
-                                    'data-orderid="' + rowObject.id + '">Detaylar</button>';
+                                    'data-productionid="' + rowObject.id + '">Detaylar</button>';
 
                             }
                             if (rowObject.status === 4) {
                                 var buttons = '<button class="btn btn-warning open-detail-modal" ' +
-                                    'data-orderid="' + rowObject.id + '">Detaylar</button>';
+                                    'data-productionid="' + rowObject.id + '">Detaylar</button>';
                             }
                             if (rowObject.status === 5) {
                                 var buttons = '<button class="btn btn-success open-approve-modal" ' +
-                                    'data-orderid="' + rowObject.id + '">Onayla</button>' +
+                                    'data-productionid="' + rowObject.id + '">Onayla</button>' +
                                     '<button class="btn btn-warning open-delete-modal" ' +
-                                    'data-orderid="' + rowObject.id + '">İptal Et</button>'+
+                                    'data-productionid="' + rowObject.id + '">İptal Et</button>'+
                                     '<button class="btn btn-warning open-detail-modal" ' +
-                                    'data-orderid="' + rowObject.id + '">Detaylar</button>';
+                                    'data-productionid="' + rowObject.id + '">Detaylar</button>';
                             }
                             return buttons;
                         }
                     }
                 ],
-                pager: '#orderGridPager',
+                pager: '#productionGridPager',
                 rowNum: 10,
                 rowList: [10, 20, 30, 40, 50],
                 sortname: 'id',
@@ -209,14 +233,14 @@
                 footerrow: true,
                 userDataOnFooter: true,
                 gridComplete: function () {
-                    var sumTotalPrice = orderGrid.jqGrid('getCol', 'totalprice', false, 'sum');
-                    var sumTotalPiece = orderGrid.jqGrid('getCol', 'totalpiece', false, 'sum');
-                    var sumProductPiece = orderGrid.jqGrid('getCol', 'productpiece', false, 'sum');
+                    var sumTotalPrice = productionGrid.jqGrid('getCol', 'totalprice', false, 'sum');
+                    var sumTotalPiece = productionGrid.jqGrid('getCol', 'totalpiece', false, 'sum');
+                    var sumProductPiece = productionGrid.jqGrid('getCol', 'productpiece', false, 'sum');
 
                     sumTotalPiece = Math.floor(sumTotalPiece);
                     sumProductPiece = Math.floor(sumProductPiece);
 
-                    orderGrid.jqGrid('footerData', 'set', {
+                    productionGrid.jqGrid('footerData', 'set', {
                         id: 'Toplam:',
                         totalprice: sumTotalPrice.toFixed(2),
                         totalpiece: sumTotalPiece.toString(),
@@ -228,20 +252,20 @@
     }
 
 
-    function openDeleteSiparisModal(button) {
+    function openDeleteUretimModal(button) {
     var data = button.dataset;
         firstModal = $.dialog({
-    title: 'Sipariş Kaldır',
+    title: 'Üretim Kaldır',
     content: `
     <!-- ${JSON.stringify(data)} -->
-    <form method="post" action="@Url.Action("RemoveOrder", "Order")">
+    <form method="post" action="@Url.Action("RemoveProduction", "ProductionTest")">
 
         <div class="form-group">
             <label>Kaldırmak istiyor musunuz ?</label>
         </div>
 
         <div class="form-group">
-            <input type="text" id="ID" name="ID" class="form-control" value="${data.orderid}" required hidden />
+            <input type="text" id="ID" name="ID" class="form-control" value="${data.productionid}" required/>
 
         </div>
 
@@ -255,20 +279,20 @@
     }
 
 
-    function openProductionSiparisModal(button) {
+    function openFinishProductionModal(button) {
     var data = button.dataset;
         firstModal = $.dialog({
-    title: 'Siparişe Geç',
+    title: 'Üretim Tamamla',
     content: `
     <!-- ${JSON.stringify(data)} -->
-    <form method="post" action="@Url.Action("GoToProduction", "Order")">
+    <form method="post" action="@Url.Action("FinishProduction", "ProductionTest")">
 
         <div class="form-group">
             <label>Üretime geçmek istiyor musunuz ?</label>
         </div>
 
         <div class="form-group">
-            <input type="text" id="ID" name="ID" class="form-control" value="${data.orderid}" required hidden />
+            <input type="text" id="ID" name="ID" class="form-control" value="${data.productionid}" required/>
 
         </div>
 
@@ -282,20 +306,20 @@
     }
 
 
-    function openApproveSiparisModal(button) {
+    function openApproveUretimModal(button) {
     var data = button.dataset;
         firstModal = $.dialog({
-    title: 'Sipariş Onayla',
+    title: 'Üretim Onayla',
     content: `
     <!-- ${JSON.stringify(data)} -->
-    <form method="post" action="@Url.Action("ApproveOrder", "Order")">
+    <form method="post" action="@Url.Action("ApproveProduction", "ProductionTest")">
 
         <div class="form-group">
             <label>Onaylamak istiyor musunuz ?</label>
         </div>
 
         <div class="form-group">
-            <input type="text" id="ID" name="ID" class="form-control" value="${data.orderid}" required hidden />
+            <input type="text" id="ID" name="ID" class="form-control" value="${data.productionid}" required/>
 
         </div>
 
@@ -312,9 +336,9 @@
         var data = button.dataset;
 
         $.ajax({
-            url: '@Url.Action("GetOfferDetailsByOrderId", "Order")',
+            url: '@Url.Action("GetOfferDetailsByProductionId", "ProductionTest")',
             type: 'GET',
-            data: { orderId: data.orderid },
+            data: { productionid: data.productionid },
             dataType: 'json',
             success: function (response) {
                 var detailHtml = '';
@@ -346,7 +370,7 @@
                 }
 
                 firstModal = $.dialog({
-                    title: 'Sipariş Detayları',
+                    title: 'Üretim Detayları',
                     content: detailHtml
                 });
             },
@@ -360,15 +384,15 @@
 
 
     $(document).on('click', '.open-delete-modal', function () {
-        openDeleteSiparisModal(this);
+        openDeleteUretimModal(this);
     });
 
     $(document).on('click', '.open-approve-modal', function () {
-        openApproveSiparisModal(this);
+        openApproveUretimModal(this);
     });
 
-    $(document).on('click', '.open-ordertoproduction-modal', function () {
-        openProductionSiparisModal(this);
+    $(document).on('click', '.open-finishproduction-modal', function () {
+        openFinishProductionModal(this);
     });
 
     $(document).on('submit', 'form', function (e) {
@@ -391,7 +415,7 @@
                     if (firstModal) {
                         firstModal.close();
                     }
-                    filterOrders();
+                    filterProductions();
                 }, 1500);
             },
             error: function (error) {

@@ -12,7 +12,7 @@ using Yesil_Vadi_Metalurji.Models;
 
 namespace Yesil_Vadi_Metalurji.Controllers
 {
-    public class OrderController : Controller
+    public class OrderTestController : Controller
     {
 
         CategoryManager categoryManager = new CategoryManager(new EFCategoryRepository());
@@ -62,6 +62,15 @@ namespace Yesil_Vadi_Metalurji.Controllers
             if (filterDto.ProductPiece > 0) orders = orders.Where(p => p.ProductPiece == filterDto.ProductPiece).ToList();
 
             if (filterDto.Status > 0) orders = orders.Where(p => p.Status.Equals(filterDto.Status)).ToList();
+
+            if (filterDto.Active == "1")
+            {
+                orders = orders.Where(p => p.Active == true).ToList();
+            }
+            else if (filterDto.Active == "2")
+            {
+                orders = orders.Where(p => p.Active == false).ToList();
+            }
 
 
             var offerData = orders.Select(p => new

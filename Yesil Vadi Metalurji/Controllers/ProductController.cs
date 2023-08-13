@@ -76,6 +76,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 Price = p.Price,
                 Piece = p.Piece,
                 Status = p.Status,
+                Active = p.Active,
                 Imageurl = p.ImageUrl,
                 Description = p.Description
             });

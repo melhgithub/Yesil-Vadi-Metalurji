@@ -2,24 +2,30 @@
 @using Yesil_Vadi_Metalurji.Dto
 @using System.ComponentModel
 @using Newtonsoft.Json
-@model CategoriesViewModel
+@model AdminsViewModel
 @{
-    ViewData["Title"] = "Kategoriler";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    ViewData["Title"] = "Adminler";
+    Layout = "~/Views/Shared/AdminTestLayout.cshtml";
 }
 
-<h1>Kategori Listesi</h1>
+<h1>Admin Listesi</h1>
 
 @await Html.PartialAsync("_ScriptImports")
 
-@using (Html.BeginForm("Filter", "Category", FormMethod.Post, new { id = "filterForm" }))
+@using (Html.BeginForm("Filter", "Admin", FormMethod.Post, new { id = "filterForm" }))
 {
 
     var statusList = new List<SelectListItem>
-    {
+{
         new SelectListItem { Value = "0", Text = "TÜMÜ" },
         new SelectListItem { Value = "1", Text = "AKTİF" },
         new SelectListItem { Value = "2", Text = "KALDIRILDI" },
+    };
+    var activeList = new List<SelectListItem>
+{
+        new SelectListItem { Value = "0", Text = "TÜMÜ" },
+        new SelectListItem { Value = "1", Text = "AKTİF" },
+        new SelectListItem { Value = "2", Text = "AKTİF DEĞİL" },
     };
 
 <div class="card">
@@ -32,12 +38,20 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Active, "Aktiflik:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.Active, activeList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
                 <dt>@Html.LabelFor(m => m.FilterDto.Status, "Durum:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
             </div>
-            <div class="col-sm-2">
-                <dt>@Html.LabelFor(m => m.FilterDto.Name, "Kategori Adı:")</dt>
-                @Html.TextBoxFor(m => m.FilterDto.Name, new { @class = "form-control", placeholder = "Kategori Adı" })
+            <div class="col-sm-3">
+                <dt>@Html.LabelFor(m => m.FilterDto.UserName, "Kullanıcı Adı:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.UserName, new { @class = "form-control", placeholder = "Kullanıcı Adı" })
+            </div>
+            <div class="col-sm-3">
+                <dt>@Html.LabelFor(m => m.FilterDto.Password, "Şifre:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Password, new { @class = "form-control", placeholder = "Şifre" })
             </div>
         </div>
     </div>
@@ -55,12 +69,12 @@
 
     <div class="card-body">
 
-        <button class="btn btn-primary" onclick="openYeniKategoriModal()">Yeni Kategori</button>
+        <button class="btn btn-primary" onclick="openYeniAdminModal()">Yeni Admin</button>
         <br />
 
-        <div id="categoryTable" class="table-responsive">
-            <table id="categoryGrid" class="table table-bordered table-striped"></table>
-            <div id="categoryGridPager"></div>
+        <div id="adminTable" class="table-responsive">
+            <table id="adminGrid" class="table table-bordered table-striped"></table>
+            <div id="adminGridPager"></div>
         </div>
 
     </div>
@@ -72,21 +86,21 @@
     var firstModal = null;
 
     $(document).ready(function () {
-        filterCategories();
+        filterAdmins();
 
         $('#filterForm select, #filterForm input[type="text"]').on('change', function () {
-            filterCategories();
+            filterAdmins();
         });
     });
 
-    function filterCategories() {
+    function filterAdmins() {
         var formData = $('#filterForm').serialize();
         console.log(formData);
 
-        var categoryGrid = $('#categoryGrid');
+        var adminGrid = $('#adminGrid');
 
         $.ajax({
-            url: '@Url.Action("Filter", "Category")',
+            url: '@Url.Action("Filter", "Admin")',
             type: 'POST',
             data: formData,
             dataType: 'json',
@@ -102,15 +116,17 @@
     }
 
     function showDatas(data) {
-        var categoryGrid = $('#categoryGrid');
+        var adminGrid = $('#adminGrid');
 
-        if (categoryGrid.length) {
-            categoryGrid.jqGrid('GridUnload');
+        if (adminGrid.length) {
+            adminGrid.jqGrid('GridUnload');
 
-            categoryGrid.jqGrid({
+            adminGrid.jqGrid({
                 data: data,
                 colModel: [
-                    { name: 'name', label: 'Kategori Adı', width: 110 },
+                    { name: 'id', label: 'ID', width: 40 },
+                    { name: 'username', label: 'Kullanıcı Adı', width: 110 },
+                    { name: 'password', label: 'Şifre', width: 110 },
                     {
                         name: 'status', label: 'Durum', width: 100,
                         formatter: function (cellValue) {
@@ -125,31 +141,46 @@
                         }
                     },
                     {
+                        name: 'active', label: 'AKTİFLİK', width: 100,
+                        formatter: function (cellValue) {
+                            switch (cellValue) {
+                                case true:
+                                    return 'AKTİF';
+                                case false:
+                                    return 'AKTİF DEĞİL';
+                                default:
+                                    return '';
+                            }
+                        }
+                    },
+                    {
                         name: 'actions', label: '', width: 200,
                         formatter: function (cellValue, options, rowObject) {
                             if (rowObject.status === 1) {
                                 var buttons = '<button class="btn btn-primary open-edit-modal" ' +
-                                    'data-categoryid="' + rowObject.id + '" ' +
-                                    'data-categoryname="' + rowObject.name + '" ' +
-                                    'data-categorystatus="' + rowObject.status + '" ' +
-                                    'data-categoryactive="' + rowObject.active + '">Düzenle</button>' +
+                                    'data-adminid="' + rowObject.id + '" ' +
+                                    'data-adminusername="' + rowObject.username + '" ' +
+                                    'data-adminpassword="' + rowObject.password + '" ' +
+                                    'data-adminstatus="' + rowObject.status + '" ' +
+                                    'data-adminactive="' + rowObject.active + '">Düzenle</button>' +
                                     '<button class="btn btn-warning open-delete-modal" ' +
-                                    'data-categoryid="' + rowObject.id + '">Kaldır</button>';
+                                    'data-adminid="' + rowObject.id + '">Kaldır</button>';
                             }
                             if (rowObject.status === 2) {
                                 var buttons = '<button class="btn btn-primary open-edit-modal" ' +
-                                    'data-categoryid="' + rowObject.id + '" ' +
-                                    'data-categoryname="' + rowObject.name + '" ' +
-                                    'data-categorystatus="' + rowObject.status + '" ' +
-                                    'data-categoryactive="' + rowObject.active + '">Düzenle</button>' +
+                                    'data-adminid="' + rowObject.id + '" ' +
+                                    'data-adminusername="' + rowObject.username + '" ' +
+                                    'data-adminpassword="' + rowObject.password + '" ' +
+                                    'data-adminstatus="' + rowObject.status + '" ' +
+                                    'data-adminactive="' + rowObject.active + '">Düzenle</button>' +
                                     '<button class="btn btn-success open-approve-modal" ' +
-                                    'data-categoryid="' + rowObject.id + '">Onayla</button>';
+                                    'data-adminid="' + rowObject.id + '">Onayla</button>';
                             }
                             return buttons;
                         }
                     }
                 ],
-                pager: '#categoryGridPager',
+                pager: '#adminGridPager',
                 rowNum: 10,
                 rowList: [10, 20, 30, 40, 50],
                 sortname: 'id',
@@ -166,20 +197,20 @@
 
 
 
-    function openApproveKategoriModal(button) {
+    function openApproveAdminModal(button) {
     var data = button.dataset;
         firstModal = $.dialog({
-        title: 'Kategori Onayla',
+        title: 'Admin Onayla',
          content: `
             <!-- ${JSON.stringify(data)} -->
-            <form method="post" action="@Url.Action("ApproveCategory", "Category")">
+            <form method="post" action="@Url.Action("ApproveAdmin", "Admin")">
 
                 <div class="form-group">
                     <label>Onaylamak istiyor musunuz ?</label>
                 </div>
 
                 <div class="form-group">
-                    <input type="text" id="ID" name="ID" class="form-control" value="${data.categoryid}" required hidden />
+                    <input type="text" id="ID" name="ID" class="form-control" value="${data.adminid}" required/>
                 </div>
 
                 <div class="form-group">
@@ -191,20 +222,20 @@
     });
     }
 
-    function openDeleteKategoriModal(button) {
+    function openDeleteAdminModal(button) {
     var data = button.dataset;
         firstModal = $.dialog({
-        title: 'Kategori Sil',
+        title: 'Admin Sil',
          content: `
             <!-- ${JSON.stringify(data)} -->
-            <form method="post" action="@Url.Action("RemoveCategory", "Category")">
+            <form method="post" action="@Url.Action("RemoveAdmin", "Admin")">
 
                 <div class="form-group">
                     <label>Kaldırmak istiyor musunuz ?</label>
                 </div>
 
                 <div class="form-group">
-                    <input type="text" id="ID" name="ID" class="form-control" value="${data.categoryid}" required hidden />
+                    <input type="text" id="ID" name="ID" class="form-control" value="${data.adminid}" required/>
                 </div>
 
                 <div class="form-group">
@@ -216,36 +247,41 @@
     });
     }
 
-    function openEditKategoriModal(button) {
+    function openEditAdminModal(button) {
         var data = button.dataset;
-        console.log(data.categoryactive);
+        console.log(data.adminactive);
         firstModal = $.dialog({
-        title: 'Kategori Düzenle',
+        title: 'Admin Düzenle',
          content: `
             <!-- ${JSON.stringify(data)} -->
-            <form method="post" action="@Url.Action("AddEditCategory", "Category")">
+            <form method="post" action="@Url.Action("AddEditAdmin", "Admin")">
 
                 <div class="form-group">
-                    <input type="text" id="ID" name="ID" class="form-control" value="${data.categoryid}" required hidden />
+                    <input type="text" id="ID" name="ID" class="form-control" value="${data.adminid}" required hidden />
                 </div>
 
                 <div class="form-group">
-                    <label for="Name">Kategori Adı:</label>
-                    <input type="text" id="Name" name="Name" class="form-control" value="${data.categoryname}" required />
+                    <label for="Name">Kullanıcı Adı:</label>
+                    <input type="text" id="UserName" name="UserName" class="form-control" value="${data.adminusername}" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="Name">Şifre:</label>
+                    <input type="text" id="Password" name="Password" class="form-control" value="${data.adminpassword}" required />
                 </div>
 
                 <div class="form-group">
                     <label for="Status">Durum :</label>
-                    <select id="Status" name="Status" class="form-control" data="${data.categorystatus}" required>
-                        <option value="1" ${data.categorystatus == "1" ? 'selected' : ''}>AKTİF</option>
-                        <option value="2" ${data.categorystatus == "2" ? 'selected' : ''}>KALDIRILDI</option>
+                    <select id="Status" name="Status" class="form-control" data="${data.adminstatus}" required>
+                        <option value="1" ${data.adminstatus == "1" ? 'selected' : ''}>AKTİF</option>
+                        <option value="2" ${data.adminstatus == "2" ? 'selected' : ''}>KALDIRILDI</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <select id="Active" name="Active" class="form-control" required hidden>
-                        <option value="1" ${data.categoryactive == 'true' ? 'selected' : ''}>AKTİF</option>
-                        <option value="2" ${data.categoryactive == 'false' ? 'selected' : ''}>AKTİF DEĞİL</option>
+                    <select id="Active" name="Active" class="form-control" required>
+                        <option value="1" ${data.adminactive == 'true' ? 'selected' : ''}>AKTİF</option>
+                        <option value="2" ${data.adminactive == 'false' ? 'selected' : ''}>AKTİF DEĞİL</option>
                     </select>
                 </div>
 
@@ -258,15 +294,20 @@
     });
 }
 
-    function openYeniKategoriModal() {
+    function openYeniAdminModal() {
         firstModal = $.dialog({
-            title: 'Yeni kategori oluştur',
+            title: 'Yeni admin oluştur',
             content: `
 
-<form method="post" action="@Url.Action("AddEditCategory", "Category")">
+<form method="post" action="@Url.Action("AddEditAdmin", "Admin")">
     <div class="form-group">
-        <label for="Name">Kategori Adı:</label>
-        <input type="text" id="Name" name="Name" class="form-control" required />
+        <label for="UserName">Kullanıcı Adı:</label>
+        <input type="text" id="UserName" name="UserName" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Password">Şifre:</label>
+        <input type="text" id="Password" name="Password" class="form-control" required />
     </div>
 
     <div class="form-group">
@@ -278,7 +319,7 @@
     </div>
 
     <div class="form-group">
-        <select id="Active" name="Active" class="form-control" required hidden>
+        <select id="Active" name="Active" class="form-control" required>
             <option value="1">AKTİF</option>
             <option value="2">AKTİF DEĞİL</option>
         </select>
@@ -297,19 +338,19 @@
 
 
     $(document).on('click', '.open-delete-modal', function () {
-        openDeleteKategoriModal(this);
+        openDeleteAdminModal(this);
     });
 
     $(document).on('click', '.open-approve-modal', function () {
-        openApproveKategoriModal(this);
+        openApproveAdminModal(this);
     });
 
     $(document).on('click', '.open-edit-modal', function () {
-        openEditKategoriModal(this);
+        openEditAdminModal(this);
     });
 
-    $(document).on('click', '#yeniUrunButton', function () {
-        openYeniKategoriModal();
+    $(document).on('click', '#yeniAdminButton', function () {
+        openYeniAdminModal();
     });
 
 
@@ -333,7 +374,7 @@
                     if (firstModal) {
                         firstModal.close();
                     }
-                    filterCategories();
+                    filterAdmins();
                 }, 1500);
             },
             error: function (error) {

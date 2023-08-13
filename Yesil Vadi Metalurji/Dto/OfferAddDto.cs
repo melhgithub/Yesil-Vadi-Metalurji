@@ -12,7 +12,7 @@ namespace Yesil_Vadi_Metalurji.Dto
 
         public OfferStatuses Status { get; set; }
 
-        public bool Active { get; set; }
+        public string Active { get; set; }
 
         public string Name { get; set; }
 

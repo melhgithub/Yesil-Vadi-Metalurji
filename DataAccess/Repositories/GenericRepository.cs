@@ -61,9 +61,10 @@ namespace DataAccess.Repositories
             return await c.Products.Select(c => c.Name).ToListAsync();
         }
 
-        public Task<List<string>> GetAdminNames()
+        public async Task<List<string>> GetAdminNames()
         {
-            throw new NotImplementedException();
+            using var c = new Context();
+            return await c.Admins.Select(c => c.UserName).ToListAsync();
         }
 
 

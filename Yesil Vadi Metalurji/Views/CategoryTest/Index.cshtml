@@ -5,14 +5,14 @@
 @model CategoriesViewModel
 @{
     ViewData["Title"] = "Kategoriler";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/AdminTestLayout.cshtml";
 }
 
 <h1>Kategori Listesi</h1>
 
 @await Html.PartialAsync("_ScriptImports")
 
-@using (Html.BeginForm("Filter", "Category", FormMethod.Post, new { id = "filterForm" }))
+@using (Html.BeginForm("Filter", "CategoryTest", FormMethod.Post, new { id = "filterForm" }))
 {
 
     var statusList = new List<SelectListItem>
@@ -204,7 +204,7 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="text" id="ID" name="ID" class="form-control" value="${data.categoryid}" required hidden />
+                    <input type="text" id="ID" name="ID" class="form-control" value="${data.categoryid}" required/>
                 </div>
 
                 <div class="form-group">
@@ -229,7 +229,7 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="text" id="ID" name="ID" class="form-control" value="${data.categoryid}" required hidden />
+                    <input type="text" id="ID" name="ID" class="form-control" value="${data.categoryid}" required/>
                 </div>
 
                 <div class="form-group">
@@ -251,7 +251,7 @@
             <form method="post" action="@Url.Action("AddEditCategory", "CategoryTest")">
 
                 <div class="form-group">
-                    <input type="text" id="ID" name="ID" class="form-control" value="${data.categoryid}" required hidden />
+                    <input type="text" id="ID" name="ID" class="form-control" value="${data.categoryid}" required/>
                 </div>
 
                 <div class="form-group">

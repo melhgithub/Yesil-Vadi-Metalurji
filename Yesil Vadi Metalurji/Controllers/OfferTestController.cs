@@ -13,7 +13,7 @@ using Core.Extensions;
 
 namespace Yesil_Vadi_Metalurji.Controllers
 {
-    public class OfferController : Controller
+    public class OfferTestController : Controller
     {
 
         CategoryManager categoryManager = new CategoryManager(new EFCategoryRepository());
@@ -43,9 +43,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
         public async Task<IActionResult> GetProducts()
         {
             var products = await productManager.GetListWithIncludes();
-
-            products = products.Where(p => p.Active == true).ToList();
-            products = products.Where(p => p.Category.Active == true).ToList();
 
             var productData = products.Select(p => new
             {
@@ -82,6 +79,15 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
             if (filterDto.Status > 0) offers = offers.Where(p => p.Status.Equals(filterDto.Status)).ToList();
 
+            if (filterDto.Active == "1")
+            {
+                offers = offers.Where(p => p.Active == true).ToList();
+            }
+            else if (filterDto.Active == "2")
+            {
+                offers = offers.Where(p => p.Active == false).ToList();
+            }
+
 
             var offerData = offers.Select(p => new
             {
@@ -91,6 +97,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 Mail = p.Mail,
                 Phonenumber = p.PhoneNumber,
                 Status = p.Status,
+                Active = p.Active,
                 Totalpiece = p.TotalPiece,
                 Totalprice = p.TotalPrice,
                 Productpiece = p.ProductPiece
@@ -145,10 +152,19 @@ namespace Yesil_Vadi_Metalurji.Controllers
             {
                 try
                 {
+                    var active = false;
+                    if (offer.Active == "1")
+                    {
+                        active = true;
+                    }
+                    else
+                    {
+                        active = false;
+                    }
                     var offerToAdd = new Offer
                     {
-                        Status = (OfferStatuses)5,
-                        Active = true,
+                        Status = offer.Status,
+                        Active = active,
                         Name = offer.Name,
                         LastName = offer.LastName,
                         Mail = offer.Mail,

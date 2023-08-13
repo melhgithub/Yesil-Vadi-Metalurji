@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Yesil_Vadi_Metalurji.Dto
 {
-    public class AdminDeleteDto
+    public class AdminRemoveDto
     {
         public int ID { get; set; }
     }
