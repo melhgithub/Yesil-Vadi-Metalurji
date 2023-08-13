@@ -15,7 +15,7 @@ namespace Entity.Concrete
         [Description("TÜMÜ")]
         All = 0,
 
-        [Description("Siparişte")]
+        [Description("Sipariş Kabul Edildi")]
         Approved = 1,
 
         [Description("KALDIRILDI")]
@@ -25,7 +25,10 @@ namespace Entity.Concrete
         Cancelled = 3,
 
         [Description("Üretime Geçildi")]
-        Finished = 4
+        Finished = 4,
+
+        [Description("Beklemede")]
+        Pending = 5,
     }
     public class Order
     {

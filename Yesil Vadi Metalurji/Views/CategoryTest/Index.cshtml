@@ -16,10 +16,17 @@
 {
 
     var statusList = new List<SelectListItem>
-    {
+{
         new SelectListItem { Value = "0", Text = "TÜMÜ" },
         new SelectListItem { Value = "1", Text = "AKTİF" },
         new SelectListItem { Value = "2", Text = "KALDIRILDI" },
+    };
+
+    var activeList = new List<SelectListItem>
+{
+        new SelectListItem { Value = "0", Text = "TÜMÜ" },
+        new SelectListItem { Value = "1", Text = "AKTİF" },
+        new SelectListItem { Value = "2", Text = "AKTİF DEĞİL" },
     };
 
 <div class="card">
@@ -34,6 +41,10 @@
             <div class="col-sm-2">
                 <dt>@Html.LabelFor(m => m.FilterDto.Status, "Durum:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Active, "Aktiflik:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.Active, activeList, new { @class = "form-control" })
             </div>
             <div class="col-sm-2">
                 <dt>@Html.LabelFor(m => m.FilterDto.Name, "Kategori Adı:")</dt>
@@ -86,7 +97,7 @@
         var categoryGrid = $('#categoryGrid');
 
         $.ajax({
-            url: '@Url.Action("Filter", "Category")',
+            url: '@Url.Action("Filter", "CategoryTest")',
             type: 'POST',
             data: formData,
             dataType: 'json',
@@ -120,6 +131,19 @@
                                     return 'AKTİF';
                                 case 2:
                                     return 'KALDIRILDI';
+                                default:
+                                    return '';
+                            }
+                        }
+                    },
+                    {
+                        name: 'active', label: 'Aktiflik', width: 100,
+                        formatter: function (cellValue) {
+                            switch (cellValue) {
+                                case true:
+                                    return 'AKTİF';
+                                case false:
+                                    return 'AKTİF DEĞİL';
                                 default:
                                     return '';
                             }
@@ -173,7 +197,7 @@
         title: 'Kategori Onayla',
          content: `
             <!-- ${JSON.stringify(data)} -->
-            <form method="post" action="@Url.Action("ApproveCategory", "Category")">
+            <form method="post" action="@Url.Action("ApproveCategory", "CategoryTest")">
 
                 <div class="form-group">
                     <label>Onaylamak istiyor musunuz ?</label>
@@ -198,7 +222,7 @@
         title: 'Kategori Sil',
          content: `
             <!-- ${JSON.stringify(data)} -->
-            <form method="post" action="@Url.Action("RemoveCategory", "Category")">
+            <form method="post" action="@Url.Action("RemoveCategory", "CategoryTest")">
 
                 <div class="form-group">
                     <label>Kaldırmak istiyor musunuz ?</label>
@@ -224,7 +248,7 @@
         title: 'Kategori Düzenle',
          content: `
             <!-- ${JSON.stringify(data)} -->
-            <form method="post" action="@Url.Action("AddEditCategory", "Category")">
+            <form method="post" action="@Url.Action("AddEditCategory", "CategoryTest")">
 
                 <div class="form-group">
                     <input type="text" id="ID" name="ID" class="form-control" value="${data.categoryid}" required hidden />
@@ -244,7 +268,8 @@
                 </div>
 
                 <div class="form-group">
-                    <select id="Active" name="Active" class="form-control" required hidden>
+                    <label for="Active">Aktiflik :</label>
+                    <select id="Active" name="Active" class="form-control" required>
                         <option value="1" ${data.categoryactive == 'true' ? 'selected' : ''}>AKTİF</option>
                         <option value="2" ${data.categoryactive == 'false' ? 'selected' : ''}>AKTİF DEĞİL</option>
                     </select>
@@ -264,7 +289,7 @@
             title: 'Yeni kategori oluştur',
             content: `
 
-<form method="post" action="@Url.Action("AddEditCategory", "Category")">
+<form method="post" action="@Url.Action("AddEditCategory", "CategoryTest")">
     <div class="form-group">
         <label for="Name">Kategori Adı:</label>
         <input type="text" id="Name" name="Name" class="form-control" required />
@@ -279,9 +304,10 @@
     </div>
 
     <div class="form-group">
-        <select id="Active" name="Active" class="form-control" required hidden>
-            <option value="1">AKTİF</option>
-            <option value="2">AKTİF DEĞİL</option>
+        <label for="Active">AKTİFLİK :</label>
+        <select id="Active" name="Active" class="form-control" required>
+            <option value=true>AKTİF</option>
+            <option value=false>AKTİF DEĞİL</option>
         </select>
     </div>
 

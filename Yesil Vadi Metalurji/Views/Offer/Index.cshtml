@@ -411,7 +411,7 @@
                                 var buttons = '<button class="btn btn-success open-offertoorder-modal" ' +
                                     'data-offerid="' + rowObject.id + '">Siparişe Geç</button>' +
                                     '<button class="btn btn-warning open-delete-modal" ' +
-                                    'data-offerid="' + rowObject.id + '">Kaldır</button>' +
+                                    'data-offerid="' + rowObject.id + '">İptal Et</button>' +
                                     '<button class="btn btn-warning open-detail-modal" ' +
                                     'data-offerid="' + rowObject.id + '">Detaylar</button>';
                             }
@@ -433,7 +433,7 @@
                                 var buttons = '<button class="btn btn-success open-approve-modal" ' +
                                     'data-offerid="' + rowObject.id + '">Onayla</button>' +
                                     '<button class="btn btn-warning open-delete-modal" ' +
-                                    'data-offerid="' + rowObject.id + '">Kaldır</button>'+
+                                    'data-offerid="' + rowObject.id + '">İptal Et</button>'+
                                     '<button class="btn btn-warning open-detail-modal" ' +
                                     'data-offerid="' + rowObject.id + '">Detaylar</button>';
                             }
@@ -470,6 +470,58 @@
             });
         }
     }
+
+
+
+    function openDetailModal(button) {
+        var data = button.dataset;
+
+        $.ajax({
+            url: '@Url.Action("GetOfferDetails", "Offer")',
+            type: 'GET',
+            data: { offerId: data.offerid },
+            dataType: 'json',
+            success: function (response) {
+                var detailHtml = '';
+
+                if (response.length > 0) {
+                    var firstDetail = response[0];
+
+                    detailHtml += `
+                        <div class="offer-detail">
+                            <p>İsim: ${firstDetail.name}</p>
+                            <p>Soyisim: ${firstDetail.lastname}</p>
+                            <p>E-Mail: ${firstDetail.mail}</p>
+                            <p>Telefon Numarası: ${firstDetail.phonenumber}</p>
+                        </div>
+                        <hr class="divider">
+                    `;
+
+                    for (var i = 0; i < response.length; i++) {
+                        var detail = response[i];
+                        detailHtml += `
+                            <div class="offer-detail">
+                                <p>Ürün Adı: ${detail.productname}</p>
+                                <p>Adet: ${detail.productpiece}</p>
+                                <p>Fiyat: ${detail.productprice}</p>
+                            </div>
+                            <hr class="divider">
+                        `;
+                    }
+                }
+
+                firstModal = $.dialog({
+                    title: 'Teklif Detayları',
+                    content: detailHtml
+                });
+            },
+            error: function (error) {
+                console.log("Detayları getirirken hata oluştu: ", error);
+            }
+        });
+    }
+
+
 
 
     function openDeleteTeklifModal(button) {
@@ -551,81 +603,6 @@
     `
     });
     }
-
-
-    function generateDetailHtml(details) {
-        if (!details || details.length === 0) {
-            return `
-            <div class="error-message">Bir sorun oluştu.</div>
-        `;
-        } else {
-            const firstDetail = details[0];
-            const detailsHtml = details.slice(1).map(detail => {
-                return `
-                <div class="detail">
-                    <div class="title">Ürün Adı:</div>
-                    <div class="value">${detail.Productname}</div>
-                </div>
-                <div class="detail">
-                    <div class="title">Ürün Adeti:</div>
-                    <div class="value">${detail.Productpiece}</div>
-                </div>
-                <div class="detail">
-                    <div class="title">Ürün Fiyatı:</div>
-                    <div class="value">${detail.Productprice}</div>
-                </div>
-                <hr class="divider">
-            `;
-            }).join('');
-
-            return `
-            <div class="detail">
-                <div class="title">İsim:</div>
-                <div class="value">${firstDetail.Name}</div>
-            </div>
-            <div class="detail">
-                <div class="title">Soyisim:</div>
-                <div class="value">${firstDetail.Lastname}</div>
-            </div>
-            <div class="detail">
-                <div class="title">E-Mail:</div>
-                <div class="value">${firstDetail.Mail}</div>
-            </div>
-            <div class="detail">
-                <div class="title">Telefon Numarası:</div>
-                <div class="value">${firstDetail.Phonenumber}</div>
-            </div>
-            <hr class="divider">
-            ${detailsHtml}
-        `;
-        }
-    }
-
-    function openDetailModal(button) {
-        var data = button.dataset;
-        firstModal = $.dialog({
-            title: 'Teklif Detayları',
-            content: `<div id="offerDetailsContainer">Teklif detayları yükleniyor...</div>`,
-            onOpen: function () {
-                $.ajax({
-                    url: '@Url.Action("GetOfferDetails", "Offer")',
-                    method: 'GET',
-                    data: { offerId: data.offerid },
-                    success: function (response) {
-                        console.log(response);
-                        const detailHtml = generateDetailHtml(response);
-                        const htmlContent = `<div class="offer-details">${detailHtml}</div>`;
-                        $('#offerDetailsContainer').html(htmlContent);
-                    },
-                    error: function (error) {
-                        console.error(error);
-                    }
-                });
-            }
-        });
-    }
-
-
 
 
     $(document).on('click', '.open-delete-modal', function () {

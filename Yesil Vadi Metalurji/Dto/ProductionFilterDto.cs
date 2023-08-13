@@ -9,7 +9,7 @@ namespace Yesil_Vadi_Metalurji.Dto
     public class ProductionFilterDto
     {
         public ProductionStatuses Status { get; set; }
-        public bool Active { get; set; }
+        public string Active { get; set; }
 
         public string Name { get; set; }
 

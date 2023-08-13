@@ -45,6 +45,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
             var products = await productManager.GetList();
 
             products = products.Where(p => p.Active == true).ToList();
+            products = products.Where(p => p.Category.Active == true).ToList();
 
             var productData = products.Select(p => new
             {
@@ -74,8 +75,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
             {
                 offers = offers.Where(p => p.TotalPrice == filterDto.TotalPrice.ToDecimal()).ToList();
             }
-
-
 
             if (filterDto.TotalPiece > 0) offers = offers.Where(p => p.TotalPiece == filterDto.TotalPiece).ToList();
 
@@ -115,19 +114,26 @@ namespace Yesil_Vadi_Metalurji.Controllers
         {
             var offerDetails = await offerDetailManager.GetOfferDetailsByOfferID(offerId);
 
-            if (offerDetails!=null)
+            if (offerDetails != null)
             {
-                var offerDetailData = offerDetails.Select(async p => new
+                var offerDetailData = new List<object>();
+
+                foreach (var detail in offerDetails)
                 {
-                    ID = p.ID,
-                    Productpiece = p.Piece,
-                    Productprice = p.Price,
-                    Productname = p.ProductName,
-                    Name = p.Name,
-                    Lastname = p.LastName,
-                    Mail = p.Mail,
-                    Phonenumber = p.PhoneNumber
-                });
+                    var detailData = new
+                    {
+                        ID = detail.ID,
+                        Productpiece = detail.Piece,
+                        Productprice = detail.Price,
+                        Productname = detail.ProductName,
+                        Name = detail.Name,
+                        Lastname = detail.LastName,
+                        Mail = detail.Mail,
+                        Phonenumber = detail.PhoneNumber
+                    };
+
+                    offerDetailData.Add(detailData);
+                }
 
                 return Json(offerDetailData);
             }
@@ -292,7 +298,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
                     var orderToAdd = new Order
                     {
-                        Status = (OrderStatuses)1,
+                        Status = (OrderStatuses)5,
                         Active = true,
                         OfferID = offerToOrder.ID,
                         Name = offerToOrder.Name,

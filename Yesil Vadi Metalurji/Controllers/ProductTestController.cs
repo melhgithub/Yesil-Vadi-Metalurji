@@ -12,7 +12,7 @@ using Yesil_Vadi_Metalurji.Models;
 
 namespace Yesil_Vadi_Metalurji.Controllers
 {
-    public class ProductController : Controller
+    public class ProductTestController : Controller
     {
         ProductManager productManager = new ProductManager(new EFProductRepository());
         CategoryManager categoryManager = new CategoryManager(new EFCategoryRepository());
@@ -21,8 +21,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
         {
             var products = await productManager.GetListWithIncludes();
             var categories = await categoryManager.GetList();
-
-            categories = categories.Where(p => p.Active == true).ToList();
 
             var filter = new ProductFilterDto
             {
@@ -61,11 +59,18 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
             if (filterDto.CategoryID.HasValue) products = products.Where(p => p.CategoryID == filterDto.CategoryID).ToList();
 
+            if (filterDto.Active == "1")
+            {
+                products = products.Where(p => p.Active == true).ToList();
+            }
+            else if (filterDto.Active == "2")
+            {
+                products = products.Where(p => p.Active == false).ToList();
+            }
+
             if (filterDto.Image == "1") products = products.Where(p => p.ImageUrl != null).ToList();
 
             if (filterDto.Image == "2") products = products.Where(p => p.ImageUrl == null).ToList();
-
-            products = products.Where(p => p.Category.Active == true).ToList();
 
             var productData = products.Select(p => new
             {
@@ -76,6 +81,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 Price = p.Price,
                 Piece = p.Piece,
                 Status = p.Status,
+                Active = p.Active,
                 Imageurl = p.ImageUrl,
                 Description = p.Description
             });
@@ -93,6 +99,18 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 try
                 {
                     var productEntity = product.ID > 0 ? await productManager.GetByID(product.ID) : new Product();
+                    //bool isUpdate = productToUpdate != null;
+
+                    //Product productEntity;
+
+                    //if (isUpdate)
+                    //{
+                    //    productEntity = productToUpdate;
+                    //}
+                    //else
+                    //{
+                    //    productEntity = new Product();
+                    //}
 
                     productEntity.CategoryID = product.CategoryID;
                     productEntity.Material = product.Material;
@@ -100,14 +118,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     productEntity.Piece = product.Piece;
                     productEntity.Price = product.Price.ToDecimal();
                     productEntity.Status = product.Status;
-                    if (productEntity.Status == (ProductStatuses)1)
-                    {
-                        productEntity.Active = true;
-                    }
-                    else
-                    {
-                        productEntity.Active = false;
-                    }
+                    productEntity.Active = product.Active;
                     productEntity.ImageUrl = product.ImageUrl;
                     productEntity.Description = product.Description;
 

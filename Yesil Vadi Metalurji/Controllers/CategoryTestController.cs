@@ -1,22 +1,19 @@
-﻿using Business.Concrete;
-using DataAccess.Repositories;
-using Entity.Concrete;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.Concrete;
+using DataAccess.Repositories;
+using Entity.Concrete;
 using Yesil_Vadi_Metalurji.Dto;
 using Yesil_Vadi_Metalurji.Models;
 
 namespace Yesil_Vadi_Metalurji.Controllers
 {
-    public class CategoryController : Controller
+    public class CategoryTestController : Controller
     {
         CategoryManager categoryManager = new CategoryManager(new EFCategoryRepository());
-
-
-
         public async Task<IActionResult> Index()
         {
 
@@ -49,11 +46,21 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 categories = categories.Where(p => p.Status.Equals(filterDto.Status)).ToList();
             }
 
+            if (filterDto.Active == "1")
+            {
+                categories = categories.Where(p => p.Active == true).ToList();
+            }
+            else if (filterDto.Active == "2")
+            {
+                categories = categories.Where(p => p.Active == false).ToList();
+            }
+
             var categoryData = categories.Select(p => new
             {
                 ID = p.ID,
                 Name = p.Name,
-                Status = p.Status
+                Active = p.Active,
+                Status = p.Status,
             });
 
             return Json(categoryData);
@@ -193,6 +200,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
             return Json(message);
         }
+
 
     }
 }

@@ -12,7 +12,7 @@
 
 @await Html.PartialAsync("_ScriptImports")
 
-@using (Html.BeginForm("Filter", "Product", FormMethod.Post, new { id = "filterForm" }))
+@using (Html.BeginForm("Filter", "ProductTest", FormMethod.Post, new { id = "filterForm" }))
 {
     var statusList = new List<SelectListItem>
 {
@@ -20,6 +20,12 @@
         new SelectListItem { Value = "1", Text = "SATIŞTA" },
         new SelectListItem { Value = "2", Text = "KALDIRILDI" },
         new SelectListItem { Value = "3", Text = "ONAY BEKLİYOR" }
+    };
+    var activeList = new List<SelectListItem>
+{
+        new SelectListItem { Value = "0", Text = "TÜMÜ" },
+        new SelectListItem { Value = "1", Text = "AKTİF" },
+        new SelectListItem { Value = "2", Text = "AKTİF DEĞİL" },
     };
     var imageList = new List<SelectListItem>
 {
@@ -46,14 +52,18 @@
                 @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
             </div>
             <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Active, "Aktiflik:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.Active, activeList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
                 <dt>@Html.LabelFor(m => m.FilterDto.Image, "Resim:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.Image, imageList, new { @class = "form-control" })
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <dt>@Html.LabelFor(m => m.FilterDto.Name, "Ürün Adı:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Name, new { @class = "form-control", placeholder = "Ürün Adı" })
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <dt>@Html.LabelFor(m => m.FilterDto.Material, "Malzeme:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Material, new { @class = "form-control", placeholder = "Malzeme" })
             </div>
@@ -139,6 +149,19 @@
                             }
                         }
                     },
+                    {
+                        name: 'active', label: 'Aktiflik', width: 100,
+                        formatter: function (cellValue) {
+                            switch (cellValue) {
+                                case true:
+                                    return 'AKTİF';
+                                case false:
+                                    return 'AKTİF DEĞİL';
+                                default:
+                                    return '';
+                            }
+                        }
+                    },
                     { name: 'description', label: 'Açıklama', width: 100 },
                     { name: 'price', label: 'Fiyat', width: 80 },
                     { name: 'piece', label: 'Adet', width: 80 },
@@ -215,7 +238,7 @@
         var productGrid = $('#productGrid');
 
         $.ajax({
-            url: '@Url.Action("Filter", "Product")',
+            url: '@Url.Action("Filter", "ProductTest")',
             type: 'POST',
             data: formData,
             dataType: 'json',
@@ -238,7 +261,7 @@
         title: 'Ürün Kaldır',
         content: `
         <!-- ${JSON.stringify(data)} -->
-        <form method="post" action="@Url.Action("RemoveProduct", "Product")">
+        <form method="post" action="@Url.Action("RemoveProduct", "ProductTest")">
 
             <div class="form-group">
                 <label>Kaldırmak istiyor musunuz ?</label>
@@ -264,7 +287,7 @@
         title: 'Ürün Onayla',
         content: `
         <!-- ${JSON.stringify(data)} -->
-        <form method="post" action="@Url.Action("ApproveProduct", "Product")">
+        <form method="post" action="@Url.Action("ApproveProduct", "ProductTest")">
 
             <div class="form-group">
                 <label>Onaylamak istiyor musunuz ?</label>
@@ -296,7 +319,7 @@
         firstModal = $.dialog({
         title: 'Ürün Düzenle',
         content: `
-        <form method="post" action="@Url.Action("AddEditProduct", "Product")">
+        <form method="post" action="@Url.Action("AddEditProduct", "ProductTest")">
 
             <div class="form-group">
                 <input type="text" id="ID" name="ID" class="form-control" value="${data.productid}" required hidden />
@@ -338,7 +361,8 @@
             </div>
 
             <div class="form-group">
-                <select id="Active" name="Active" class="form-control" data="${data.productactive}" required hidden>
+                <label for="Active">Aktiflik :</label>
+                <select id="Active" name="Active" class="form-control" data="${data.productactive}" required>
                     <option value=true ${data.productactive == "true" ? 'selected' : '' }>AKTİF</option>
                     <option value=false ${data.productactive == "false" ? 'selected' : '' }>AKTİF DEĞİL</option>
                 </select>
@@ -371,7 +395,7 @@
         firstModal = $.dialog({
         title: 'Ürün Oluştur',
         content: `
-        <form method="post" action="@Url.Action("AddEditProduct", "Product")">
+        <form method="post" action="@Url.Action("AddEditProduct", "ProductTest")">
             <div class="form-group">
                 <label for="Name">Ürün Adı</label>
                 <input type="text" id="Name" name="Name" class="form-control" required />
@@ -407,7 +431,8 @@
             </div>
 
             <div class="form-group">
-                <select id="Active" name="Active" class="form-control" required hidden>
+                <label for="Active">Aktiflik : </label>
+                <select id="Active" name="Active" class="form-control" required>
                     <option value=true>AKTİF</option>
                     <option value=false>AKTİF DEĞİL</option>
                 </select>

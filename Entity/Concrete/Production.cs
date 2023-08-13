@@ -27,7 +27,10 @@ namespace Entity.Concrete
 
 
         [Description("Üretim Tamamlandı")]
-        Finished = 4
+        Finished = 4,
+
+        [Description("Beklemede")]
+        Pending = 5,
     }
 
     public class Production
