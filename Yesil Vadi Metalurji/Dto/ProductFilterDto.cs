@@ -30,6 +30,8 @@ namespace Yesil_Vadi_Metalurji.Dto
         public string Description { get; set; }
         public string Image { get; set; }
         public int? CategoryID { get; set; }
+        public CategoryStatuses CategoryStatus { get; set; }
+        public string CategoryActive { get; set; }
 
         public List<Category> Categories { get; set; }
 

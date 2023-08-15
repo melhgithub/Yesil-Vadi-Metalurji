@@ -167,7 +167,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                         if (form[$"Product{i}"] != null && int.TryParse(form[$"Product{i}"], out int productID) &&
                             int.TryParse(form[$"ProductPiece{i}"], out int productPiece))
                         {
-                            totalprice += form[$"ProductPrice{i}"].ToDecimal();
+                            totalprice += form[$"ProductPrice{i}"].ToDecimal()*productPiece;
                             totalpiecee += productPiece;
                             var offerProduct = await productManager.GetByID(productID);
                             var productName = offerProduct.Name;

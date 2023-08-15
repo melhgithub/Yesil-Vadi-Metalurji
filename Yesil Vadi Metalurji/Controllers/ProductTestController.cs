@@ -57,6 +57,8 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
             if (filterDto.Status > 0) products = products.Where(p => p.Status.Equals(filterDto.Status)).ToList();
 
+            if (filterDto.CategoryStatus > 0) products = products.Where(p => p.Category.Status.Equals(filterDto.CategoryStatus)).ToList();
+
             if (filterDto.CategoryID.HasValue) products = products.Where(p => p.CategoryID == filterDto.CategoryID).ToList();
 
             if (filterDto.Active == "1")
@@ -66,6 +68,14 @@ namespace Yesil_Vadi_Metalurji.Controllers
             else if (filterDto.Active == "2")
             {
                 products = products.Where(p => p.Active == false).ToList();
+            }
+            if (filterDto.CategoryActive == "1")
+            {
+                products = products.Where(p => p.Category.Active == true).ToList();
+            }
+            else if (filterDto.CategoryActive == "2")
+            {
+                products = products.Where(p => p.Category.Active == false).ToList();
             }
 
             if (filterDto.Image == "1") products = products.Where(p => p.ImageUrl != null).ToList();

@@ -82,7 +82,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
             return Json(offerData);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> ApproveProduction(ProductionApproveDto production)
         {

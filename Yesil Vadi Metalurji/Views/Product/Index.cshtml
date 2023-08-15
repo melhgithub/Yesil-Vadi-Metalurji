@@ -21,6 +21,12 @@
         new SelectListItem { Value = "2", Text = "KALDIRILDI" },
         new SelectListItem { Value = "3", Text = "ONAY BEKLİYOR" }
     };
+    var categoryStatusList = new List<SelectListItem>
+{
+        new SelectListItem { Value = "0", Text = "TÜMÜ" },
+        new SelectListItem { Value = "1", Text = "AKTİF" },
+        new SelectListItem { Value = "2", Text = "KALDIRILDI" },
+    };
     var imageList = new List<SelectListItem>
 {
         new SelectListItem { Value = "0", Text = "TÜMÜ" },
@@ -37,15 +43,19 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.CategoryID, "Kategori:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.CategoryID, new SelectList(Model.FilterDto.Categories, "ID", "Name"), "TÜMÜ", new { @class = "form-control" })
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Status, "Durum:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
+                <dt>@Html.LabelFor(m => m.FilterDto.Status, "Kategori Durumu:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.CategoryStatus, categoryStatusList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Image, "Resim:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.Image, imageList, new { @class = "form-control" })
             </div>
@@ -123,6 +133,9 @@
                     { name: 'category', label: 'Kategori', width: 100, formatter: categoryFormatter },
                     { name: 'name', label: 'Ürün Adı', width: 110 },
                     { name: 'material', label: 'Malzeme', width: 80 },
+                    { name: 'description', label: 'Açıklama', width: 100 },
+                    { name: 'price', label: 'Fiyat', width: 80 },
+                    { name: 'piece', label: 'Adet', width: 80 },
                     {
                         name: 'status', label: 'Durum', width: 100,
                         formatter: function (cellValue) {
@@ -138,9 +151,6 @@
                             }
                         }
                     },
-                    { name: 'description', label: 'Açıklama', width: 100 },
-                    { name: 'price', label: 'Fiyat', width: 80 },
-                    { name: 'piece', label: 'Adet', width: 80 },
                     {
                         name: 'actions', label: '', width: 200,
                         formatter: function (cellValue, options, rowObject) {
@@ -197,7 +207,7 @@
                     sumPiece = Math.floor(sumPiece);
 
                     productGrid.jqGrid('footerData', 'set', {
-                        id: 'Toplam:',
+                        name: 'Toplam:',
                         price: sumPrice.toFixed(2),
                         piece: sumPiece.toString(),
                     });

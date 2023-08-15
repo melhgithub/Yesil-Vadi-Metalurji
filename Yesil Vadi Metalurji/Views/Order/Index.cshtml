@@ -138,6 +138,9 @@
                     { name: 'lastname', label: 'Soyisim', width: 80 },
                     { name: 'mail', label: 'E-Mail', width: 150 },
                     { name: 'phonenumber', label: 'Telefon Numarası', width: 100 },
+                    { name: 'totalprice', label: 'Toplam Fiyat', width: 80 },
+                    { name: 'totalpiece', label: 'Toplam Adet', width: 80 },
+                    { name: 'productpiece', label: 'Ürün Adeti', width: 80 },
                     {
                         name: 'status', label: 'Durum', width: 80,
                         formatter: function (cellValue) {
@@ -157,9 +160,6 @@
                             }
                         }
                     },
-                    { name: 'totalprice', label: 'Toplam Fiyat', width: 80 },
-                    { name: 'totalpiece', label: 'Toplam Adet', width: 80 },
-                    { name: 'productpiece', label: 'Ürün Adeti', width: 80 },
                     {
                         name: 'actions', label: '', width: 300,
                         formatter: function (cellValue, options, rowObject) {
@@ -217,7 +217,7 @@
                     sumProductPiece = Math.floor(sumProductPiece);
 
                     orderGrid.jqGrid('footerData', 'set', {
-                        id: 'Toplam:',
+                        name: 'Toplam:',
                         totalprice: sumTotalPrice.toFixed(2),
                         totalpiece: sumTotalPiece.toString(),
                         productpiece: sumProductPiece.toString()

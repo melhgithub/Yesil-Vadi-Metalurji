@@ -22,8 +22,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
             var products = await productManager.GetListWithIncludes();
             var categories = await categoryManager.GetList();
 
-            categories = categories.Where(p => p.Active == true).ToList();
-
             var filter = new ProductFilterDto
             {
                 Categories = categories
@@ -59,13 +57,14 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
             if (filterDto.Status > 0) products = products.Where(p => p.Status.Equals(filterDto.Status)).ToList();
 
+            if (filterDto.CategoryStatus > 0) products = products.Where(p => p.Category.Status.Equals(filterDto.CategoryStatus)).ToList();
+
             if (filterDto.CategoryID.HasValue) products = products.Where(p => p.CategoryID == filterDto.CategoryID).ToList();
 
-            if (filterDto.Image == "1") products = products.Where(p => p.ImageUrl != null).ToList();
+            if (filterDto.Image == "1") products = products.Where(p => p.ImageUrl != "null").ToList();
 
-            if (filterDto.Image == "2") products = products.Where(p => p.ImageUrl == null).ToList();
+            if (filterDto.Image == "2") products = products.Where(p => p.ImageUrl == "null").ToList();
 
-            products = products.Where(p => p.Category.Active == true).ToList();
 
             var productData = products.Select(p => new
             {
