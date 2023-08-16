@@ -33,17 +33,17 @@ namespace Business.Concrete
             return await _offerDetailDal.GetOfferDetailsByOfferID(offerID);
         }
 
-        public async Task OfferDetailAdd(OfferDetail offerDetail)
+        public async Task Add(OfferDetail offerDetail)
         {
             await _offerDetailDal.Insert(offerDetail);
         }
 
-        public async Task OfferDetailDelete(OfferDetail offerDetail)
+        public async Task Delete(OfferDetail offerDetail)
         {
             await _offerDetailDal.Delete(offerDetail);
         }
 
-        public async Task OfferDetailUpdate(OfferDetail offerDetail)
+        public async Task Update(OfferDetail offerDetail)
         {
             await _offerDetailDal.Update(offerDetail);
         }

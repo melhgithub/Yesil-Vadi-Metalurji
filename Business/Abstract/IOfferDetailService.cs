@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IOfferDetailService
+    public interface IOfferDetailService : GenericService<OfferDetail>
     {
-        Task OfferDetailAdd(OfferDetail offerDetail);
-        Task OfferDetailDelete(OfferDetail offerDetail);
-        Task OfferDetailUpdate(OfferDetail offerDetail);
-        Task<List<OfferDetail>> GetList();
+        //Task OfferDetailAdd(OfferDetail offerDetail);
+        //Task OfferDetailDelete(OfferDetail offerDetail);
+        //Task OfferDetailUpdate(OfferDetail offerDetail);
+        //Task<OfferDetail> GetByID(int ID);
+        //Task<List<OfferDetail>> GetList();
+
+
         Task<List<OfferDetail>> GetOfferDetailsByOfferID(int offerID);
-        Task<OfferDetail> GetByID(int ID);
     }
 }

@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IAdminService
+    public interface IAdminService : GenericService<Admin>
     {
-        Task AdminAdd(Admin admin);
-        Task AdminDelete(Admin admin);
-        Task AdminUpdate(Admin admin);
+        //    Task AdminAdd(Admin admin);
+        //    Task AdminDelete(Admin admin);
+        //    Task AdminUpdate(Admin admin);
+        //    Task<Admin> GetByID(int ID);
+        //    Task<List<Admin>> GetList();
+
         Task<List<string>> GetAdminNames();
-        Task<Admin> GetByID(int ID);
         Task<int> GetAdminIdByName(string AdminName);
-        Task<List<Admin>> GetList();
         Task<Admin> GetAdminByName(string Name);
 
     }

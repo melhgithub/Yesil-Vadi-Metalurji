@@ -2,6 +2,7 @@
 using Core.Extensions;
 using DataAccess.Repositories;
 using Entity.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using Yesil_Vadi_Metalurji.Models;
 
 namespace Yesil_Vadi_Metalurji.Controllers
 {
+    [Authorize(Policy = "MelhOnly")]
     public class ProductionTestController : Controller
     {
 
@@ -90,7 +92,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
             return Json(offerData);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> ApproveProduction(ProductionApproveDto production)
         {
@@ -103,7 +104,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 {
                     productionToApprove.Status = (ProductionStatuses)1;
                     productionToApprove.Active = true;
-                    await productionManager.ProductionUpdate(productionToApprove);
+                    await productionManager.Update(productionToApprove);
 
                     message = "Üretim başarıyla onaylandı!";
                 }
@@ -132,7 +133,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 {
                     productionToRemove.Status = (ProductionStatuses)3;
                     productionToRemove.Active = false;
-                    await productionManager.ProductionUpdate(productionToRemove);
+                    await productionManager.Update(productionToRemove);
 
                     message = "Üretim başarıyla reddedildi!";
                 }
@@ -160,7 +161,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 if (productionToFinish != null)
                 {
                     productionToFinish.Status = (ProductionStatuses)4;
-                    await productionManager.ProductionUpdate(productionToFinish);
+                    await productionManager.Update(productionToFinish);
 
                     message = "Üretim başarıyla tamamlandı!";
                 }

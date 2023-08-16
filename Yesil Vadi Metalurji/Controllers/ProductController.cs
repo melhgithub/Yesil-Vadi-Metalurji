@@ -2,6 +2,7 @@
 using Core.Extensions;
 using DataAccess.Repositories;
 using Entity.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -113,12 +114,12 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
                     if (productEntity.ID > 0)
                     {
-                        await productManager.ProductUpdate(productEntity);
+                        await productManager.Update(productEntity);
                         message = "Ürün başarıyla güncellendi!";
                     }
                     else
                     {
-                        await productManager.ProductAdd(productEntity);
+                        await productManager.Add(productEntity);
                         message = "Ürün başarıyla kaydedildi!";
                     }
                 }
@@ -155,7 +156,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
                         message = "Ürün başarıyla onaylandı!";
 
-                        await productManager.ProductUpdate(productToApprove);
+                        await productManager.Update(productToApprove);
                     }
                     else
                     {
@@ -190,7 +191,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     {
                         productToRemove.Status = (ProductStatuses)2;
                         productToRemove.Active = false;
-                        await productManager.ProductUpdate(productToRemove);
+                        await productManager.Update(productToRemove);
                         message = "Ürün başarıyla kaldırıldı!";
                     }
                     else

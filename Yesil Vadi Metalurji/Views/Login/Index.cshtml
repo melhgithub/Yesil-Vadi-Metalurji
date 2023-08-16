@@ -1,0 +1,93 @@
+﻿@using Entity.Concrete
+@using Yesil_Vadi_Metalurji.Dto
+@using System.ComponentModel
+@using Newtonsoft.Json
+@model AdminsLoginViewModel
+@{
+    ViewData["Title"] = "Admin Paneli";
+}
+
+<!DOCTYPE html>
+@await Html.PartialAsync("_ScriptImports")
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-card {
+            width: 350px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container login-container">
+        <div class="card login-card">
+            <div class="card-body">
+                <h4 class="card-title text-center">Admin Giriş</h4>
+                <div class="form-group">
+                    <label for="userName">Kullanıcı Adı:</label>
+                    <input type="text" class="form-control" id="userName" placeholder="Kullanıcı Adı">
+                </div>
+                <div class="form-group">
+                    <label for="password">Şifre:</label>
+                    <input type="password" class="form-control" id="password" placeholder="Şifre">
+                </div>
+                <button type="button" class="btn btn-primary btn-block" id="loginButton">Giriş Yap</button>
+                <div class="mt-3 text-center" id="errorMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#userName, #password").keypress(function (event) {
+                if (event.which === 13) {
+                    $("#loginButton").click();
+                }
+            });
+
+            $("#loginButton").click(function () {
+                var userName = $("#userName").val();
+                var password = $("#password").val();
+
+                $.ajax({
+                    url: "/Login/Index",
+                    type: "POST",
+                    data: {
+                        userName: userName,
+                        password: password
+                    },
+                    success: function (result) {
+                        if (result.success) {
+                            window.location.href = result.redirectUrl;
+                        } else {
+                            alert("Geçersiz kullanıcı adı veya şifre.");
+                        }
+                    },
+                    error: function () {
+                        alert("Bir hata oluştu, lütfen tekrar deneyin.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

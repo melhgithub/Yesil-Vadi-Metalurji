@@ -2,6 +2,7 @@
 using Core.Extensions;
 using DataAccess.Repositories;
 using Entity.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -81,8 +82,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
             return Json(offerData);
         }
 
-
-
         [HttpGet]
         public async Task<IActionResult> GetOfferDetailsByOrderId(int orderId)
         {
@@ -118,7 +117,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
             }
         }
 
-
         [HttpPost]
         public async Task<IActionResult> ApproveOrder(OrderApproveDto order)
         {
@@ -131,7 +129,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 {
                     orderToApprove.Status = (OrderStatuses)1;
                     orderToApprove.Active = true;
-                    await orderManager.OrderUpdate(orderToApprove);
+                    await orderManager.Update(orderToApprove);
 
                     message = "Sipariş başarıyla onaylandı!";
                 }
@@ -160,7 +158,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 {
                     orderToRemove.Status = (OrderStatuses)3;
                     orderToRemove.Active = false;
-                    await orderManager.OrderUpdate(orderToRemove);
+                    await orderManager.Update(orderToRemove);
 
                     message = "Sipariş başarıyla reddedildi!";
                 }
@@ -188,7 +186,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 if (orderToProduction != null)
                 {
                     orderToProduction.Status = (OrderStatuses)4;
-                    await orderManager.OrderUpdate(orderToProduction);
+                    await orderManager.Update(orderToProduction);
 
 
                     var productionToAdd = new Production
@@ -204,7 +202,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                         TotalPrice = orderToProduction.TotalPrice,
                         ProductPiece = orderToProduction.ProductPiece
                     };
-                    await productionManager.ProductionAdd(productionToAdd);
+                    await productionManager.Add(productionToAdd);
 
                     message = "Sipariş başarıyla üretime geçti!";
                 }

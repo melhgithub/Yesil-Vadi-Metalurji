@@ -28,19 +28,19 @@ namespace Business.Concrete
             return await _productionDal.GetList();
         }
 
-        public async Task ProductionAdd(Production production)
+        public async Task Add(Production production)
         {
             await _productionDal.Insert(production);
         }
 
-        public async Task ProductionDelete(Production production)
+        public async Task Delete(Production production)
         {
             production.Status = (ProductionStatuses)2;
             production.Active = false;
             await _productionDal.Update(production);
         }
 
-        public async Task ProductionUpdate(Production production)
+        public async Task Update(Production production)
         {
             await _productionDal.Update(production);
         }

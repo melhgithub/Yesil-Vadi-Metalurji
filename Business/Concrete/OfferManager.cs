@@ -28,19 +28,19 @@ namespace Business.Concrete
             return await _offerDal.GetList();
         }
 
-        public async Task OfferAdd(Offer offer)
+        public async Task Add(Offer offer)
         {
             await _offerDal.Insert(offer);
         }
 
-        public async Task OfferDelete(Offer offer)
+        public async Task Delete(Offer offer)
         {
             offer.Status = (OfferStatuses)2;
             offer.Active = false;
             await _offerDal.Update(offer);
         }
 
-        public async Task OfferUpdate(Offer offer)
+        public async Task Update(Offer offer)
         {
             await _offerDal.Update(offer);
         }

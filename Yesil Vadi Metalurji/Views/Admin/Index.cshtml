@@ -63,7 +63,7 @@
     <div class="card-header">
         <h3 class="card-title">
             <i class="fas fa-cubes"></i>
-            Kategoriler
+            Adminler
         </h3>
     </div>
 
@@ -115,6 +115,10 @@
         });
     }
 
+    function passwordFormatter(cellValue, options, rowObject) {
+        return '********';
+    }
+
     function showDatas(data) {
         var adminGrid = $('#adminGrid');
 
@@ -126,7 +130,7 @@
                 colModel: [
                     { name: 'id', label: 'ID', width: 40 },
                     { name: 'username', label: 'Kullanıcı Adı', width: 110 },
-                    { name: 'password', label: 'Şifre', width: 110 },
+                    { name: 'password', label: 'Şifre', width: 110, formatter: passwordFormatter },
                     {
                         name: 'status', label: 'Durum', width: 100,
                         formatter: function (cellValue) {
@@ -266,8 +270,18 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="Name">Şifre:</label>
-                    <input type="text" id="Password" name="Password" class="form-control" value="${data.adminpassword}" required />
+                    <label for="OldPassword">Eski Şifre:</label>
+                    <input type="password" id="OldPassword" name="OldPassword" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="NewPassword">Yeni Şifre:</label>
+                    <input type="password" id="NewPassword" name="NewPassword" class="form-control" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="ConfirmNewPassword">Yeni Şifre (Tekrar):</label>
+                    <input type="password" id="ConfirmNewPassword" name="ConfirmNewPassword" class="form-control" required />
                 </div>
 
                 <div class="form-group">
@@ -306,8 +320,18 @@
     </div>
 
     <div class="form-group">
-        <label for="Password">Şifre:</label>
-        <input type="text" id="Password" name="Password" class="form-control" required />
+        <label for="OldPassword">Eski Şifre:</label>
+        <input type="password" id="OldPassword" name="OldPassword" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="NewPassword">Yeni Şifre:</label>
+        <input type="password" id="NewPassword" name="NewPassword" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="ConfirmNewPassword">Yeni Şifre (Tekrar):</label>
+        <input type="password" id="ConfirmNewPassword" name="ConfirmNewPassword" class="form-control" required />
     </div>
 
     <div class="form-group">
@@ -382,6 +406,8 @@
             }
         });
     });
+
+
 
 </script>
 

@@ -10,9 +10,11 @@ using System.Threading.Tasks;
 using Yesil_Vadi_Metalurji.Dto;
 using Yesil_Vadi_Metalurji.Models;
 using Core.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Yesil_Vadi_Metalurji.Controllers
 {
+    [Authorize(Policy = "MelhOnly")]
     public class OfferTestController : Controller
     {
 
@@ -174,7 +176,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                         ProductPiece = productpiece
                     };
 
-                    await offerManager.OfferAdd(offerToAdd);
+                    await offerManager.Add(offerToAdd);
 
                     var addedOffer = await offerManager.GetByID(offerToAdd.ID);
 
@@ -200,7 +202,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                                 Piece = productPiece
                             };
 
-                            await offerDetailManager.OfferDetailAdd(offerDetailToAdd);
+                            await offerDetailManager.Add(offerDetailToAdd);
                         }
                         else
                         {
@@ -212,7 +214,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     var offerToUpdate = await offerManager.GetByID(offerToAdd.ID);
                     offerToUpdate.TotalPrice = totalprice;
                     offerToUpdate.TotalPiece = totalpiecee;
-                    await offerManager.OfferUpdate(offerToUpdate);
+                    await offerManager.Update(offerToUpdate);
 
                     message = "Teklif başarıyla kaydedildi!";
                     return Json(message);
@@ -242,7 +244,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 {
                     offerToApprove.Status = (OfferStatuses)1;
                     offerToApprove.Active = true;
-                    await offerManager.OfferUpdate(offerToApprove);
+                    await offerManager.Update(offerToApprove);
 
                     message = "Teklif başarıyla onaylandı!";
                 }
@@ -271,7 +273,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 {
                     offerToRemove.Status = (OfferStatuses)3;
                     offerToRemove.Active = false;
-                    await offerManager.OfferUpdate(offerToRemove);
+                    await offerManager.Update(offerToRemove);
 
                     message = "Teklif başarıyla reddedildi!";
                 }
@@ -299,7 +301,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 if (offerToOrder != null)
                 {
                     offerToOrder.Status = (OfferStatuses)4;
-                    await offerManager.OfferUpdate(offerToOrder);
+                    await offerManager.Update(offerToOrder);
 
 
                     var orderToAdd = new Order
@@ -315,7 +317,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                         TotalPrice = offerToOrder.TotalPrice,
                         ProductPiece = offerToOrder.ProductPiece
                     };
-                    await orderManager.OrderAdd(orderToAdd);
+                    await orderManager.Add(orderToAdd);
 
                     message = "Teklif başarıyla siparişe geçti!";
                 }

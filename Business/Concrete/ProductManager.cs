@@ -37,19 +37,19 @@ namespace Business.Concrete
         {
             return await _productDal.GetProductByName(Name);
         }
-        public async Task ProductAdd(Product product)
+        public async Task Add(Product product)
         {
             await _productDal.Insert(product);
         }
 
-        public async Task ProductDelete(Product product)
+        public async Task Delete(Product product)
         {
             product.Status = (ProductStatuses)2;
             product.Active = false;
             await _productDal.Update(product);
         }
 
-        public async Task ProductUpdate(Product product)
+        public async Task Update(Product product)
         {
             await _productDal.Update(product);
         }

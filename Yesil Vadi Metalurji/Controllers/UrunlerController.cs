@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,15 +10,8 @@ using Yesil_Vadi_Metalurji.Models;
 namespace Yesil_Vadi_Metalurji.Controllers
 {
     [AllowAnonymous]
-    public class HomeController : Controller
+    public class UrunlerController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
             return View();

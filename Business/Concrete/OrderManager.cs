@@ -28,18 +28,18 @@ namespace Business.Concrete
         {
             return await _orderDal.GetList();
         }
-        public async Task OrderAdd(Order order)
+        public async Task Add(Order order)
         {
             await _orderDal.Insert(order);
         }
 
-        public async Task OrderDelete(Order order)
+        public async Task Delete(Order order)
         {
             order.Status = (OrderStatuses)2;
             order.Active = false;
             await _orderDal.Update(order);
         }
-        public async Task OrderUpdate(Order order)
+        public async Task Update(Order order)
         {
             await _orderDal.Update(order);
         }

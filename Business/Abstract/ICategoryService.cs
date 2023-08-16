@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface ICategoryService
+    public interface ICategoryService : GenericService<Category>
     {
-        Task CategoryAdd(Category category);
-        Task CategoryDelete(Category category);
-        Task CategoryUpdate(Category category);
-        Task<List<string>> GetCategoryNames();
-        Task<Category> GetByID(int ID);
+        //Task CategoryAdd(Category category);
+        //Task CategoryDelete(Category category);
+        //Task CategoryUpdate(Category category);
+        //Task<Category> GetByID(int ID);
+        //Task<List<Category>> GetList();
+
         Task<int> GetCategoryIdByName(string categoryName);
-        Task<List<Category>> GetList();
+        Task<List<string>> GetCategoryNames();
         Task<Category> GetCategoryByName(string Name);
     }
 }

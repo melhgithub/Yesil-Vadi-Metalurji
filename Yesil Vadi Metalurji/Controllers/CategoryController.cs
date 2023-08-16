@@ -1,6 +1,7 @@
 ﻿using Business.Concrete;
 using DataAccess.Repositories;
 using Entity.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
     public class CategoryController : Controller
     {
         CategoryManager categoryManager = new CategoryManager(new EFCategoryRepository());
-
-
 
         public async Task<IActionResult> Index()
         {
@@ -96,12 +95,12 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
                     if (isUpdate)
                     {
-                        await categoryManager.CategoryUpdate(categoryEntity);
+                        await categoryManager.Update(categoryEntity);
                         message = "Kategori başarıyla güncellendi!";
                     }
                     else
                     {
-                        await categoryManager.CategoryAdd(categoryEntity);
+                        await categoryManager.Add(categoryEntity);
                         message = "Kategori başarıyla kaydedildi!";
                     }
                 }
@@ -134,7 +133,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     {
                         categoryToRemove.Status = (CategoryStatuses)2;
                         categoryToRemove.Active = false;
-                        await categoryManager.CategoryUpdate(categoryToRemove);
+                        await categoryManager.Update(categoryToRemove);
 
                         message = "Kategori başarıyla kaldırıldı!";
                     }
@@ -172,7 +171,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     {
                         categoryToApprove.Status = (CategoryStatuses)1;
                         categoryToApprove.Active = true;
-                        await categoryManager.CategoryUpdate(categoryToApprove);
+                        await categoryManager.Update(categoryToApprove);
 
                         message = "Kategori başarıyla onaylandı!";
                     }

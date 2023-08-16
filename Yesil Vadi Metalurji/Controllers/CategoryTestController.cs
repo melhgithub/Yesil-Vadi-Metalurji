@@ -8,12 +8,15 @@ using DataAccess.Repositories;
 using Entity.Concrete;
 using Yesil_Vadi_Metalurji.Dto;
 using Yesil_Vadi_Metalurji.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Yesil_Vadi_Metalurji.Controllers
 {
+    [Authorize(Policy = "MelhOnly")]
     public class CategoryTestController : Controller
     {
         CategoryManager categoryManager = new CategoryManager(new EFCategoryRepository());
+
         public async Task<IActionResult> Index()
         {
 
@@ -103,12 +106,12 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
                     if (isUpdate)
                     {
-                        await categoryManager.CategoryUpdate(categoryEntity);
+                        await categoryManager.Update(categoryEntity);
                         message = "Kategori başarıyla güncellendi!";
                     }
                     else
                     {
-                        await categoryManager.CategoryAdd(categoryEntity);
+                        await categoryManager.Add(categoryEntity);
                         message = "Kategori başarıyla kaydedildi!";
                     }
                 }
@@ -141,7 +144,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     {
                         categoryToRemove.Status = (CategoryStatuses)2;
                         categoryToRemove.Active = false;
-                        await categoryManager.CategoryUpdate(categoryToRemove);
+                        await categoryManager.Update(categoryToRemove);
 
                         message = "Kategori başarıyla kaldırıldı!";
                     }
@@ -179,7 +182,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     {
                         categoryToApprove.Status = (CategoryStatuses)1;
                         categoryToApprove.Active = true;
-                        await categoryManager.CategoryUpdate(categoryToApprove);
+                        await categoryManager.Update(categoryToApprove);
 
                         message = "Kategori başarıyla onaylandı!";
                     }

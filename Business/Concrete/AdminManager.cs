@@ -20,20 +20,30 @@ namespace Business.Concrete
             _adminDal = adminDal;
         }
 
-        public async Task AdminAdd(Admin admin)
+        public async Task Add(Admin admin)
         {
             await _adminDal.Insert(admin);
         }
 
-        public async Task AdminDelete(Admin admin)
+        public async Task Delete(Admin admin)
         {
             admin.Active = false;
             await _adminDal.Update(admin);
         }
 
-        public async Task AdminUpdate(Admin admin)
+        public async Task Update(Admin admin)
         {
             await _adminDal.Update(admin);
+        }
+
+        public async Task<Admin> GetByID(int ID)
+        {
+            return await _adminDal.GetByID(ID);
+        }
+
+        public async Task<List<Admin>> GetList()
+        {
+            return await _adminDal.GetList();
         }
 
         public async Task<Admin> GetAdminByName(string Name)
@@ -50,16 +60,6 @@ namespace Business.Concrete
         public async Task<List<string>> GetAdminNames()
         {
             return await _adminDal.GetAdminNames();
-        }
-
-        public async Task<Admin> GetByID(int ID)
-        {
-            return await _adminDal.GetByID(ID);
-        }
-
-        public async Task<List<Admin>> GetList()
-        {
-            return await _adminDal.GetList();
         }
     }
 }

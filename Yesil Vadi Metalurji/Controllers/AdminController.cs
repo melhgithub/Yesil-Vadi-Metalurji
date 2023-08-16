@@ -1,6 +1,7 @@
 ﻿using Business.Concrete;
 using DataAccess.Repositories;
 using Entity.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,11 @@ using Yesil_Vadi_Metalurji.Models;
 
 namespace Yesil_Vadi_Metalurji.Controllers
 {
+    [Authorize(Policy = "MelhOnly")]
     public class AdminController : Controller
     {
         AdminManager adminManager = new AdminManager(new EFAdminRepository());
+
         public async Task<IActionResult> Index()
         {
 
@@ -95,27 +98,49 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     {
                         adminEntity = new Admin();
                     }
-                    adminEntity.UserName = admin.UserName;
-                    adminEntity.Password = admin.Password;
-                    adminEntity.Status = admin.Status;
-                    if (adminEntity.Status == (AdminStatuses)1)
+                    if (!isUpdate || adminEntity.Password == admin.OldPassword)
                     {
-                        adminEntity.Active = true;
-                    }
-                    else
-                    {
-                        adminEntity.Active = false;
-                    }
+                        if (admin.NewPassword == admin.ConfirmNewPassword)
+                        {
+                            if (admin.NewPassword != admin.OldPassword)
+                            {
+                                adminEntity.UserName = admin.UserName;
+                                adminEntity.Password = admin.NewPassword;
+                                adminEntity.Status = admin.Status;
 
-                    if (isUpdate)
-                    {
-                        await adminManager.AdminUpdate(adminEntity);
-                        message = "Admin başarıyla güncellendi!";
+                                if (adminEntity.Status == (AdminStatuses)1)
+                                {
+                                    adminEntity.Active = true;
+                                }
+                                else
+                                {
+                                    adminEntity.Active = false;
+                                }
+
+                                if (isUpdate)
+                                {
+                                    await adminManager.Update(adminEntity);
+                                    message = "Admin başarıyla güncellendi!";
+                                }
+                                else
+                                {
+                                    await adminManager.Add(adminEntity);
+                                    message = "Admin başarıyla kaydedildi!";
+                                }
+                            }
+                            else
+                            {
+                                message = "Eski şifre ile yeni şifre aynı olamaz!";
+                            }
+                        }
+                        else
+                        {
+                            message = "Yeni şifreler uyuşmuyor!";
+                        }
                     }
                     else
                     {
-                        await adminManager.AdminAdd(adminEntity);
-                        message = "Admin başarıyla kaydedildi!";
+                        message = "Eski şifre hatalı!";
                     }
                 }
                 catch (Exception)
@@ -147,7 +172,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     {
                         adminToRemove.Status = (AdminStatuses)2;
                         adminToRemove.Active = false;
-                        await adminManager.AdminUpdate(adminToRemove);
+                        await adminManager.Update(adminToRemove);
 
                         message = "Admin başarıyla kaldırıldı!";
                     }
@@ -185,7 +210,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     {
                         adminToApprove.Status = (AdminStatuses)1;
                         adminToApprove.Active = true;
-                        await adminManager.AdminUpdate(adminToApprove);
+                        await adminManager.Update(adminToApprove);
 
                         message = "Admin başarıyla onaylandı!";
                     }
