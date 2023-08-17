@@ -6,7 +6,7 @@
 
 @{
     ViewData["Title"] = "Ürünler";
-    Layout = "~/Views/Shared/AdminTestLayout.cshtml";
+    Layout = "~/Views/Shared/_AdminTest.cshtml";
 }
 <h1>Ürün Listesi</h1>
 
@@ -39,12 +39,6 @@
         new SelectListItem { Value = "1", Text = "AKTİF" },
         new SelectListItem { Value = "2", Text = "AKTİF DEĞİL" },
     };
-    var imageList = new List<SelectListItem>
-{
-        new SelectListItem { Value = "0", Text = "TÜMÜ" },
-        new SelectListItem { Value = "1", Text = "VAR" },
-        new SelectListItem { Value = "2", Text = "YOK" },
-    };
 
 <div class="card">
     <div class="card-header">
@@ -64,20 +58,16 @@
                 @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
             </div>
             <div class="col-sm-3">
-                <dt>@Html.LabelFor(m => m.FilterDto.Status, "Kategori Durumu:")</dt>
+                <dt>@Html.LabelFor(m => m.FilterDto.CategoryStatus, "Kategori Durumu:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.CategoryStatus, categoryStatusList, new { @class = "form-control" })
             </div>
             <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Active, "Aktiflik:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.Active, activeList, new { @class = "form-control" })
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <dt>@Html.LabelFor(m => m.FilterDto.CategoryActive, "Kategori Aktiflik:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.CategoryActive, categoryActiveList, new { @class = "form-control" })
-            </div>
-            <div class="col-sm-3">
-                <dt>@Html.LabelFor(m => m.FilterDto.Image, "Resim:")</dt>
-                @Html.DropDownListFor(m => m.FilterDto.Image, imageList, new { @class = "form-control" })
             </div>
             <div class="col-sm-2">
                 <dt>@Html.LabelFor(m => m.FilterDto.Name, "Ürün Adı:")</dt>
@@ -150,15 +140,15 @@
             productGrid.jqGrid({
                 data: data,
                 colModel: [
-                    { name: 'id', label: 'ID', width: 40 },
-                    { name: 'category', label: 'Kategori', width: 100, formatter: categoryFormatter },
-                    { name: 'name', label: 'Ürün Adı', width: 110 },
-                    { name: 'material', label: 'Malzeme', width: 80 },
-                    { name: 'description', label: 'Açıklama', width: 100 },
-                    { name: 'price', label: 'Fiyat', width: 80 },
-                    { name: 'piece', label: 'Adet', width: 80 },
+                    { name: 'id', label: 'ID', width: 50 },
+                    { name: 'category', label: 'Kategori', width: 120, formatter: categoryFormatter },
+                    { name: 'name', label: 'Ürün Adı', width: 120 },
+                    { name: 'material', label: 'Malzeme', width: 120 },
+                    { name: 'description', label: 'Açıklama', width: 120 },
+                    { name: 'price', label: 'Fiyat', width: 90 },
+                    { name: 'piece', label: 'Adet', width: 90 },
                     {
-                        name: 'status', label: 'Durum', width: 100,
+                        name: 'status', label: 'Durum', width: 150,
                         formatter: function (cellValue) {
                             switch (cellValue) {
                                 case 1:
@@ -173,7 +163,7 @@
                         }
                     },
                     {
-                        name: 'active', label: 'Aktiflik', width: 100,
+                        name: 'active', label: 'Aktiflik', width: 120,
                         formatter: function (cellValue) {
                             switch (cellValue) {
                                 case true:
@@ -186,7 +176,7 @@
                         }
                     },
                     {
-                        name: 'actions', label: '', width: 200,
+                        name: 'actions', label: '', width: 210,
                         formatter: function (cellValue, options, rowObject) {
                             if (rowObject.status === 1) {
                                 var buttons = '<button class="btn btn-primary open-edit-modal" ' +
@@ -339,7 +329,7 @@
         firstModal = $.dialog({
         title: 'Ürün Düzenle',
         content: `
-        <form method="post" action="@Url.Action("AddEditProduct", "ProductTest")">
+        <form method="post" action="@Url.Action("AddEditProduct", "ProductTest")>
 
             <div class="form-group">
                 <input type="text" id="ID" name="ID" class="form-control" value="${data.productid}" required/>
@@ -357,9 +347,10 @@
             </div>
 
             <div class="form-group">
-                <label for="ImageUrl">Resim</label>
-                <input type="text" id="ImageUrl" name="ImageUrl" class="form-control" value="${data.productimageurl}" />
+                <label for="ImageFiles">Resimler : </label>
+                <input type="file" id="ImageFiles" name="ImageFiles" class="form-control" multiple />
             </div>
+
 
             <div class="form-group">
                 <label for="Price">Fiyat</label>
@@ -427,9 +418,10 @@
             </div>
 
             <div class="form-group">
-                <label for="ImageUrl">Resim (LINK): </label>
-                <input type="text" id="ImageUrl" name="ImageUrl" class="form-control" />
+                <label for="ImageFiles">Resimler : </label>
+                <input type="file" id="ImageFiles" name="ImageFiles" class="form-control" multiple />
             </div>
+
 
             <div class="form-group">
                 <label for="Price">Fiyat : </label>
@@ -502,10 +494,19 @@
         openYeniUrunModal();
     });
 
+    $(document).on('submit', '#filterForm', function (e) {
+        e.preventDefault();
+        filterProducts();
+    });
 
-    $(document).on('submit', 'form', function (e) {
+    $(document).on('submit', 'form:not(#filterForm)', function (e) {
         e.preventDefault();
         var form = $(this);
+        var formData = new FormData(form[0]);
+        var imageFilesInput = $('#ImageFiles')[0];
+        for (var i = 0; i < imageFilesInput.files.length; i++) {
+            formData.append('ImageFiles', imageFilesInput.files[i]);
+        }
         form.find('.decimal-input').each(function () {
             var value = $(this).val();
             value = parseFloat(value.replace(',', '.'), CultureInfo.InvariantCulture).toFixed(2);
@@ -514,6 +515,8 @@
             $.ajax({
                 url: form.attr('action'),
                 type: form.attr('method'),
+                contentType: false,
+                processData: false,
                 data: form.serialize(),
                 success: function (response) {
                     var message = response;

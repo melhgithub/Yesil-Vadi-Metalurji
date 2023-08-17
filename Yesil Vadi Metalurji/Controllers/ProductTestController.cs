@@ -3,9 +3,11 @@ using Core.Extensions;
 using DataAccess.Repositories;
 using Entity.Concrete;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Yesil_Vadi_Metalurji.Dto;
@@ -29,13 +31,13 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 Categories = categories
             };
 
-            var model = new ProductsViewModel
+            var firstmodel = new ProductsViewModel
             {
                 Products = products,
                 FilterDto = filter
             };
 
-            return View(model);
+            return View(firstmodel);
         }
 
         [HttpPost]
@@ -80,10 +82,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 products = products.Where(p => p.Category.Active == false).ToList();
             }
 
-            if (filterDto.Image == "1") products = products.Where(p => p.ImageUrl != null).ToList();
-
-            if (filterDto.Image == "2") products = products.Where(p => p.ImageUrl == null).ToList();
-
             var productData = products.Select(p => new
             {
                 ID = p.ID,
@@ -94,15 +92,20 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 Piece = p.Piece,
                 Status = p.Status,
                 Active = p.Active,
-                Imageurl = p.ImageUrl,
-                Description = p.Description
+                Description = p.Description,
+                ImageUrl1 = p.ImageUrl1,
+                ImageUrl2 = p.ImageUrl2,
+                ImageUrl3 = p.ImageUrl3,
+                ImageUrl4 = p.ImageUrl4,
+                ImageUrl5 = p.ImageUrl5,
+                ImageUrl6 = p.ImageUrl6
             });
 
             return Json(productData);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddEditProduct(ProductAddEditDto product)
+        public async Task<IActionResult> AddEditProduct(ProductAddEditDto product, List<IFormFile> ImageFiles)
         {
             string message;
 
@@ -111,18 +114,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 try
                 {
                     var productEntity = product.ID > 0 ? await productManager.GetByID(product.ID) : new Product();
-                    //bool isUpdate = productToUpdate != null;
-
-                    //Product productEntity;
-
-                    //if (isUpdate)
-                    //{
-                    //    productEntity = productToUpdate;
-                    //}
-                    //else
-                    //{
-                    //    productEntity = new Product();
-                    //}
 
                     productEntity.CategoryID = product.CategoryID;
                     productEntity.Material = product.Material;
@@ -131,8 +122,47 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     productEntity.Price = product.Price.ToDecimal();
                     productEntity.Status = product.Status;
                     productEntity.Active = product.Active;
-                    productEntity.ImageUrl = product.ImageUrl;
                     productEntity.Description = product.Description;
+
+                    if (ImageFiles != null && ImageFiles.Any())
+                    {
+                        for (int i = 0; i < ImageFiles.Count; i++)
+                        {
+                            var imageFile = ImageFiles[i];
+                            if (imageFile != null)
+                            {
+                                var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+                                var imagePath = Path.Combine("path_to_your_image_folder", uniqueFileName);
+
+                                using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                                {
+                                    await imageFile.CopyToAsync(fileStream);
+                                }
+
+                                switch (i)
+                                {
+                                    case 0:
+                                        productEntity.ImageUrl1 = uniqueFileName;
+                                        break;
+                                    case 1:
+                                        productEntity.ImageUrl2 = uniqueFileName;
+                                        break;
+                                    case 2:
+                                        productEntity.ImageUrl3 = uniqueFileName;
+                                        break;
+                                    case 3:
+                                        productEntity.ImageUrl4 = uniqueFileName;
+                                        break;
+                                    case 4:
+                                        productEntity.ImageUrl5 = uniqueFileName;
+                                        break;
+                                    case 5:
+                                        productEntity.ImageUrl6 = uniqueFileName;
+                                        break;
+                                }
+                            }
+                        }
+                    }
 
                     if (productEntity.ID > 0)
                     {

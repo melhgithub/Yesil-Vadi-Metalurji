@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Paneli</title>
+
+    <link href="~/inspinia-gh-pages/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/inspinia-gh-pages/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="~/inspinia-gh-pages/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="~/inspinia-gh-pages/css/animate.css" rel="stylesheet">
+    <link href="~/inspinia-gh-pages/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <a href="/AdminPage/Index" data-toggle="dropdown" class="dropdown-toggle" >
+                                <span class="block m-t-xs font-bold">Admin Paneli</span>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/Category/Index"><i class="fa fa-th-large"></i> <span class="nav-label">Kategoriler</span></span></a>
+                    </li>
+                    <li>
+                        <a href="/Product/Index"><i class="fa fa-diamond"></i> <span class="nav-label">Ürünler</span></a>
+                    </li>
+
+                    <li>
+                        <a href="/Offer/Index"><i class="fa fa-envelope"></i> <span class="nav-label">Teklifler</span></a>
+                    </li>
+                    <li>
+                        <a href="/Order/Index"><i class="fa fa-pie-chart"></i> <span class="nav-label">Siparişler</span>  </a>
+                    </li>
+                    <li>
+                        <a href="/Production/Index"><i class="fa fa-flask"></i> <span class="nav-label">Üretimler</span></a>
+                    </li>
+                    <li>
+                        <a href="/Login/Logout"><i class="fa fa-window-close"></i> <span class="nav-label">Çıkış Yap</span></a>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-10">
+                    <h2>Sayfalara Git</h2>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/Home/Index">Ana Sayfa</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="/Urunler/Index">Ürünler</a>
+                        </li>
+                    </ol>
+                </div>
+                <div class="col-lg-2">
+                </div>
+            </div>
+            <div class="wrapper wrapper-content animated fadeInRight">
+                @RenderBody()
+            </div>
+            <div class="footer">
+                <div class="float-right">
+                </div>
+                <div>
+                    <strong>Copyright</strong> Yeşilvadi Metalurji &copy;
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <script src="~/inspinia-gh-pages/js/jquery-3.1.1.min.js"></script>
+    <script src="~/inspinia-gh-pages/js/popper.min.js"></script>
+    <script src="~/inspinia-gh-pages/js/bootstrap.js"></script>
+    <script src="~/inspinia-gh-pages/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="~/inspinia-gh-pages/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <script src="~/inspinia-gh-pages/js/plugins/peity/jquery.peity.min.js"></script>
+
+    <script src="~/inspinia-gh-pages/js/inspinia.js"></script>
+    <script src="~/inspinia-gh-pages/js/plugins/pace/pace.min.js"></script>
+
+    <script src="~/inspinia-gh-pages/js/plugins/iCheck/icheck.min.js"></script>
+
+    <script src="~/inspinia-gh-pages/js/demo/peity-demo.js"></script>
+
+    <link rel="stylesheet" href="~/lib/izitoast/css/iziToast.min.css">
+    <link rel="stylesheet" href="~/lib/jquery-confirm/jquery-confirm.min.css">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    @await Html.PartialAsync("_ScriptImports")
+    </script>
+
+</body>
+
+</html>
+@if (IsSectionDefined("scripts"))
+{
+    @RenderSection("scripts", required: false)
+}

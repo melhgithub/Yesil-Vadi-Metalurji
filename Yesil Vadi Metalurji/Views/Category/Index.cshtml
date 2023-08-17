@@ -5,7 +5,7 @@
 @model CategoriesViewModel
 @{
     ViewData["Title"] = "Kategoriler";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
 <h1>Kategori Listesi</h1>
@@ -31,11 +31,11 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Status, "Durum:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Name, "Kategori Adı:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Name, new { @class = "form-control", placeholder = "Kategori Adı" })
             </div>
@@ -110,9 +110,9 @@
             categoryGrid.jqGrid({
                 data: data,
                 colModel: [
-                    { name: 'name', label: 'Kategori Adı', width: 110 },
+                    { name: 'name', label: 'Kategori Adı', width: 500 },
                     {
-                        name: 'status', label: 'Durum', width: 100,
+                        name: 'status', label: 'Durum', width: 500,
                         formatter: function (cellValue) {
                             switch (cellValue) {
                                 case 1:

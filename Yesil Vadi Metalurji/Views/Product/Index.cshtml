@@ -6,7 +6,7 @@
 
 @{
     ViewData["Title"] = "Ürünler";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_Admin.cshtml";
 }
 <h1>Ürün Listesi</h1>
 
@@ -52,12 +52,8 @@
                 @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
             </div>
             <div class="col-sm-3">
-                <dt>@Html.LabelFor(m => m.FilterDto.Status, "Kategori Durumu:")</dt>
+                <dt>@Html.LabelFor(m => m.FilterDto.CategoryStatus, "Kategori Durumu:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.CategoryStatus, categoryStatusList, new { @class = "form-control" })
-            </div>
-            <div class="col-sm-3">
-                <dt>@Html.LabelFor(m => m.FilterDto.Image, "Resim:")</dt>
-                @Html.DropDownListFor(m => m.FilterDto.Image, imageList, new { @class = "form-control" })
             </div>
             <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Name, "Ürün Adı:")</dt>
@@ -71,11 +67,11 @@
                 <dt>@Html.LabelFor(m => m.FilterDto.Price, "Fiyat:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Price, new { @class = "form-control", placeholder = "Fiyat", type = "number", step = "0.01" })
             </div>
-            <div class="col-sm-1">
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Piece, "Adet:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Piece, new { @class = "form-control", placeholder = "Adet", type = "number" })
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Description, "Açıklama:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Description, new { @class = "form-control", placeholder = "Açıklama" })
             </div>
@@ -130,14 +126,14 @@
             productGrid.jqGrid({
                 data: data,
                 colModel: [
-                    { name: 'category', label: 'Kategori', width: 100, formatter: categoryFormatter },
-                    { name: 'name', label: 'Ürün Adı', width: 110 },
-                    { name: 'material', label: 'Malzeme', width: 80 },
-                    { name: 'description', label: 'Açıklama', width: 100 },
-                    { name: 'price', label: 'Fiyat', width: 80 },
-                    { name: 'piece', label: 'Adet', width: 80 },
+                    { name: 'category', label: 'Kategori', width: 150, formatter: categoryFormatter },
+                    { name: 'name', label: 'Ürün Adı', width: 150 },
+                    { name: 'material', label: 'Malzeme', width: 150 },
+                    { name: 'description', label: 'Açıklama', width: 150 },
+                    { name: 'price', label: 'Fiyat', width: 100 },
+                    { name: 'piece', label: 'Adet', width: 100 },
                     {
-                        name: 'status', label: 'Durum', width: 100,
+                        name: 'status', label: 'Durum', width: 180,
                         formatter: function (cellValue) {
                             switch (cellValue) {
                                 case 1:
@@ -152,7 +148,7 @@
                         }
                     },
                     {
-                        name: 'actions', label: '', width: 200,
+                        name: 'actions', label: '', width: 210,
                         formatter: function (cellValue, options, rowObject) {
                             if (rowObject.status === 1) {
                                 var buttons = '<button class="btn btn-primary open-edit-modal" ' +
@@ -323,11 +319,6 @@
             </div>
 
             <div class="form-group">
-                <label for="ImageUrl">Resim</label>
-                <input type="text" id="ImageUrl" name="ImageUrl" class="form-control" value="${data.productimageurl}" />
-            </div>
-
-            <div class="form-group">
                 <label for="Price">Fiyat</label>
                 <input type="number" id="Price" name="Price" class="form-control" step="0.01" value="${data.productprice.replace(",", "." )}" required />
             </div>
@@ -389,11 +380,6 @@
             <div class="form-group">
                 <label for="Material">Malzeme : </label>
                 <input type="text" id="Material" name="Material" class="form-control" required />
-            </div>
-
-            <div class="form-group">
-                <label for="ImageUrl">Resim (LINK): </label>
-                <input type="text" id="ImageUrl" name="ImageUrl" class="form-control" />
             </div>
 
             <div class="form-group">

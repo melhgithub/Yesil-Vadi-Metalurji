@@ -62,9 +62,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
             if (filterDto.CategoryID.HasValue) products = products.Where(p => p.CategoryID == filterDto.CategoryID).ToList();
 
-            if (filterDto.Image == "1") products = products.Where(p => p.ImageUrl != "null").ToList();
-
-            if (filterDto.Image == "2") products = products.Where(p => p.ImageUrl == "null").ToList();
 
 
             var productData = products.Select(p => new
@@ -77,7 +74,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 Piece = p.Piece,
                 Status = p.Status,
                 Active = p.Active,
-                Imageurl = p.ImageUrl,
                 Description = p.Description
             });
 
@@ -109,7 +105,8 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     {
                         productEntity.Active = false;
                     }
-                    productEntity.ImageUrl = product.ImageUrl;
+
+
                     productEntity.Description = product.Description;
 
                     if (productEntity.ID > 0)

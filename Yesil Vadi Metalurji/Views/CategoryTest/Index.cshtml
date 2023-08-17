@@ -5,7 +5,7 @@
 @model CategoriesViewModel
 @{
     ViewData["Title"] = "Kategoriler";
-    Layout = "~/Views/Shared/AdminTestLayout.cshtml";
+    Layout = "~/Views/Shared/_AdminTest.cshtml";
 }
 
 <h1>Kategori Listesi</h1>
@@ -38,15 +38,15 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Status, "Durum:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Active, "Aktiflik:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.Active, activeList, new { @class = "form-control" })
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Name, "Kategori Adı:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Name, new { @class = "form-control", placeholder = "Kategori Adı" })
             </div>
@@ -122,9 +122,9 @@
                 data: data,
                 colModel: [
                     { name: 'id', label: 'ID', width: 40 },
-                    { name: 'name', label: 'Kategori Adı', width: 110 },
+                    { name: 'name', label: 'Kategori Adı', width: 250 },
                     {
-                        name: 'status', label: 'Durum', width: 100,
+                        name: 'status', label: 'Durum', width: 300,
                         formatter: function (cellValue) {
                             switch (cellValue) {
                                 case 1:
@@ -137,7 +137,7 @@
                         }
                     },
                     {
-                        name: 'active', label: 'Aktiflik', width: 100,
+                        name: 'active', label: 'Aktiflik', width: 300,
                         formatter: function (cellValue) {
                             switch (cellValue) {
                                 case true:
@@ -150,7 +150,7 @@
                         }
                     },
                     {
-                        name: 'actions', label: '', width: 200,
+                        name: 'actions', label: '', width: 300,
                         formatter: function (cellValue, options, rowObject) {
                             if (rowObject.status === 1) {
                                 var buttons = '<button class="btn btn-primary open-edit-modal" ' +
@@ -255,7 +255,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="Name">Firma Adı:</label>
+                    <label for="Name">Kategori Adı:</label>
                     <input type="text" id="Name" name="Name" class="form-control" value="${data.categoryname}" required />
                 </div>
 

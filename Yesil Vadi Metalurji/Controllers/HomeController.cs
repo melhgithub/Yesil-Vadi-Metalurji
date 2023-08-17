@@ -20,7 +20,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }

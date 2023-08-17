@@ -5,7 +5,7 @@
 @model ProductionsViewModel
 @{
     ViewData["Title"] = "Üretimler";
-    Layout = "~/Views/Shared/AdminTestLayout.cshtml";
+    Layout = "~/Views/Shared/_AdminTest.cshtml";
 }
 
 <h1>Üretim Listesi</h1>
@@ -147,13 +147,26 @@
                     { name: 'id', label: 'ID', width: 40 },
                     { name: 'name', label: 'İsim', width: 80 },
                     { name: 'lastname', label: 'Soyisim', width: 80 },
-                    { name: 'mail', label: 'E-Mail', width: 150 },
+                    { name: 'mail', label: 'E-Mail', width: 140 },
                     { name: 'phonenumber', label: 'Telefon Numarası', width: 100 },
                     { name: 'totalprice', label: 'Toplam Fiyat', width: 80 },
                     { name: 'totalpiece', label: 'Toplam Adet', width: 80 },
                     { name: 'productpiece', label: 'Ürün Adeti', width: 80 },
                     {
-                        name: 'status', label: 'Durum', width: 80,
+                        name: 'active', label: 'Aktiflik', width: 80,
+                        formatter: function (cellValue) {
+                            switch (cellValue) {
+                                case true:
+                                    return 'AKTİF';
+                                case false:
+                                    return 'AKTİF DEĞİL';
+                                default:
+                                    return '';
+                            }
+                        }
+                    },
+                    {
+                        name: 'status', label: 'Durum', width: 120,
                         formatter: function (cellValue) {
                             switch (cellValue) {
                                 case 1:
@@ -172,20 +185,7 @@
                         }
                     },
                     {
-                        name: 'active', label: 'Aktiflik', width: 100,
-                        formatter: function (cellValue) {
-                            switch (cellValue) {
-                                case true:
-                                    return 'AKTİF';
-                                case false:
-                                    return 'AKTİF DEĞİL';
-                                default:
-                                    return '';
-                            }
-                        }
-                    },
-                    {
-                        name: 'actions', label: '', width: 300,
+                        name: 'actions', label: '', width: 310,
                         formatter: function (cellValue, options, rowObject) {
                             if (rowObject.status === 1) {
                                 var buttons = '<button class="btn btn-success open-finishproduction-modal" ' +

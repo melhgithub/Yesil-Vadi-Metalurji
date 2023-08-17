@@ -5,7 +5,7 @@
 @model ProductionsViewModel
 @{
     ViewData["Title"] = "Üretimler";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
 <h1>Üretim Listesi</h1>
@@ -52,15 +52,15 @@
                 <dt>@Html.LabelFor(m => m.FilterDto.PhoneNumber, "Tel. No:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.PhoneNumber, new { @class = "form-control", placeholder = "Tel. No" })
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <dt>@Html.LabelFor(m => m.FilterDto.TotalPrice, "Toplam Fiyat:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.TotalPrice, new { @class = "form-control", placeholder = "Toplam Fiyat", type = "number", step = "0.01" })
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <dt>@Html.LabelFor(m => m.FilterDto.TotalPiece, "Toplam Adet:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.TotalPiece, new { @class = "form-control", placeholder = "Toplam Adet", type = "number" })
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <dt>@Html.LabelFor(m => m.FilterDto.ProductPiece, "Ürün Adeti:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.ProductPiece, new { @class = "form-control", placeholder = "Ürün Adeti", type = "number" })
             </div>
@@ -134,15 +134,15 @@
             productionGrid.jqGrid({
                 data: data,
                 colModel: [
-                    { name: 'name', label: 'İsim', width: 80 },
-                    { name: 'lastname', label: 'Soyisim', width: 80 },
-                    { name: 'mail', label: 'E-Mail', width: 150 },
-                    { name: 'phonenumber', label: 'Telefon Numarası', width: 100 },
+                    { name: 'name', label: 'İsim', width: 120 },
+                    { name: 'lastname', label: 'Soyisim', width: 120 },
+                    { name: 'mail', label: 'E-Mail', width: 140 },
+                    { name: 'phonenumber', label: 'Telefon Numarası', width: 120 },
                     { name: 'totalprice', label: 'Toplam Fiyat', width: 80 },
                     { name: 'totalpiece', label: 'Toplam Adet', width: 80 },
                     { name: 'productpiece', label: 'Ürün Adeti', width: 80 },
                     {
-                        name: 'status', label: 'Durum', width: 80,
+                        name: 'status', label: 'Durum', width: 150,
                         formatter: function (cellValue) {
                             switch (cellValue) {
                                 case 1:
@@ -161,7 +161,7 @@
                         }
                     },
                     {
-                        name: 'actions', label: '', width: 300,
+                        name: 'actions', label: '', width: 310,
                         formatter: function (cellValue, options, rowObject) {
                             if (rowObject.status === 1) {
                                 var buttons = '<button class="btn btn-success open-finishproduction-modal" ' +

@@ -51,8 +51,26 @@ namespace Entity.Concrete
         [MaxLength(500)]
         public string Description { get; set; }
 
-        public string ImageUrl { get; set; }
 
+
+
+        [MaxLength(200)]
+        public string ImageUrl1 { get; set; }
+
+        [MaxLength(200)]
+        public string ImageUrl2 { get; set; }
+
+        [MaxLength(200)]
+        public string ImageUrl3 { get; set; }
+
+        [MaxLength(200)]
+        public string ImageUrl4 { get; set; }
+
+        [MaxLength(200)]
+        public string ImageUrl5 { get; set; }
+
+        [MaxLength(200)]
+        public string ImageUrl6 { get; set; }
 
         //BAĞLANTILAR
 

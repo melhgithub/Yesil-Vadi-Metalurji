@@ -5,7 +5,7 @@
 @model AdminsViewModel
 @{
     ViewData["Title"] = "Adminler";
-    Layout = "~/Views/Shared/AdminTestLayout.cshtml";
+    Layout = "~/Views/Shared/_AdminTest.cshtml";
 }
 
 <h1>Admin Listesi</h1>
@@ -37,11 +37,11 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Active, "Aktiflik:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.Active, activeList, new { @class = "form-control" })
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Status, "Durum:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
             </div>
@@ -128,11 +128,11 @@
             adminGrid.jqGrid({
                 data: data,
                 colModel: [
-                    { name: 'id', label: 'ID', width: 40 },
-                    { name: 'username', label: 'Kullanıcı Adı', width: 110 },
-                    { name: 'password', label: 'Şifre', width: 110, formatter: passwordFormatter },
+                    { name: 'id', label: 'ID', width: 50 },
+                    { name: 'username', label: 'Kullanıcı Adı', width: 255 },
+                    { name: 'password', label: 'Şifre', width: 255, formatter: passwordFormatter },
                     {
-                        name: 'status', label: 'Durum', width: 100,
+                        name: 'status', label: 'Durum', width: 260,
                         formatter: function (cellValue) {
                             switch (cellValue) {
                                 case 1:
@@ -145,7 +145,7 @@
                         }
                     },
                     {
-                        name: 'active', label: 'AKTİFLİK', width: 100,
+                        name: 'active', label: 'AKTİFLİK', width: 260,
                         formatter: function (cellValue) {
                             switch (cellValue) {
                                 case true:
@@ -158,7 +158,7 @@
                         }
                     },
                     {
-                        name: 'actions', label: '', width: 200,
+                        name: 'actions', label: '', width: 210,
                         formatter: function (cellValue, options, rowObject) {
                             if (rowObject.status === 1) {
                                 var buttons = '<button class="btn btn-primary open-edit-modal" ' +

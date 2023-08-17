@@ -54,6 +54,13 @@ namespace Yesil_Vadi_Metalurji
                     policy.RequireAuthenticatedUser().RequireRole("melh"));
             });
 
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
+
+            services.AddControllersWithViews();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

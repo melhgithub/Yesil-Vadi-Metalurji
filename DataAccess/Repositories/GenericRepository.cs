@@ -59,7 +59,6 @@ namespace DataAccess.Repositories
             return await c.Admins.Select(c => c.UserName).ToListAsync();
         }
 
-
         public async Task<Category> GetCategoryByName(string Name)
         {
             return await c.Categories.FirstOrDefaultAsync(c => c.Name == Name);
@@ -78,7 +77,6 @@ namespace DataAccess.Repositories
 
 
 
-
         public async Task<List<Product>> GetListWithIncludesForProduct()
         {
             return await c.Products.Include(p => p.Category)
@@ -89,5 +87,6 @@ namespace DataAccess.Repositories
         {
             return await c.OfferDetails.Where(p => p.OfferID == offerID).ToListAsync();
         }
+
     }
 }
