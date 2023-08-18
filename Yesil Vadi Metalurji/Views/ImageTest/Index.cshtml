@@ -1,0 +1,51 @@
+﻿@model List<string>
+@{
+    ViewData["Title"] = "Resimler";
+    Layout = "~/Views/Shared/_AdminTest.cshtml";
+}
+
+<h2>Resimler</h2>
+
+<form asp-action="Upload" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="image">Resim Seçin:</label>
+        <input type="file" class="form-control-file" name="image" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Yükle</button>
+</form>
+
+<hr />
+
+<div>
+    <label for="search">Ara:</label>
+    <input type="text" id="search" />
+</div>
+
+<div class="row" id="imageContainer">
+    @foreach (var image in Model)
+    {
+        <div class="col-md-3 image-item" data-image-name="@image">
+            <img src="~/Resimler/@image" alt="Image" class="img-fluid" />
+            <div class="mt-2">
+                <span>@image</span>
+                <a asp-action="Delete" asp-route-image="@image" class="btn btn-danger btn-sm ml-2">Sil</a>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    document.getElementById('search').addEventListener('input', function () {
+        var searchTerm = this.value.toLowerCase();
+        var images = document.querySelectorAll('.image-item');
+
+        images.forEach(function (image) {
+            var imageName = image.getAttribute('data-image-name').toLowerCase();
+            if (imageName.includes(searchTerm)) {
+                image.style.display = 'block';
+            } else {
+                image.style.display = 'none';
+            }
+        });
+    });
+</script>

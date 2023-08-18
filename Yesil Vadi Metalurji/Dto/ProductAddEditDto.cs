@@ -28,8 +28,14 @@ namespace Yesil_Vadi_Metalurji.Dto
         public ProductStatuses Status { get; set; }
         public bool Active{ get; set; }
         public string Description { get; set; }
-
-        public List<IFormFile> ImageFiles { get; set; }
         public int CategoryID { get; set; }
+
+        public IFormFile ImageUrl1 { get; set; }
+        public IFormFile ImageUrl2 { get; set; }
+        public IFormFile ImageUrl3 { get; set; }
+        public IFormFile ImageUrl4 { get; set; }
+        public IFormFile ImageUrl5 { get; set; }
+        public IFormFile ImageUrl6 { get; set; }
+
     }
 }

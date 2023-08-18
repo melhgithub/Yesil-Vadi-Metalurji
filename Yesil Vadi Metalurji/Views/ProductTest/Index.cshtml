@@ -112,7 +112,6 @@
         </div>
 
     </div>
-
 </div>
 
 <script>
@@ -346,11 +345,6 @@
                 <input type="text" id="Material" name="Material" class="form-control" value="${data.productmaterial}" required />
             </div>
 
-            <div class="form-group">
-                <label for="ImageFiles">Resimler : </label>
-                <input type="file" id="ImageFiles" name="ImageFiles" class="form-control" multiple />
-            </div>
-
 
             <div class="form-group">
                 <label for="Price">Fiyat</label>
@@ -406,7 +400,7 @@
         firstModal = $.dialog({
         title: 'Ürün Oluştur',
         content: `
-        <form method="post" action="@Url.Action("AddEditProduct", "ProductTest")">
+        <form method="post" action="@Url.Action("AddEditProduct", "ProductTest")>
             <div class="form-group">
                 <label for="Name">Ürün Adı</label>
                 <input type="text" id="Name" name="Name" class="form-control" required />
@@ -415,11 +409,6 @@
             <div class="form-group">
                 <label for="Material">Malzeme : </label>
                 <input type="text" id="Material" name="Material" class="form-control" required />
-            </div>
-
-            <div class="form-group">
-                <label for="ImageFiles">Resimler : </label>
-                <input type="file" id="ImageFiles" name="ImageFiles" class="form-control" multiple />
             </div>
 
 
@@ -464,7 +453,6 @@
                     }
                 </select>
             </div>
-
             <div class="form-group">
                 <input type="submit" value="Oluştur" class="btn btn-primary w-100" />
             </div>
@@ -503,10 +491,6 @@
         e.preventDefault();
         var form = $(this);
         var formData = new FormData(form[0]);
-        var imageFilesInput = $('#ImageFiles')[0];
-        for (var i = 0; i < imageFilesInput.files.length; i++) {
-            formData.append('ImageFiles', imageFilesInput.files[i]);
-        }
         form.find('.decimal-input').each(function () {
             var value = $(this).val();
             value = parseFloat(value.replace(',', '.'), CultureInfo.InvariantCulture).toFixed(2);
@@ -515,8 +499,6 @@
             $.ajax({
                 url: form.attr('action'),
                 type: form.attr('method'),
-                contentType: false,
-                processData: false,
                 data: form.serialize(),
                 success: function (response) {
                     var message = response;

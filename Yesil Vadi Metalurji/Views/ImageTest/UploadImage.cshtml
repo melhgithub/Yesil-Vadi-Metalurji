@@ -1,0 +1,13 @@
+﻿@model Yesil_Vadi_Metalurji.Controllers.ImageTestController
+
+<div>
+    <h2>Upload Images</h2>
+
+    <form asp-action="UploadImage" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="files">Resimleri Seçin (jpg/jpeg/png):</label>
+            <input type="file" name="files" id="files" accept=".jpg, .jpeg, .png" multiple />
+        </div>
+        <button type="submit">Yükle</button>
+    </form>
+</div>

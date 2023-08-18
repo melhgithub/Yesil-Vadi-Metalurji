@@ -3,6 +3,7 @@ using Core.Extensions;
 using DataAccess.Repositories;
 using Entity.Concrete;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,6 +19,13 @@ namespace Yesil_Vadi_Metalurji.Controllers
     [Authorize(Policy = "MelhOnly")]
     public class ProductTestController : Controller
     {
+        private readonly IWebHostEnvironment _environment;
+
+        public ProductTestController(IWebHostEnvironment environment)
+        {
+            _environment = environment;
+        }
+
         ProductManager productManager = new ProductManager(new EFProductRepository());
         CategoryManager categoryManager = new CategoryManager(new EFCategoryRepository());
 
@@ -31,13 +39,13 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 Categories = categories
             };
 
-            var firstmodel = new ProductsViewModel
+            var model = new ProductsViewModel
             {
                 Products = products,
                 FilterDto = filter
             };
 
-            return View(firstmodel);
+            return View(model);
         }
 
         [HttpPost]
@@ -105,7 +113,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddEditProduct(ProductAddEditDto product, List<IFormFile> ImageFiles)
+        public async Task<IActionResult> AddEditProduct(ProductAddEditDto product)
         {
             string message;
 
@@ -124,45 +132,25 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     productEntity.Active = product.Active;
                     productEntity.Description = product.Description;
 
-                    if (ImageFiles != null && ImageFiles.Any())
+                    if (product.ImageUrl1 != null)
                     {
-                        for (int i = 0; i < ImageFiles.Count; i++)
-                        {
-                            var imageFile = ImageFiles[i];
-                            if (imageFile != null)
-                            {
-                                var uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                                var imagePath = Path.Combine("path_to_your_image_folder", uniqueFileName);
-
-                                using (var fileStream = new FileStream(imagePath, FileMode.Create))
-                                {
-                                    await imageFile.CopyToAsync(fileStream);
-                                }
-
-                                switch (i)
-                                {
-                                    case 0:
-                                        productEntity.ImageUrl1 = uniqueFileName;
-                                        break;
-                                    case 1:
-                                        productEntity.ImageUrl2 = uniqueFileName;
-                                        break;
-                                    case 2:
-                                        productEntity.ImageUrl3 = uniqueFileName;
-                                        break;
-                                    case 3:
-                                        productEntity.ImageUrl4 = uniqueFileName;
-                                        break;
-                                    case 4:
-                                        productEntity.ImageUrl5 = uniqueFileName;
-                                        break;
-                                    case 5:
-                                        productEntity.ImageUrl6 = uniqueFileName;
-                                        break;
-                                }
-                            }
-                        }
                     }
+                    if (product.ImageUrl2 != null)
+                    {
+                    }
+                    if (product.ImageUrl3 != null)
+                    {
+                    }
+                    if (product.ImageUrl4 != null)
+                    {
+                    }
+                    if (product.ImageUrl5 != null)
+                    {
+                    }
+                    if (product.ImageUrl6 != null)
+                    {
+                    }
+
 
                     if (productEntity.ID > 0)
                     {
@@ -264,5 +252,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
             return Json(message);
         }
+
     }
 }
