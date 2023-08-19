@@ -81,7 +81,6 @@
 
     function filterCategories() {
         var formData = $('#filterForm').serialize();
-        console.log(formData);
 
         var categoryGrid = $('#categoryGrid');
 
@@ -92,7 +91,6 @@
             dataType: 'json',
             success: function (response) {
                 var data = response;
-                console.log(data);
                 showDatas(data);
             },
             error: function (error) {
@@ -218,7 +216,6 @@
 
     function openEditKategoriModal(button) {
         var data = button.dataset;
-        console.log(data.categoryactive);
         firstModal = $.dialog({
         title: 'Kategori Düzenle',
          content: `

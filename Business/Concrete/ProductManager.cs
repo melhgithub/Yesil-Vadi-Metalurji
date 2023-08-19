@@ -53,5 +53,10 @@ namespace Business.Concrete
         {
             await _productDal.Update(product);
         }
+
+        public Task<Product> CheckProducts()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

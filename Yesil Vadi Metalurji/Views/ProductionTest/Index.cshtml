@@ -398,6 +398,11 @@
     $(document).on('submit', 'form', function (e) {
         e.preventDefault();
         var form = $(this);
+        form.find('.decimal-input').each(function () {
+            var value = $(this).val();
+            value = parseFloat(value.replace(',', '.'), CultureInfo.InvariantCulture).toFixed(2);
+            $(this).val(value);
+        });
 
         $.ajax({
             url: form.attr('action'),

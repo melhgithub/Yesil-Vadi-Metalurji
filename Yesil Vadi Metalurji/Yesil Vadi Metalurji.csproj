@@ -30,7 +30,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\" />
     <Folder Include="wwwroot\Resimler\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Image\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

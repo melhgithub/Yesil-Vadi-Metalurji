@@ -17,6 +17,7 @@ namespace Business.Abstract
 
         Task<List<Product>> GetListWithIncludes();
         Task<Product> GetProductByName(string Name);
+        Task<Product> CheckProducts();
 
     }
 }

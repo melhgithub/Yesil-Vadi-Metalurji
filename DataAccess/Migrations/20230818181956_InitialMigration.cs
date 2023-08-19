@@ -13,7 +13,9 @@ namespace DataAccess.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,11 +29,25 @@ namespace DataAccess.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -44,7 +60,11 @@ namespace DataAccess.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Mail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Mail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalPiece = table.Column<int>(type: "int", nullable: false),
+                    ProductPiece = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -61,10 +81,15 @@ namespace DataAccess.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Material = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Piece = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Piece = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageUrl1 = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    ImageUrl2 = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    ImageUrl3 = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    ImageUrl4 = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    ImageUrl5 = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    ImageUrl6 = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     CategoryID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -85,6 +110,14 @@ namespace DataAccess.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Mail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalPiece = table.Column<int>(type: "int", nullable: false),
+                    ProductPiece = table.Column<int>(type: "int", nullable: false),
                     OfferID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -105,6 +138,14 @@ namespace DataAccess.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Mail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalPiece = table.Column<int>(type: "int", nullable: false),
+                    ProductPiece = table.Column<int>(type: "int", nullable: false),
                     OfferID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -125,7 +166,12 @@ namespace DataAccess.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Piece = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Piece = table.Column<double>(type: "float", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Mail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ProductID = table.Column<int>(type: "int", nullable: false),
                     OfferID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -176,6 +222,9 @@ namespace DataAccess.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Admins");
+
+            migrationBuilder.DropTable(
+                name: "Images");
 
             migrationBuilder.DropTable(
                 name: "OfferDetails");

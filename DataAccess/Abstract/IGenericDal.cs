@@ -18,13 +18,17 @@ namespace DataAccess.Abstract
         Task<List<Product>> GetListWithIncludesForProduct();
         Task<List<OfferDetail>> GetOfferDetailsByOfferID(int offerID);
 
+        Task<Product> CheckProducts();
+
         Task<List<string>> GetCategoryNames();
         Task<List<string>> GetAdminNames();
         Task<List<string>> GetProductNames();
+        Task<List<string>> GetImageNames();
 
         Task<Category> GetCategoryByName(string Name);
         Task<Admin> GetAdminByName(string Name);
         Task<Product> GetProductByName(string Name);
+        Task<Image> GetImageByName(string Name);
 
 
     }

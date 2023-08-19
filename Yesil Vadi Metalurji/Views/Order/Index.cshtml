@@ -105,7 +105,6 @@
 
     function filterOrders() {
         var formData = $('#filterForm').serialize();
-        console.log(formData);
 
         var orderGrid = $('#orderGrid');
 
@@ -116,7 +115,6 @@
             dataType: 'json',
             success: function (response) {
                 var data = response;
-                console.log(data);
                 showDatas(data);
             },
             error: function (error) {

@@ -138,6 +138,31 @@ namespace Yesil_Vadi_Metalurji.Controllers
                             message = "Yeni şifreler uyuşmuyor!";
                         }
                     }
+                    else if (isUpdate || admin.NewPassword == admin.ConfirmNewPassword){
+                        adminEntity.UserName = admin.UserName;
+                        adminEntity.Password = admin.NewPassword;
+                        adminEntity.Status = admin.Status;
+
+                        if (adminEntity.Status == (AdminStatuses)1)
+                        {
+                            adminEntity.Active = true;
+                        }
+                        else
+                        {
+                            adminEntity.Active = false;
+                        }
+
+                        if (isUpdate)
+                        {
+                            await adminManager.Update(adminEntity);
+                            message = "Admin başarıyla güncellendi!";
+                        }
+                        else
+                        {
+                            await adminManager.Add(adminEntity);
+                            message = "Admin başarıyla kaydedildi!";
+                        }
+                    }
                     else
                     {
                         message = "Eski şifre hatalı!";

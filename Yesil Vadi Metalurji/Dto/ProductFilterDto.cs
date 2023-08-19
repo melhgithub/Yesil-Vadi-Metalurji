@@ -27,12 +27,13 @@ namespace Yesil_Vadi_Metalurji.Dto
 
         public ProductStatuses Status { get; set; }
         public string Active { get; set; }
+        public string Image { get; set; }
         public string Description { get; set; }
         public int? CategoryID { get; set; }
         public CategoryStatuses CategoryStatus { get; set; }
         public string CategoryActive { get; set; }
-
         public List<Category> Categories { get; set; }
+        public List<Image> Images { get; set; }
 
     }
 }

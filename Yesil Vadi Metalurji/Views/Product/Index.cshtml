@@ -52,6 +52,10 @@
                 @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
             </div>
             <div class="col-sm-3">
+                <dt>@Html.LabelFor(m => m.FilterDto.Image, "Resim:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.Image, imageList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.CategoryStatus, "Kategori Durumu:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.CategoryStatus, categoryStatusList, new { @class = "form-control" })
             </div>
@@ -63,17 +67,17 @@
                 <dt>@Html.LabelFor(m => m.FilterDto.Material, "Malzeme:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Material, new { @class = "form-control", placeholder = "Malzeme" })
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-5">
+                <dt>@Html.LabelFor(m => m.FilterDto.Description, "Açıklama:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Description, new { @class = "form-control", placeholder = "Açıklama" })
+            </div>
+            <div class="col-sm-2">
                 <dt>@Html.LabelFor(m => m.FilterDto.Price, "Fiyat:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Price, new { @class = "form-control", placeholder = "Fiyat", type = "number", step = "0.01" })
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <dt>@Html.LabelFor(m => m.FilterDto.Piece, "Adet:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Piece, new { @class = "form-control", placeholder = "Adet", type = "number" })
-            </div>
-            <div class="col-sm-3">
-                <dt>@Html.LabelFor(m => m.FilterDto.Description, "Açıklama:")</dt>
-                @Html.TextBoxFor(m => m.FilterDto.Description, new { @class = "form-control", placeholder = "Açıklama" })
             </div>
         </div>
     </div>
@@ -126,14 +130,19 @@
             productGrid.jqGrid({
                 data: data,
                 colModel: [
-                    { name: 'category', label: 'Kategori', width: 150, formatter: categoryFormatter },
-                    { name: 'name', label: 'Ürün Adı', width: 150 },
-                    { name: 'material', label: 'Malzeme', width: 150 },
-                    { name: 'description', label: 'Açıklama', width: 150 },
-                    { name: 'price', label: 'Fiyat', width: 100 },
-                    { name: 'piece', label: 'Adet', width: 100 },
+                    { name: 'category', label: 'Kategori', width: 130, formatter: categoryFormatter },
+                    { name: 'name', label: 'Ürün Adı', width: 130 },
+                    { name: 'material', label: 'Malzeme', width: 130 },
                     {
-                        name: 'status', label: 'Durum', width: 180,
+                        name: 'description', label: 'Açıklama', width: 120,
+                        formatter: function (cellValue) {
+                            return cellValue !== null ? cellValue : '&nbsp;';
+                        }
+                    },
+                    { name: 'price', label: 'Fiyat', width: 80 },
+                    { name: 'piece', label: 'Adet', width: 80 },
+                    {
+                        name: 'status', label: 'Durum', width: 150,
                         formatter: function (cellValue) {
                             switch (cellValue) {
                                 case 1:
@@ -160,8 +169,13 @@
                                     'data-productdescription="' + rowObject.description + '" ' +
                                     'data-productstatus="' + rowObject.status + '" ' +
                                     'data-productactive="' + rowObject.active + '" ' +
-                                    'data-productimageurl="' + rowObject.imageurl + '" ' +
-                                    'data-productcategory="' + (rowObject.category ? rowObject.category.id : '') + '">Düzenle</button>' +
+                                    'data-productcategory="' + (rowObject.category ? rowObject.category.id : '') + '" ' +
+                                    'data-productimageurla="' + rowObject.imageurla + '" ' +
+                                    'data-productimageurlb="' + rowObject.imageurlb + '" ' +
+                                    'data-productimageurlc="' + rowObject.imageurlc + '" ' +
+                                    'data-productimageurld="' + rowObject.imageurld + '" ' +
+                                    'data-productimageurle="' + rowObject.imageurle + '" ' +
+                                    'data-productimageurlf="' + rowObject.imageurlf + '"> Düzenle</button> ' +
                                     '<button class="btn btn-warning open-delete-modal" ' +
                                     'data-productid="' + rowObject.id + '">Kaldır</button>';
                             }
@@ -175,8 +189,13 @@
                                     'data-productdescription="' + rowObject.description + '" ' +
                                     'data-productstatus="' + rowObject.status + '" ' +
                                     'data-productactive="' + rowObject.active + '" ' +
-                                    'data-productimageurl="' + rowObject.imageurl + '" ' +
-                                    'data-productcategory="' + (rowObject.category ? rowObject.category.id : '') + '">Düzenle</button>' +
+                                    'data-productcategory="' + (rowObject.category ? rowObject.category.id : '') + '" ' +
+                                    'data-productimageurla="' + rowObject.imageurla + '" ' +
+                                    'data-productimageurlb="' + rowObject.imageurlb + '" ' +
+                                    'data-productimageurlc="' + rowObject.imageurlc + '" ' +
+                                    'data-productimageurld="' + rowObject.imageurld + '" ' +
+                                    'data-productimageurle="' + rowObject.imageurle + '" ' +
+                                    'data-productimageurlf="' + rowObject.imageurlf + '"> Düzenle</button> ' +
                                     '<button class="btn btn-success open-approve-modal" ' +
                                     'data-productid="' + rowObject.id + '">Onayla</button>';
                             }
@@ -215,7 +234,6 @@
 
     function filterProducts() {
         var formData = $('#filterForm').serialize();
-        console.log(formData);
 
         var productGrid = $('#productGrid');
 
@@ -226,7 +244,6 @@
             dataType: 'json',
             success: function (response) {
                 var data = response;
-                console.log(data);
                 showDatas(data);
             },
             error: function (error) {
@@ -292,11 +309,8 @@
     function openEditUrunModal(button) {
         var data = button.dataset;
         var categoryOptions = @Html.Raw(JsonConvert.SerializeObject(Model.FilterDto.Categories));
+        var imageOptions = @Html.Raw(JsonConvert.SerializeObject(Model.FilterDto.Images));
         data.productcategory = parseInt(data.productcategory);
-
-        console.log(data);
-        console.log(data.productcategory);
-        console.log(categoryOptions);
 
         firstModal = $.dialog({
         title: 'Ürün Düzenle',
@@ -357,6 +371,59 @@
                 </select>
             </div>
 
+            <div class="form-group">
+                <label for="ImageUrl1">Resim 1 : </label>
+                <select id="ImageUrl1" name="ImageUrl1" class="form-control">
+                    <option value="">Seçiniz</option>
+                    ${imageOptions.map(image => `
+                    <option value="${image.ID}" ${data.productimageurla === image.Name ? 'selected' : ''}>${image.Name}</option>`).join('')}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl2">Resim 2 : </label>
+                <select id="ImageUrl2" name="ImageUrl2" class="form-control">
+                    <option value="">Seçiniz</option>
+                    ${imageOptions.map(image => `
+                    <option value="${image.ID}" ${data.productimageurlb === image.Name ? 'selected' : ''}>${image.Name}</option>`).join('')}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl3">Resim 3 : </label>
+                <select id="ImageUrl3" name="ImageUrl3" class="form-control">
+                    <option value="">Seçiniz</option>
+                    ${imageOptions.map(image => `
+                    <option value="${image.ID}" ${data.productimageurlc === image.Name ? 'selected' : ''}>${image.Name}</option>`).join('')}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl4">Resim 4 : </label>
+                <select id="ImageUrl4" name="ImageUrl4" class="form-control">
+                    <option value="">Seçiniz</option>
+                    ${imageOptions.map(image => `
+                    <option value="${image.ID}" ${data.productimageurld === image.Name ? 'selected' : ''}>${image.Name}</option>`).join('')}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl5">Resim 5 : </label>
+                <select id="ImageUrl5" name="ImageUrl5" class="form-control">
+                    <option value="">Seçiniz</option>
+                    ${imageOptions.map(image => `
+                    <option value="${image.ID}" ${data.productimageurle === image.Name ? 'selected' : ''}>${image.Name}</option>`).join('')}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl6">Resim 6 : </label>
+                <select id="ImageUrl6" name="ImageUrl6" class="form-control">
+                    <option value="">Seçiniz</option>
+                    ${imageOptions.map(image => `
+                    <option value="${image.ID}" ${data.productimageurlf === image.Name ? 'selected' : ''}>${image.Name}</option>`).join('')}
+                </select>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Düzenle" class="btn btn-primary w-100" />
             </div>
@@ -423,6 +490,71 @@
                 </select>
             </div>
 
+            <div class="form-group">
+                <label for="ImageUrl1">Resim 1 : </label>
+                <select id="ImageUrl1" name="ImageUrl1" class="form-control">
+                    <option value="">Seçiniz</option>
+                    @foreach (var image in Model.FilterDto.Images)
+                    {
+                        <option value="@image.ID">@image.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl2">Resim 2 : </label>
+                <select id="ImageUrl2" name="ImageUrl2" class="form-control">
+                    <option value="">Seçiniz</option>
+                    @foreach (var image in Model.FilterDto.Images)
+                    {
+                        <option value="@image.ID">@image.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl3">Resim 3 : </label>
+                <select id="ImageUrl3" name="ImageUrl3" class="form-control">
+                    <option value="">Seçiniz</option>
+                    @foreach (var image in Model.FilterDto.Images)
+                    {
+                        <option value="@image.ID">@image.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl4">Resim 4 : </label>
+                <select id="ImageUrl4" name="ImageUrl4" class="form-control">
+                    <option value="">Seçiniz</option>
+                    @foreach (var image in Model.FilterDto.Images)
+                    {
+                        <option value="@image.ID">@image.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl5">Resim 5 : </label>
+                <select id="ImageUrl5" name="ImageUrl5" class="form-control">
+                    <option value="">Seçiniz</option>
+                    @foreach (var image in Model.FilterDto.Images)
+                    {
+                        <option value="@image.ID">@image.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl6">Resim 6 : </label>
+                <select id="ImageUrl6" name="ImageUrl6" class="form-control">
+                    <option value="">Seçiniz</option>
+                    @foreach (var image in Model.FilterDto.Images)
+                    {
+                        <option value="@image.ID">@image.Name</option>
+                    }
+                </select>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Oluştur" class="btn btn-primary w-100" />
             </div>

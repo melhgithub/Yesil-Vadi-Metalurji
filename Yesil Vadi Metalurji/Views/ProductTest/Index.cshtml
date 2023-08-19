@@ -39,6 +39,12 @@
         new SelectListItem { Value = "1", Text = "AKTİF" },
         new SelectListItem { Value = "2", Text = "AKTİF DEĞİL" },
     };
+    var imageList = new List<SelectListItem>
+{
+        new SelectListItem { Value = "0", Text = "TÜMÜ" },
+        new SelectListItem { Value = "1", Text = "VAR" },
+        new SelectListItem { Value = "2", Text = "YOK" },
+    };
 
 <div class="card">
     <div class="card-header">
@@ -58,6 +64,10 @@
                 @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
             </div>
             <div class="col-sm-3">
+                <dt>@Html.LabelFor(m => m.FilterDto.Image, "Resim:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.Image, imageList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.CategoryStatus, "Kategori Durumu:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.CategoryStatus, categoryStatusList, new { @class = "form-control" })
             </div>
@@ -65,15 +75,15 @@
                 <dt>@Html.LabelFor(m => m.FilterDto.Active, "Aktiflik:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.Active, activeList, new { @class = "form-control" })
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.CategoryActive, "Kategori Aktiflik:")</dt>
                 @Html.DropDownListFor(m => m.FilterDto.CategoryActive, categoryActiveList, new { @class = "form-control" })
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Name, "Ürün Adı:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Name, new { @class = "form-control", placeholder = "Ürün Adı" })
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <dt>@Html.LabelFor(m => m.FilterDto.Material, "Malzeme:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Material, new { @class = "form-control", placeholder = "Malzeme" })
             </div>
@@ -85,7 +95,7 @@
                 <dt>@Html.LabelFor(m => m.FilterDto.Piece, "Adet:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Piece, new { @class = "form-control", placeholder = "Adet", type = "number" })
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-4">
                 <dt>@Html.LabelFor(m => m.FilterDto.Description, "Açıklama:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Description, new { @class = "form-control", placeholder = "Açıklama" })
             </div>
@@ -143,7 +153,12 @@
                     { name: 'category', label: 'Kategori', width: 120, formatter: categoryFormatter },
                     { name: 'name', label: 'Ürün Adı', width: 120 },
                     { name: 'material', label: 'Malzeme', width: 120 },
-                    { name: 'description', label: 'Açıklama', width: 120 },
+                    {
+                        name: 'description', label: 'Açıklama', width: 120,
+                        formatter: function (cellValue) {
+                            return cellValue !== null ? cellValue : '&nbsp;';
+                        }
+                    },
                     { name: 'price', label: 'Fiyat', width: 90 },
                     { name: 'piece', label: 'Adet', width: 90 },
                     {
@@ -187,8 +202,13 @@
                                     'data-productdescription="' + rowObject.description + '" ' +
                                     'data-productstatus="' + rowObject.status + '" ' +
                                     'data-productactive="' + rowObject.active + '" ' +
-                                    'data-productimageurl="' + rowObject.imageurl + '" ' +
-                                    'data-productcategory="' + (rowObject.category ? rowObject.category.id : '') + '">Düzenle</button>' +
+                                    'data-productcategory="' + (rowObject.category ? rowObject.category.id : '') + '" ' +
+                                    'data-productimageurla="' + rowObject.imageurla + '" ' +
+                                    'data-productimageurlb="' + rowObject.imageurlb + '" ' +
+                                    'data-productimageurlc="' + rowObject.imageurlc + '" ' +
+                                    'data-productimageurld="' + rowObject.imageurld + '" ' +
+                                    'data-productimageurle="' + rowObject.imageurle + '" ' +
+                                    'data-productimageurlf="' + rowObject.imageurlf + '"> Düzenle</button> ' +
                                     '<button class="btn btn-warning open-delete-modal" ' +
                                     'data-productid="' + rowObject.id + '">Kaldır</button>';
                             }
@@ -202,8 +222,13 @@
                                     'data-productdescription="' + rowObject.description + '" ' +
                                     'data-productstatus="' + rowObject.status + '" ' +
                                     'data-productactive="' + rowObject.active + '" ' +
-                                    'data-productimageurl="' + rowObject.imageurl + '" ' +
-                                    'data-productcategory="' + (rowObject.category ? rowObject.category.id : '') + '">Düzenle</button>' +
+                                    'data-productcategory="' + (rowObject.category ? rowObject.category.id : '') + '" ' +
+                                    'data-productimageurla="' + rowObject.imageurla + '" ' +
+                                    'data-productimageurlb="' + rowObject.imageurlb + '" ' +
+                                    'data-productimageurlc="' + rowObject.imageurlc + '" ' +
+                                    'data-productimageurld="' + rowObject.imageurld + '" ' +
+                                    'data-productimageurle="' + rowObject.imageurle + '" ' +
+                                    'data-productimageurlf="' + rowObject.imageurlf + '"> Düzenle</button> ' +
                                     '<button class="btn btn-success open-approve-modal" ' +
                                     'data-productid="' + rowObject.id + '">Onayla</button>';
                             }
@@ -318,20 +343,35 @@
 
     function openEditUrunModal(button) {
         var data = button.dataset;
+        console.log("data ilk");
+        console.log(data);
         var categoryOptions = @Html.Raw(JsonConvert.SerializeObject(Model.FilterDto.Categories));
+        var imageOptions = @Html.Raw(JsonConvert.SerializeObject(Model.FilterDto.Images));
         data.productcategory = parseInt(data.productcategory);
 
+        console.log("data son");
         console.log(data);
+        console.log("category");
         console.log(data.productcategory);
+        console.log("kategoriler");
         console.log(categoryOptions);
+        console.log("RESİMLER");
+        console.log(imageOptions);
+        console.log("ÜRÜN RESİMLERİ");
+        console.log(data.productimageurla);
+        console.log(data.productimageurlb);
+        console.log(data.productimageurlc);
+        console.log(data.productimageurld);
+        console.log(data.productimageurle);
+        console.log(data.productimageurlf);
 
         firstModal = $.dialog({
         title: 'Ürün Düzenle',
         content: `
-        <form method="post" action="@Url.Action("AddEditProduct", "ProductTest")>
+        <form method="post" action="@Url.Action("AddEditProduct", "ProductTest")">
 
             <div class="form-group">
-                <input type="text" id="ID" name="ID" class="form-control" value="${data.productid}" required/>
+                <input type="text" id="ID" name="ID" class="form-control" value="${data.productid}" required />
 
             </div>
 
@@ -344,7 +384,6 @@
                 <label for="Material">Malzeme</label>
                 <input type="text" id="Material" name="Material" class="form-control" value="${data.productmaterial}" required />
             </div>
-
 
             <div class="form-group">
                 <label for="Price">Fiyat</label>
@@ -366,8 +405,7 @@
             </div>
 
             <div class="form-group">
-                <label for="Active">Aktiflik :</label>
-                <select id="Active" name="Active" class="form-control" data="${data.productactive}" required>
+                <select id="Active" name="Active" class="form-control" data="${data.productactive}" required hidden>
                     <option value=true ${data.productactive == "true" ? 'selected' : '' }>AKTİF</option>
                     <option value=false ${data.productactive == "false" ? 'selected' : '' }>AKTİF DEĞİL</option>
                 </select>
@@ -387,6 +425,60 @@
             </div>
 
             <div class="form-group">
+                <label for="ImageUrl1">Resim 1 : </label>
+                <select id="ImageUrl1" name="ImageUrl1" class="form-control">
+                    <option value="">Seçiniz</option>
+                    ${imageOptions.map(image => `
+                    <option value="${image.ID}" ${data.productimageurla === image.Name ? 'selected' : ''}>${image.Name}</option>`).join('')}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl2">Resim 2 : </label>
+                <select id="ImageUrl2" name="ImageUrl2" class="form-control">
+                    <option value="">Seçiniz</option>
+                    ${imageOptions.map(image => `
+                    <option value="${image.ID}" ${data.productimageurlb === image.Name ? 'selected' : ''}>${image.Name}</option>`).join('')}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl3">Resim 3 : </label>
+                <select id="ImageUrl3" name="ImageUrl3" class="form-control">
+                    <option value="">Seçiniz</option>
+                    ${imageOptions.map(image => `
+                    <option value="${image.ID}" ${data.productimageurlc === image.Name ? 'selected' : ''}>${image.Name}</option>`).join('')}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl4">Resim 4 : </label>
+                <select id="ImageUrl4" name="ImageUrl4" class="form-control">
+                    <option value="">Seçiniz</option>
+                    ${imageOptions.map(image => `
+                    <option value="${image.ID}" ${data.productimageurld === image.Name ? 'selected' : ''}>${image.Name}</option>`).join('')}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl5">Resim 5 : </label>
+                <select id="ImageUrl5" name="ImageUrl5" class="form-control">
+                    <option value="">Seçiniz</option>
+                    ${imageOptions.map(image => `
+                    <option value="${image.ID}" ${data.productimageurle === image.Name ? 'selected' : ''}>${image.Name}</option>`).join('')}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl6">Resim 6 : </label>
+                <select id="ImageUrl6" name="ImageUrl6" class="form-control">
+                    <option value="">Seçiniz</option>
+                    ${imageOptions.map(image => `
+                    <option value="${image.ID}" ${data.productimageurlf === image.Name ? 'selected' : ''}>${image.Name}</option>`).join('')}
+                </select>
+            </div>
+
+            <div class="form-group">
                 <input type="submit" value="Düzenle" class="btn btn-primary w-100" />
             </div>
 
@@ -400,7 +492,7 @@
         firstModal = $.dialog({
         title: 'Ürün Oluştur',
         content: `
-        <form method="post" action="@Url.Action("AddEditProduct", "ProductTest")>
+        <form method="post" action="@Url.Action("AddEditProduct", "ProductTest")">
             <div class="form-group">
                 <label for="Name">Ürün Adı</label>
                 <input type="text" id="Name" name="Name" class="form-control" required />
@@ -410,7 +502,6 @@
                 <label for="Material">Malzeme : </label>
                 <input type="text" id="Material" name="Material" class="form-control" required />
             </div>
-
 
             <div class="form-group">
                 <label for="Price">Fiyat : </label>
@@ -432,8 +523,7 @@
             </div>
 
             <div class="form-group">
-                <label for="Active">Aktiflik : </label>
-                <select id="Active" name="Active" class="form-control" required>
+                <select id="Active" name="Active" class="form-control" required hidden>
                     <option value=true>AKTİF</option>
                     <option value=false>AKTİF DEĞİL</option>
                 </select>
@@ -453,6 +543,73 @@
                     }
                 </select>
             </div>
+
+            <div class="form-group">
+                <label for="ImageUrl1">Resim 1 : </label>
+                <select id="ImageUrl1" name="ImageUrl1" class="form-control">
+                    <option value="">Seçiniz</option>
+                    @foreach (var image in Model.FilterDto.Images)
+                    {
+                        <option value="@image.ID">@image.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl2">Resim 2 : </label>
+                <select id="ImageUrl2" name="ImageUrl2" class="form-control">
+                    <option value="">Seçiniz</option>
+                    @foreach (var image in Model.FilterDto.Images)
+                    {
+                        <option value="@image.ID">@image.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl3">Resim 3 : </label>
+                <select id="ImageUrl3" name="ImageUrl3" class="form-control">
+                    <option value="">Seçiniz</option>
+                    @foreach (var image in Model.FilterDto.Images)
+                    {
+                        <option value="@image.ID">@image.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl4">Resim 4 : </label>
+                <select id="ImageUrl4" name="ImageUrl4" class="form-control">
+                    <option value="">Seçiniz</option>
+                    @foreach (var image in Model.FilterDto.Images)
+                    {
+                        <option value="@image.ID">@image.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl5">Resim 5 : </label>
+                <select id="ImageUrl5" name="ImageUrl5" class="form-control">
+                    <option value="">Seçiniz</option>
+                    @foreach (var image in Model.FilterDto.Images)
+                    {
+                        <option value="@image.ID">@image.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ImageUrl6">Resim 6 : </label>
+                <select id="ImageUrl6" name="ImageUrl6" class="form-control">
+                    <option value="">Seçiniz</option>
+                    @foreach (var image in Model.FilterDto.Images)
+                    {
+                        <option value="@image.ID">@image.Name</option>
+                    }
+                </select>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Oluştur" class="btn btn-primary w-100" />
             </div>
@@ -463,7 +620,6 @@
     });
 
     }
-
 
 
     $(document).on('click', '.open-delete-modal', function () {
@@ -482,44 +638,38 @@
         openYeniUrunModal();
     });
 
-    $(document).on('submit', '#filterForm', function (e) {
-        e.preventDefault();
-        filterProducts();
-    });
-
-    $(document).on('submit', 'form:not(#filterForm)', function (e) {
+    $(document).on('submit', 'form:not(#filterForm)' , function (e) {
         e.preventDefault();
         var form = $(this);
-        var formData = new FormData(form[0]);
         form.find('.decimal-input').each(function () {
             var value = $(this).val();
             value = parseFloat(value.replace(',', '.'), CultureInfo.InvariantCulture).toFixed(2);
             $(this).val(value);
         });
-            $.ajax({
-                url: form.attr('action'),
-                type: form.attr('method'),
-                data: form.serialize(),
-                success: function (response) {
-                    var message = response;
-                    mesajDialog = $.dialog({
-                        title: 'İşlem Sonucu',
-                        content: message,
-                        closeButton: false
-                    });
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            success: function (response) {
+                var message = response;
+                mesajDialog = $.dialog({
+                    title: 'İşlem Sonucu',
+                    content: message,
+                    closeButton: false
+                });
 
-                    setTimeout(function () {
-                        mesajDialog.close();
-                        if (firstModal) {
-                            firstModal.close();
-                        }
-                        filterProducts();
-                    }, 1500);
-                },
-                error: function (error) {
-                    alert("Başarısız");
-                }
-            });
+                setTimeout(function () {
+                    mesajDialog.close();
+                    if (firstModal) {
+                        firstModal.close();
+                    }
+                    filterProducts();
+                }, 1500);
+            },
+            error: function (error) {
+                alert("Başarısız");
+            }
+        });
 
     });
 

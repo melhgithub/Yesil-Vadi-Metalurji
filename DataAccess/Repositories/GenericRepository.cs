@@ -59,6 +59,11 @@ namespace DataAccess.Repositories
             return await c.Admins.Select(c => c.UserName).ToListAsync();
         }
 
+        public async Task<List<string>> GetImageNames()
+        {
+            return await c.Images.Select(c => c.Name).ToListAsync();
+        }
+
 
 
         public async Task<Category> GetCategoryByName(string Name)
@@ -77,6 +82,11 @@ namespace DataAccess.Repositories
             return await c.Admins.FirstOrDefaultAsync(c => c.UserName == Name);
         }
 
+        public async Task<Image> GetImageByName(string Name)
+        {
+            return await c.Images.FirstOrDefaultAsync(c => c.Name == Name);
+        }
+
         public async Task<List<Product>> GetListWithIncludesForProduct()
         {
             return await c.Products.Include(p => p.Category)
@@ -86,6 +96,11 @@ namespace DataAccess.Repositories
         public async Task<List<OfferDetail>> GetOfferDetailsByOfferID(int offerID)
         {
             return await c.OfferDetails.Where(p => p.OfferID == offerID).ToListAsync();
+        }
+
+        public Task<Product> CheckProducts()
+        {
+            throw new NotImplementedException();
         }
     }
 }

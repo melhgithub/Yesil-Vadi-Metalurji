@@ -13,13 +13,12 @@ using System.Threading.Tasks;
 
 namespace Yesil_Vadi_Metalurji.Controllers
 {
-    [Authorize(Policy = "MelhOnly")]
-    public class ImageTestController : Controller
+    public class ImageController : Controller
     {
         private readonly IWebHostEnvironment _environment;
         ImageManager imageManager = new ImageManager(new EFImageRepository());
 
-        public ImageTestController(IWebHostEnvironment environment)
+        public ImageController(IWebHostEnvironment environment)
         {
             _environment = environment;
         }

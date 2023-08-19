@@ -159,7 +159,6 @@
             adetInput.value = adetValue;
         }
 
-        console.log(adet);
 
         if (productDropdown) {
                 if (dropdownOptions['allProducts']) {
@@ -171,8 +170,6 @@
                         success: function (response) {
                             var optionItems = "";
                             products = response;
-                            console.log("GELEN ÜRÜNLER:");
-                            console.log(response);
 
                             if (products && products.length > 0) {
                                 products.forEach(function (product) {
@@ -192,8 +189,6 @@
 
             productDropdown.addEventListener('change', function () {
                 var selectedProductId = productDropdown.value;
-                console.log("product değişti");
-                console.log(selectedProductId);
                 productDropdown.value = selectedProductId;
 
                 var selectedProduct = products.find(function (product) {
@@ -211,7 +206,6 @@
 
 
     function updateProductDropdowns() {
-        console.log(adet);
         var productDropdownContainer = document.getElementById("ProductDropdownContainer");
 
         if (adet && productDropdownContainer) {
@@ -225,7 +219,6 @@
         var adetValue = adet;
         var adetInput = document.getElementById('adet');
         adetInput.value = adetValue;
-        console.log(adet);
     }
 
 
@@ -248,7 +241,6 @@
 
     function openYeniTeklifModal() {
         adet = 0;
-        console.log("adet:", adet);
 
         var dropdownHTML = '';
 
@@ -325,7 +317,6 @@
 
     function filterOffers() {
         var formData = $('#filterForm').serialize();
-        console.log(formData);
 
         var offerGrid = $('#offerGrid');
 
@@ -336,7 +327,6 @@
             dataType: 'json',
             success: function (response) {
                 var data = response;
-                console.log(data);
                 showDatas(data);
             },
             error: function (error) {

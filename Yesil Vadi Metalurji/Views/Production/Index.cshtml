@@ -105,7 +105,6 @@
 
     function filterProductions() {
         var formData = $('#filterForm').serialize();
-        console.log(formData);
 
         var productionGrid = $('#productionGrid');
 
@@ -116,7 +115,6 @@
             dataType: 'json',
             success: function (response) {
                 var data = response;
-                console.log(data);
                 showDatas(data);
             },
             error: function (error) {
