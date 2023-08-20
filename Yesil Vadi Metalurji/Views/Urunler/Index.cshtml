@@ -20,20 +20,20 @@
                     @foreach (var product in Model.Products.OrderByDescending(p => p.CreateDate))
                     {
                         <div class="col-lg-4 card">
-                            @if (!string.IsNullOrEmpty(product.ImageUrl1))
-                            {
-                                <a href="/Urunler/UrunDetaylari/@product.ID/">
-                                    <img src="~/Resimler/@product.ImageUrl1" class="card-img-top img-fluid" alt="">
-                                </a>
-                            }
-                            <ul class="blog-icons my-4">
-                                <li>
-                                    <a href="/Urunler/UrunDetaylari/@product.ID/">
-                                        <i class="far fa-calendar-alt"></i> @(((DateTime)product.CreateDate).ToString("dd-MMM-yyyy"))
-                                    </a>
-                                </li>
-                            </ul>
                             <div class="card-body">
+                                @if (!string.IsNullOrEmpty(product.ImageUrl1))
+                                {
+                                    <a href="/Urunler/UrunDetaylari/@product.ID/">
+                                        <img src="~/Resimler/@product.ImageUrl1" class="card-img-top img-fluid" alt="">
+                                    </a>
+                                }
+                                <ul class="blog-icons my-4">
+                                    <li>
+                                        <a href="/Urunler/UrunDetaylari/@product.ID/">
+                                            <i class="far fa-calendar-alt"></i> @(((DateTime)product.CreateDate).ToString("dd-MMM-yyyy"))
+                                        </a>
+                                    </li>
+                                </ul>
                                 <h5 class="card-title">
                                     <a href="/Urunler/UrunDetaylari/@product.ID/">@product.Name</a>
                                 </h5>
@@ -41,16 +41,18 @@
                                 {
                                     if (product.Description.Length > 130)
                                     {
-                                        <p class="card-text mb-3">@product.Description.Substring(0, 130)...</p>
+                                        <p class="card-text mb-3">@product.Description.Substring(0, 120)...</p>
                                     }
                                     else
                                     {
-                                        <p class="card-text mb-3">@product.Description</p>
+                                        <p class="card-text mb-3">@product.Description @Html.Raw(new string(' ', 120 - product.Description.Length))</p>
                                     }
                                 }
-                                <a href="/Urunler/UrunDetaylari/@product.ID/" class="btn btn-primary read-m">Ürünü Gör</a>
+                                <a href="/Urunler/UrunDetaylari?urunID=@product.ID" class="btn btn-primary read-m">Ürünü Gör</a>
+                                <a href="/Urunler/HizliTeklif/@product.ID" class="btn btn-primary read-m" id="teklifButon">Hızlı Teklif</a>
                             </div>
                         </div>
+                        <br />
                     }
                 </div>
             </div>

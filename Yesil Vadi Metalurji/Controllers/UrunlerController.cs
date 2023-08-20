@@ -23,6 +23,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
         {
             var products = await productManager.GetListWithIncludes();
             products = products.Where(p => p.Active == true && p.Status == (ProductStatuses)1).ToList();
+            products = products.Where(p => p.ImageUrl1 != null).ToList();
             var categories = await categoryManager.GetList();
 
 
@@ -39,7 +40,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
             return View(model);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Filter(ProductFilterDto filterDto)
@@ -85,9 +85,42 @@ namespace Yesil_Vadi_Metalurji.Controllers
             return Json(productData);
         }
 
+        [HttpGet]
         public async Task<IActionResult> UrunDetaylari(int urunID)
         {
-            return View();
+            var product = await productManager.GetByID(urunID);
+            var products = await productManager.GetList();
+            products = products.Where(p => p.ID == product.ID).ToList();
+            if (product != null && product.ImageUrl1!=null)
+            {
+                if (product.Active == false || product.Status == (ProductStatuses)2)
+                {
+                    return RedirectToAction("Urunler");
+                }
+                else
+                {
+                    var categories = await categoryManager.GetList();
+
+
+                    var filterDto = new ProductFilterDto
+                    {
+                        Categories = categories
+                    };
+
+                    var model = new ProductsViewModel
+                    {
+                        FilterDto = filterDto,
+                        Products = products
+                    };
+
+                    return View(model);
+                }
+            }
+            else
+            {
+                return RedirectToAction("Urunler");
+            }
+            
         }
     }
 }

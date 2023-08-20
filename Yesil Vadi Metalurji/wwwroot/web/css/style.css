@@ -1,10 +1,35 @@
-/*--
-	Author: proj
-	Author URL: http://proj.com
-	License: Creative Commons Attribution 3.0 Unported
-	License URL: http://creativecommons.org/licenses/by/3.0/
---*/
+#teklifButon {
+	border-radius: 0;
+	padding: 0.55em 2em;
+	letter-spacing: 1px;
+	background: #007bff;
+	border: none;
+	margin-left: 10px;
+}
 
+	#teklifButon:hover,
+	#teklifButon:focus {
+		background: #fff;
+		color: #222;
+		box-shadow: none !important;
+	}
+a.btn.btn-primary.read-m {
+	border-radius: 0;
+	padding: 0.55em 2em;
+	letter-spacing: 1px;
+	background: #01cd74;
+	border: none;
+}
+
+	a.btn.btn-primary.read-m:hover, a.btn.btn-primary.read-m:focus {
+		background: #fff;
+		color: #222;
+		box-shadow: none !important;
+	}
+
+.read {
+	margin-top: 1em;
+}
 html,
 body {
 	margin: 0;
@@ -437,21 +462,7 @@ form.header-search {
 .carousel-indicators .active {
 	background: #01cd74;
 }
-a.btn.btn-primary.read-m {
-    border-radius: 0;
-    padding: 0.55em 2em;
-    letter-spacing: 1px;
-    background: #01cd74;
-    border: none;
-}
-a.btn.btn-primary.read-m:hover,a.btn.btn-primary.read-m:focus{
-   background:#fff;
-   color:#222;
-   box-shadow:none!important;
-}
-.read {
-    margin-top: 1em;
-}
+
 /* Show it is fixed to the top */
 
 /*--//banner --*/
