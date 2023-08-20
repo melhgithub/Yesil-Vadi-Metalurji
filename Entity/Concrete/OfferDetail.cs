@@ -38,6 +38,7 @@ namespace Entity.Concrete
         [MaxLength(100)]
         public string Mail { get; set; }
 
+        public DateTime CreateDate { get; set; }
 
         public int ProductID { get; set; }
         public Product Product { get; set; }

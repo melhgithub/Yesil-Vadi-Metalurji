@@ -102,7 +102,8 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 imageurlc = p.ImageUrl3,
                 imageurld = p.ImageUrl4,
                 imageurle = p.ImageUrl5,
-                imageurlf = p.ImageUrl6
+                imageurlf = p.ImageUrl6,
+                Createdate = p.CreateDate
             });
 
             return Json(productData);
@@ -125,6 +126,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     productEntity.Piece = product.Piece;
                     productEntity.Price = product.Price.ToDecimal();
                     productEntity.Status = product.Status;
+                    productEntity.CreateDate = DateTime.Parse(DateTime.Now.ToShortDateString());
                     if (productEntity.Status == (ProductStatuses)1)
                     {
                         productEntity.Active = true;
@@ -205,13 +207,13 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     if (productEntity.ID > 0)
                     {
                         await productManager.Update(productEntity);
+                        message = "Ürün başarıyla güncellendi!";
                     }
                     else
                     {
                         await productManager.Add(productEntity);
+                        message = "Ürün başarıyla kaydedildi!";
                     }
-
-                    message = productEntity.ID > 0 ? "Ürün başarıyla güncellendi!" : "Ürün başarıyla kaydedildi!";
                 }
                 catch (Exception)
                 {

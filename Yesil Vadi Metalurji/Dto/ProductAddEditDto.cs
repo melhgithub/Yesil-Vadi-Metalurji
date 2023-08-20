@@ -36,5 +36,7 @@ namespace Yesil_Vadi_Metalurji.Dto
         public string ImageUrl5 { get; set; }
         public string ImageUrl6 { get; set; }
 
+        public DateTime CreateDate { get; set; }
+
     }
 }

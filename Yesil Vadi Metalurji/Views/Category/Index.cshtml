@@ -110,16 +110,27 @@
                 colModel: [
                     { name: 'name', label: 'Kategori Adı', width: 500 },
                     {
-                        name: 'status', label: 'Durum', width: 500,
+                        name: 'status',
+                        label: 'Durum',
+                        width: 130,
                         formatter: function (cellValue) {
+                            var statusText = '';
+                            var statusStyle = '';
+
                             switch (cellValue) {
                                 case 1:
-                                    return 'AKTİF';
+                                    statusText = 'AKTİF';
+                                    statusStyle = 'color: green;';
+                                    break;
                                 case 2:
-                                    return 'KALDIRILDI';
+                                    statusText = 'KALDIRILDI';
+                                    statusStyle = 'color: red;';
+                                    break;
                                 default:
-                                    return '';
+                                    break;
                             }
+
+                            return '<span style="' + statusStyle + '">' + statusText + '</span>';
                         }
                     },
                     {

@@ -5,73 +5,81 @@
 @model ProductsViewModel
 
 @{
-    ViewData["Title"] = "Ürünlerimiz";
+    ViewData["Title"] = "Ürünler";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @await Html.PartialAsync("_ScriptImports")
 
-
-@using (Html.BeginForm("Filter", "Urunler", FormMethod.Post, new { id = "filterForm" }))
-{
-    var statusList = new List<SelectListItem>
-{
-        new SelectListItem { Value = "0", Text = "TÜMÜ" },
-        new SelectListItem { Value = "1", Text = "SATIŞTA" },
-        new SelectListItem { Value = "2", Text = "KALDIRILDI" },
-        new SelectListItem { Value = "3", Text = "ONAY BEKLİYOR" }
-    };
-    var categoryStatusList = new List<SelectListItem>
-{
-        new SelectListItem { Value = "0", Text = "TÜMÜ" },
-        new SelectListItem { Value = "1", Text = "AKTİF" },
-        new SelectListItem { Value = "2", Text = "KALDIRILDI" },
-    };
-    var imageList = new List<SelectListItem>
-{
-        new SelectListItem { Value = "0", Text = "TÜMÜ" },
-        new SelectListItem { Value = "1", Text = "VAR" },
-        new SelectListItem { Value = "2", Text = "YOK" },
-    };
-
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title">
-            <i class="fas fa-filter"></i>
-            Filtrele
-        </h3>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-sm-2">
-                <dt>@Html.LabelFor(m => m.FilterDto.CategoryID, "Kategori:")</dt>
-                @Html.DropDownListFor(m => m.FilterDto.CategoryID, new SelectList(Model.FilterDto.Categories, "ID", "Name"), "TÜMÜ", new { @class = "form-control" })
-            </div>
-            <div class="col-sm-2">
-                <dt>@Html.LabelFor(m => m.FilterDto.Name, "Ürün Adı:")</dt>
-                @Html.TextBoxFor(m => m.FilterDto.Name, new { @class = "form-control", placeholder = "Ürün Adı" })
-            </div>
-            <div class="col-sm-2">
-                <dt>@Html.LabelFor(m => m.FilterDto.Material, "Malzeme:")</dt>
-                @Html.TextBoxFor(m => m.FilterDto.Material, new { @class = "form-control", placeholder = "Malzeme" })
-            </div>
-            <div class="col-sm-2">
-                <dt>@Html.LabelFor(m => m.FilterDto.Price, "Fiyat:")</dt>
-                @Html.TextBoxFor(m => m.FilterDto.Price, new { @class = "form-control", placeholder = "Fiyat", type = "number", step = "0.01" })
-            </div>
-            <div class="col-sm-2">
-                <dt>@Html.LabelFor(m => m.FilterDto.Piece, "Adet:")</dt>
-                @Html.TextBoxFor(m => m.FilterDto.Piece, new { @class = "form-control", placeholder = "Adet", type = "number" })
-            </div>
-            <div class="col-sm-2">
-                <dt>@Html.LabelFor(m => m.FilterDto.Description, "Açıklama:")</dt>
-                @Html.TextBoxFor(m => m.FilterDto.Description, new { @class = "form-control", placeholder = "Açıklama" })
+<h3 class="tittle">Ürünler</h3>
+<section class="main-content-w3layouts-agileits">
+    <div class="container">
+        <div class="inner-sec">
+            <div class="left-blog-info-w3layouts-agileits text-left">
+                <div class="row">
+                    @foreach (var product in Model.Products.OrderByDescending(p => p.CreateDate))
+                    {
+                        <div class="col-lg-4 card">
+                            @if (!string.IsNullOrEmpty(product.ImageUrl1))
+                            {
+                                <a href="/Urunler/UrunDetaylari/@product.ID/">
+                                    <img src="~/Resimler/@product.ImageUrl1" class="card-img-top img-fluid" alt="">
+                                </a>
+                            }
+                            <ul class="blog-icons my-4">
+                                <li>
+                                    <a href="/Urunler/UrunDetaylari/@product.ID/">
+                                        <i class="far fa-calendar-alt"></i> @(((DateTime)product.CreateDate).ToString("dd-MMM-yyyy"))
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="/Urunler/UrunDetaylari/@product.ID/">@product.Name</a>
+                                </h5>
+                                @if (!string.IsNullOrEmpty(product.Description))
+                                {
+                                    if (product.Description.Length > 130)
+                                    {
+                                        <p class="card-text mb-3">@product.Description.Substring(0, 130)...</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text mb-3">@product.Description</p>
+                                    }
+                                }
+                                <a href="/Urunler/UrunDetaylari/@product.ID/" class="btn btn-primary read-m">Ürünü Gör</a>
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
-</div>
-}
-
+</section>
 
 <script>
+    jQuery(document).ready(function ($) {
+        $(".scroll").click(function (event) {
+            event.preventDefault();
+            $('html,body').animate({
+                scrollTop: $(this.hash).offset().top
+            }, 900);
+        });
+    });
+    $(document).ready(function () {
+
+        $().UItoTop({
+            easingType: 'easeOutQuart'
+        });
+
+    });
+
+    addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    }
 </script>

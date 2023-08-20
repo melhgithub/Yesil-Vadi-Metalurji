@@ -130,30 +130,59 @@
             productGrid.jqGrid({
                 data: data,
                 colModel: [
-                    { name: 'category', label: 'Kategori', width: 130, formatter: categoryFormatter },
-                    { name: 'name', label: 'Ürün Adı', width: 130 },
-                    { name: 'material', label: 'Malzeme', width: 130 },
+                    { name: 'category', label: 'Kategori', width: 100, formatter: categoryFormatter },
+                    { name: 'name', label: 'Ürün Adı', width: 110 },
+                    { name: 'material', label: 'Malzeme', width: 110 },
                     {
-                        name: 'description', label: 'Açıklama', width: 120,
+                        name: 'description', label: 'Açıklama', width: 110,
                         formatter: function (cellValue) {
                             return cellValue !== null ? cellValue : '&nbsp;';
+                        }
+                    },
+                    {
+                        name: 'createdate',
+                        label: 'Oluşturulma Tarihi',
+                        width: 110,
+                        formatter: function (cellValue) {
+                            if (cellValue) {
+                                var date = new Date(cellValue);
+                                var formattedDate = (date.getDate() < 10 ? '0' : '') + date.getDate() + '.' +
+                                    ((date.getMonth() + 1 < 10 ? '0' : '') + (date.getMonth() + 1)) + '.' +
+                                    date.getFullYear();
+                                return formattedDate;
+                            } else {
+                                return '';
+                            }
                         }
                     },
                     { name: 'price', label: 'Fiyat', width: 80 },
                     { name: 'piece', label: 'Adet', width: 80 },
                     {
-                        name: 'status', label: 'Durum', width: 150,
+                        name: 'status',
+                        label: 'Durum',
+                        width: 130,
                         formatter: function (cellValue) {
+                            var statusText = '';
+                            var statusStyle = '';
+
                             switch (cellValue) {
                                 case 1:
-                                    return 'SATIŞTA';
+                                    statusText = 'SATIŞTA';
+                                    statusStyle = 'color: green;';
+                                    break;
                                 case 2:
-                                    return 'KALDIRILDI';
+                                    statusText = 'KALDIRILDI';
+                                    statusStyle = 'color: red;';
+                                    break;
                                 case 3:
-                                    return 'ONAY BEKLİYOR';
+                                    statusText = 'ONAY BEKLİYOR';
+                                    statusStyle = 'color: orange;';
+                                    break;
                                 default:
-                                    return '';
+                                    break;
                             }
+
+                            return '<span style="' + statusStyle + '">' + statusText + '</span>';
                         }
                     },
                     {

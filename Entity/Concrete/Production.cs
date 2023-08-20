@@ -58,7 +58,7 @@ namespace Entity.Concrete
         [MaxLength(100)]
         public string Mail { get; set; }
 
-
+        public DateTime CreateDate { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]

@@ -75,7 +75,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
             }
 
 
-            var offerData = productions.Select(p => new
+            var productionData = productions.Select(p => new
             {
                 ID = p.ID,
                 Name = p.Name,
@@ -86,10 +86,11 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 Active = p.Active,
                 Totalpiece = p.TotalPiece,
                 Totalprice = p.TotalPrice,
-                Productpiece = p.ProductPiece
+                Productpiece = p.ProductPiece,
+                Createdate = p.CreateDate
             });
 
-            return Json(offerData);
+            return Json(productionData);
         }
 
         [HttpPost]
@@ -199,7 +200,8 @@ namespace Yesil_Vadi_Metalurji.Controllers
                         Name = detail.Name,
                         Lastname = detail.LastName,
                         Mail = detail.Mail,
-                        Phonenumber = detail.PhoneNumber
+                        Phonenumber = detail.PhoneNumber,
+                        Createdate = detail.CreateDate
                     };
 
                     offerDetailData.Add(detailData);

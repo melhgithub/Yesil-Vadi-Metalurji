@@ -35,5 +35,7 @@ namespace Yesil_Vadi_Metalurji.Dto
         public List<Category> Categories { get; set; }
         public List<Image> Images { get; set; }
 
+        public DateTime CreateDate { get; set; }
+
     }
 }

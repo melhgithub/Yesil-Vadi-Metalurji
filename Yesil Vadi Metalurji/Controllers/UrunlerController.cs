@@ -73,10 +73,21 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 Piece = p.Piece,
                 Status = p.Status,
                 Active = p.Active,
+                Imageurla = p.ImageUrl1,
+                Imageurlb = p.ImageUrl2,
+                Imageurlc = p.ImageUrl3,
+                Imageurld = p.ImageUrl4,
+                Imageurle = p.ImageUrl5,
+                Imageurlf = p.ImageUrl6,
                 Description = p.Description
             });
 
             return Json(productData);
+        }
+
+        public async Task<IActionResult> UrunDetaylari(int urunID)
+        {
+            return View();
         }
     }
 }

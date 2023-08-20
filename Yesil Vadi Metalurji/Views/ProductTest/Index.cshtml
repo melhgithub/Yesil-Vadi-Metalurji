@@ -149,44 +149,84 @@
             productGrid.jqGrid({
                 data: data,
                 colModel: [
-                    { name: 'id', label: 'ID', width: 50 },
-                    { name: 'category', label: 'Kategori', width: 120, formatter: categoryFormatter },
-                    { name: 'name', label: 'Ürün Adı', width: 120 },
-                    { name: 'material', label: 'Malzeme', width: 120 },
+                    { name: 'id', label: 'ID', width: 30 },
+                    { name: 'category', label: 'Kategori', width: 80, formatter: categoryFormatter },
+                    { name: 'name', label: 'Ürün Adı', width: 100 },
+                    { name: 'material', label: 'Malzeme', width: 100 },
                     {
-                        name: 'description', label: 'Açıklama', width: 120,
+                        name: 'description', label: 'Açıklama', width: 80,
                         formatter: function (cellValue) {
                             return cellValue !== null ? cellValue : '&nbsp;';
+                        }
+                    },
+                    {
+                        name: 'createdate',
+                        label: 'Oluşturulma Tarihi',
+                        width: 100,
+                        formatter: function (cellValue) {
+                            if (cellValue) {
+                                var date = new Date(cellValue);
+                                var formattedDate = (date.getDate() < 10 ? '0' : '') + date.getDate() + '.' +
+                                    ((date.getMonth() + 1 < 10 ? '0' : '') + (date.getMonth() + 1)) + '.' +
+                                    date.getFullYear();
+                                return formattedDate;
+                            } else {
+                                return '';
+                            }
                         }
                     },
                     { name: 'price', label: 'Fiyat', width: 90 },
                     { name: 'piece', label: 'Adet', width: 90 },
                     {
-                        name: 'status', label: 'Durum', width: 150,
+                        name: 'status',
+                        label: 'Durum',
+                        width: 130,
                         formatter: function (cellValue) {
+                            var statusText = '';
+                            var statusStyle = '';
+
                             switch (cellValue) {
                                 case 1:
-                                    return 'SATIŞTA';
+                                    statusText = 'SATIŞTA';
+                                    statusStyle = 'color: green;';
+                                    break;
                                 case 2:
-                                    return 'KALDIRILDI';
+                                    statusText = 'KALDIRILDI';
+                                    statusStyle = 'color: red;';
+                                    break;
                                 case 3:
-                                    return 'ONAY BEKLİYOR';
+                                    statusText = 'ONAY BEKLİYOR';
+                                    statusStyle = 'color: orange;';
+                                    break;
                                 default:
-                                    return '';
+                                    break;
                             }
+
+                            return '<span style="' + statusStyle + '">' + statusText + '</span>';
                         }
                     },
                     {
-                        name: 'active', label: 'Aktiflik', width: 120,
+                        name: 'active',
+                        label: 'Aktiflik',
+                        width: 80,
                         formatter: function (cellValue) {
+                            var activeText = '';
+                            var activeStyle = '';
+
                             switch (cellValue) {
                                 case true:
-                                    return 'AKTİF';
+                                    activeText = 'AKTİF';
+                                    activeStyle = 'color: green;';
+                                    break;
                                 case false:
-                                    return 'AKTİF DEĞİL';
+                                    activeText = 'AKTİF DEĞİL';
+                                    activeStyle = 'color: red;';
+                                    break;
                                 default:
-                                    return '';
+                                    break;
                             }
+
+                            return '<span style="' + activeStyle + '">' + activeText + '</span>';
                         }
                     },
                     {
@@ -231,6 +271,29 @@
                                     'data-productimageurlf="' + rowObject.imageurlf + '"> Düzenle</button> ' +
                                     '<button class="btn btn-success open-approve-modal" ' +
                                     'data-productid="' + rowObject.id + '">Onayla</button>';
+                            }
+
+                            if (rowObject.status === 3) {
+                                var buttons = '<button class="btn btn-primary open-edit-modal" ' +
+                                    'data-productid="' + rowObject.id + '" ' +
+                                    'data-productname="' + rowObject.name + '" ' +
+                                    'data-productmaterial="' + rowObject.material + '" ' +
+                                    'data-productprice="' + rowObject.price + '" ' +
+                                    'data-productpiece="' + rowObject.piece + '" ' +
+                                    'data-productdescription="' + rowObject.description + '" ' +
+                                    'data-productstatus="' + rowObject.status + '" ' +
+                                    'data-productactive="' + rowObject.active + '" ' +
+                                    'data-productcategory="' + (rowObject.category ? rowObject.category.id : '') + '" ' +
+                                    'data-productimageurla="' + rowObject.imageurla + '" ' +
+                                    'data-productimageurlb="' + rowObject.imageurlb + '" ' +
+                                    'data-productimageurlc="' + rowObject.imageurlc + '" ' +
+                                    'data-productimageurld="' + rowObject.imageurld + '" ' +
+                                    'data-productimageurle="' + rowObject.imageurle + '" ' +
+                                    'data-productimageurlf="' + rowObject.imageurlf + '"> Düzenle</button> ' +
+                                    '<button class="btn btn-success open-approve-modal" ' +
+                                    'data-productid="' + rowObject.id + '">Onayla</button>' +
+                                    '<button class="btn btn-warning open-delete-modal" ' +
+                                    'data-productid="' + rowObject.id + '">Kaldır</button>';
                             }
 
                             return buttons;
@@ -405,7 +468,7 @@
             </div>
 
             <div class="form-group">
-                <select id="Active" name="Active" class="form-control" data="${data.productactive}" required hidden>
+                <select id="Active" name="Active" class="form-control" data="${data.productactive}" required>
                     <option value=true ${data.productactive == "true" ? 'selected' : '' }>AKTİF</option>
                     <option value=false ${data.productactive == "false" ? 'selected' : '' }>AKTİF DEĞİL</option>
                 </select>
@@ -523,7 +586,7 @@
             </div>
 
             <div class="form-group">
-                <select id="Active" name="Active" class="form-control" required hidden>
+                <select id="Active" name="Active" class="form-control" required>
                     <option value=true>AKTİF</option>
                     <option value=false>AKTİF DEĞİL</option>
                 </select>

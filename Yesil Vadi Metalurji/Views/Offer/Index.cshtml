@@ -272,12 +272,12 @@
 
                      <div class="form-group">
                         <label for="Mail">E-Mail</label>
-                        <input type="text" id="Mail" name="Mail" class="form-control" required />
+                        <input type="email" id="Mail" name="Mail" class="form-control" required />
                     </div>
 
                      <div class="form-group">
                         <label for="Phonenumber">Telefon Numarası</label>
-                        <input type="text" id="Phonenumber" name="Phonenumber" class="form-control" required />
+                        <input type="text" id="Phonenumber" name="Phonenumber" class="form-control" required pattern="^[0-9]{10}$" title="Lütfen 10 haneli telefon numarası girin." />
                     </div>
 
                     <div id="ProductDropdownContainer">${dropdownHTML}</div>
@@ -344,30 +344,63 @@
             offerGrid.jqGrid({
                 data: data,
                 colModel: [
-                    { name: 'name', label: 'İsim', width: 120 },
-                    { name: 'lastname', label: 'Soyisim', width: 120 },
-                    { name: 'mail', label: 'E-Mail', width: 140 },
-                    { name: 'phonenumber', label: 'Telefon Numarası', width: 120 },
+                    { name: 'name', label: 'İsim', width: 100 },
+                    { name: 'lastname', label: 'Soyisim', width: 100 },
+                    { name: 'mail', label: 'E-Mail', width: 120 },
+                    { name: 'phonenumber', label: 'Telefon Numarası', width: 100 },
+                    {
+                        name: 'createdate',
+                        label: 'Oluşturulma Tarihi',
+                        width: 100,
+                        formatter: function (cellValue) {
+                            if (cellValue) {
+                                var date = new Date(cellValue);
+                                var formattedDate = (date.getDate() < 10 ? '0' : '') + date.getDate() + '.' +
+                                    ((date.getMonth() + 1 < 10 ? '0' : '') + (date.getMonth() + 1)) + '.' +
+                                    date.getFullYear();
+                                return formattedDate;
+                            } else {
+                                return '';
+                            }
+                        }
+                    },
                     { name: 'totalprice', label: 'Toplam Fiyat', width: 80 },
                     { name: 'totalpiece', label: 'Toplam Adet', width: 80 },
                     { name: 'productpiece', label: 'Ürün Adeti', width: 80 },
                     {
-                        name: 'status', label: 'Durum', width: 150,
+                        name: 'status',
+                        label: 'Durum',
+                        width: 130,
                         formatter: function (cellValue) {
+                            var statusText = '';
+                            var statusStyle = '';
+
                             switch (cellValue) {
                                 case 1:
-                                    return 'Teklifte';
+                                    statusText = 'Teklifte';
+                                    statusStyle = 'color: green;';
+                                    break;
                                 case 2:
-                                    return 'KALDIRILDI';
+                                    statusText = 'KALDIRILDI';
+                                    statusStyle = 'color: red;';
+                                    break;
                                 case 3:
-                                    return 'Teklif İptal Edildi';
+                                    statusText = 'Teklif İptal Edildi';
+                                    statusStyle = 'color: red;';
+                                    break;
                                 case 4:
-                                    return 'Siparişe Geçildi';
+                                    statusText = 'Siparişe Geçildi';
+                                    statusStyle = 'color: green;';
+                                    break;
                                 case 5:
-                                    return 'Beklemede';
+                                    statusText = 'Beklemede';
+                                    statusStyle = 'color: orange;';
+                                    break;
                                 default:
-                                    return '';
+                                    break;
                             }
+
+                            return '<span style="' + statusStyle + '">' + statusText + '</span>';
                         }
                     },
                     {
@@ -453,12 +486,18 @@
                 if (response.length > 0) {
                     var firstDetail = response[0];
 
+                    var createDate = new Date(firstDetail.createdate);
+                    var formattedCreateDate = (createDate.getDate() < 10 ? '0' : '') + createDate.getDate() + '.' +
+                        ((createDate.getMonth() + 1 < 10 ? '0' : '') + (createDate.getMonth() + 1)) + '.' +
+                        createDate.getFullYear();
+
                     detailHtml += `
                         <div class="offer-detail">
                             <p>İsim: ${firstDetail.name}</p>
                             <p>Soyisim: ${firstDetail.lastname}</p>
                             <p>E-Mail: ${firstDetail.mail}</p>
                             <p>Telefon Numarası: ${firstDetail.phonenumber}</p>
+                            <p>Oluşturulma Tarihi: ${formattedCreateDate}</p>
                         </div>
                         <hr class="divider">
                     `;

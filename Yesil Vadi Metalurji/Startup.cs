@@ -41,10 +41,11 @@ namespace Yesil_Vadi_Metalurji
 
             services.AddMvc();
             services.AddAuthentication(
-                CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
-                {
-                    x.LoginPath = "/Login/Index";
-                });
+    CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
+    {
+        x.LoginPath = "/Login/Index";
+        x.AccessDeniedPath = "/Login/Logout";
+    });
 
 
             //melhhhhhhhhhhhh

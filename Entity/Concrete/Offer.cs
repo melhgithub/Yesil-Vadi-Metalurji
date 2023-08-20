@@ -66,6 +66,8 @@ namespace Entity.Concrete
         [Required]
         public int ProductPiece { get; set; }
 
+        public DateTime CreateDate { get; set; }
+
         //BAĞLANTILAR
         public List<OfferDetail> OfferDetail { get; set; }
 

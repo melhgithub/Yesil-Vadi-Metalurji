@@ -21,6 +21,9 @@ namespace Entity.Concrete
 
         [Description("KALDIRILDI")]
         Removed = 2,
+
+        [Description("ONAY BEKLİYOR")]
+        Pending = 3,
     }
     public class Product
     {
@@ -51,6 +54,7 @@ namespace Entity.Concrete
         [MaxLength(500)]
         public string Description { get; set; }
 
+        public DateTime CreateDate { get; set; }
 
 
 

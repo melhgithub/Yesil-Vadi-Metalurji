@@ -132,29 +132,51 @@
                     { name: 'username', label: 'Kullanıcı Adı', width: 255 },
                     { name: 'password', label: 'Şifre', width: 255, formatter: passwordFormatter },
                     {
-                        name: 'status', label: 'Durum', width: 260,
+                        name: 'status',
+                        label: 'Durum',
+                        width: 130,
                         formatter: function (cellValue) {
+                            var statusText = '';
+                            var statusStyle = '';
+
                             switch (cellValue) {
                                 case 1:
-                                    return 'AKTİF';
+                                    statusText = 'AKTİF';
+                                    statusStyle = 'color: green;';
+                                    break;
                                 case 2:
-                                    return 'KALDIRILDI';
+                                    statusText = 'KALDIRILDI';
+                                    statusStyle = 'color: red;';
+                                    break;
                                 default:
-                                    return '';
+                                    break;
                             }
+
+                            return '<span style="' + statusStyle + '">' + statusText + '</span>';
                         }
                     },
                     {
-                        name: 'active', label: 'AKTİFLİK', width: 260,
+                        name: 'active',
+                        label: 'Aktiflik',
+                        width: 80,
                         formatter: function (cellValue) {
+                            var activeText = '';
+                            var activeStyle = '';
+
                             switch (cellValue) {
                                 case true:
-                                    return 'AKTİF';
+                                    activeText = 'AKTİF';
+                                    activeStyle = 'color: green;';
+                                    break;
                                 case false:
-                                    return 'AKTİF DEĞİL';
+                                    activeText = 'AKTİF DEĞİL';
+                                    activeStyle = 'color: red;';
+                                    break;
                                 default:
-                                    return '';
+                                    break;
                             }
+
+                            return '<span style="' + activeStyle + '">' + activeText + '</span>';
                         }
                     },
                     {

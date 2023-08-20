@@ -102,7 +102,8 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 Active = p.Active,
                 Totalpiece = p.TotalPiece,
                 Totalprice = p.TotalPrice,
-                Productpiece = p.ProductPiece
+                Productpiece = p.ProductPiece,
+                Createdate = p.CreateDate
             });
 
             return Json(offerData);
@@ -128,7 +129,8 @@ namespace Yesil_Vadi_Metalurji.Controllers
                         Name = detail.Name,
                         Lastname = detail.LastName,
                         Mail = detail.Mail,
-                        Phonenumber = detail.PhoneNumber
+                        Phonenumber = detail.PhoneNumber,
+                        Createdate = detail.CreateDate
                     };
 
                     offerDetailData.Add(detailData);
@@ -173,8 +175,9 @@ namespace Yesil_Vadi_Metalurji.Controllers
                         PhoneNumber = offer.PhoneNumber,
                         TotalPiece = 0,
                         TotalPrice = 0,
-                        ProductPiece = productpiece
-                    };
+                        ProductPiece = productpiece,
+                        CreateDate = DateTime.Parse(DateTime.Now.ToShortDateString())
+                };
 
                     await offerManager.Add(offerToAdd);
 
@@ -199,7 +202,8 @@ namespace Yesil_Vadi_Metalurji.Controllers
                                 ProductID = productID,
                                 ProductName = productName,
                                 Price = form[$"ProductPrice{i}"].ToDecimal(),
-                                Piece = productPiece
+                                Piece = productPiece,
+                                CreateDate = addedOffer.CreateDate
                             };
 
                             await offerDetailManager.Add(offerDetailToAdd);
@@ -315,7 +319,8 @@ namespace Yesil_Vadi_Metalurji.Controllers
                         PhoneNumber = offerToOrder.PhoneNumber,
                         TotalPiece = offerToOrder.TotalPiece,
                         TotalPrice = offerToOrder.TotalPrice,
-                        ProductPiece = offerToOrder.ProductPiece
+                        ProductPiece = offerToOrder.ProductPiece,
+                        CreateDate = offerToOrder.CreateDate
                     };
                     await orderManager.Add(orderToAdd);
 
