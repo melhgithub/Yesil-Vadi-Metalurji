@@ -1,0 +1,171 @@
+﻿@model AboutPageViewModel
+
+@{
+    ViewData["Title"] = "Hakkımızda";
+    Layout = "~/Views/Shared/_AdminTest.cshtml";
+}
+
+@{
+    var statusList = new List<SelectListItem>
+{
+        new SelectListItem { Value = "1", Text = "AKTİF" },
+        new SelectListItem { Value = "2", Text = "AKTİF DEĞİL" },
+    };
+}
+
+<form method="post" action="/AboutPageTest/Update" id="updateForm">
+    @foreach (var about in Model.About)
+    {
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-pencil-alt"></i>
+                    Düzenle
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <input type="text" name="ID" value="@about.ID" hidden />
+                    <div class="col-sm-4">
+                        <h2>Durum Seçin:</h2>
+                        @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control", required = "required" })
+                    </div>
+
+                    <div class="col-md-4">
+                        <h2>Başlık:</h2>
+                        <input type="text" name="Title" value="@about.Title" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <h2>Alt başlık:</h2>
+                        <input type="text" name="Subtitle" value="@about.Subtitle" />
+                    </div>
+
+                    <div class="col-md-12">
+                        <h2>Detaylar:</h2>
+                        <textarea name="Content" rows="4" class="form-control col-sm-12" required>@about.Content</textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h2>Resim Seçin (1):</h2>
+                        <select name="ImageUrl1">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                <option value="@image.ID">@(image.Name)</option>
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (2):</h2>
+                        <select name="ImageUrl2">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                <option value="@image.ID">@(image.Name)</option>
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (3):</h2>
+                        <select name="ImageUrl3">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                <option value="@image.ID">@(image.Name)</option>
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (4):</h2>
+                        <select name="ImageUrl4">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                <option value="@image.ID">@(image.Name)</option>
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (5):</h2>
+                        <select name="ImageUrl5">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                <option value="@image.ID">@(image.Name)</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <h2>Resim Seçin (6):</h2>
+                        <select name="ImageUrl6">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                <option value="@image.ID">@(image.Name)</option>
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (7):</h2>
+                        <select name="ImageUrl7">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                <option value="@image.ID">@(image.Name)</option>
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (8):</h2>
+                        <select name="ImageUrl8">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                <option value="@image.ID">@(image.Name)</option>
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (9):</h2>
+                        <select name="ImageUrl9">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                <option value="@image.ID">@(image.Name)</option>
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (10):</h2>
+                        <select name="ImageUrl10">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                <option value="@image.ID">@(image.Name)</option>
+                            }
+                        </select>
+                    </div>
+
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">Güncelle</button>
+                </div>
+            </div>
+        </div>
+    }
+
+
+</form>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Onay</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bu değişiklikleri kaydetmek istediğinizden emin misiniz?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                <button type="submit" form="updateForm" class="btn btn-primary">Evet, Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>

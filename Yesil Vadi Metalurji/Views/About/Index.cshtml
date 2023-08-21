@@ -1,0 +1,25 @@
+﻿@using Entity.Concrete
+@using Yesil_Vadi_Metalurji.Dto
+@using System.ComponentModel
+@using Newtonsoft.Json
+@model List<About>
+@{
+    ViewData["Title"] = "Hakkımızda";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@foreach (var about in Model)
+{
+    if (about.Status == (AboutStatuses)1)
+    {
+
+        <h2>@about.Title</h2>
+        <h4>@about.Subtitle</h4>
+        <span>@about.Content</span>
+    }
+    else
+    {
+        <h1>DÜZENLEMEDE</h1>
+    }
+}
+

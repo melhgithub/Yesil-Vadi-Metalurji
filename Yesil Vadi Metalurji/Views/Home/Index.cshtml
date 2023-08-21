@@ -1,9 +1,25 @@
-﻿
+﻿@using Entity.Concrete
+@using Yesil_Vadi_Metalurji.Dto
+@using System.ComponentModel
+@using Newtonsoft.Json
+@model List<HomePage>
 @{
     ViewData["Title"] = "Ana Sayfa";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-BAŞLIK
+@foreach (var homepage in Model)
+{
+    if (homepage.Status == (HomePageStatuses)1)
+    {
 
-içerik
+        <h2>@homepage.Title</h2>
+        <h4>@homepage.Subtitle</h4>
+        <span>@homepage.Content</span>
+    }
+    else
+    {
+        <h1>DÜZENLEMEDE</h1>
+    }
+}
+

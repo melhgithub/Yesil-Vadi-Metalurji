@@ -45,6 +45,9 @@ namespace DataAccess
 
 
         public DbSet<Admin> Admins { get; set; }
+        public DbSet<HomePage> HomePages { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<About> Abouts { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }

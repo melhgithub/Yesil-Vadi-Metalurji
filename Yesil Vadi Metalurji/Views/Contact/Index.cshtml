@@ -1,0 +1,25 @@
+﻿@using Entity.Concrete
+@using Yesil_Vadi_Metalurji.Dto
+@using System.ComponentModel
+@using Newtonsoft.Json
+@model List<Contact>
+@{
+    ViewData["Title"] = "İletişim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@foreach (var contact in Model)
+{
+    if (contact.Status == (ContactStatuses)1)
+    {
+
+        <h2>@contact.Title</h2>
+        <h4>@contact.Subtitle</h4>
+        <span>@contact.Content</span>
+    }
+    else
+    {
+        <h1>DÜZENLEMEDE</h1>
+    }
+}
+

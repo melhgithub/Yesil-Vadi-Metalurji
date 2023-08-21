@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Business.Concrete;
+using DataAccess.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,6 +17,8 @@ namespace Yesil_Vadi_Metalurji.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+        HomePageManager homePageManager = new HomePageManager(new EFHomePageRepository());
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -22,7 +26,9 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View();
+            var homepage = await homePageManager.GetList();
+
+            return View(homepage);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
