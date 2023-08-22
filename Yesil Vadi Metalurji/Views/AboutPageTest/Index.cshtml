@@ -5,14 +5,6 @@
     Layout = "~/Views/Shared/_AdminTest.cshtml";
 }
 
-@{
-    var statusList = new List<SelectListItem>
-{
-        new SelectListItem { Value = "1", Text = "AKTİF" },
-        new SelectListItem { Value = "2", Text = "AKTİF DEĞİL" },
-    };
-}
-
 <form method="post" action="/AboutPageTest/Update" id="updateForm">
     @foreach (var about in Model.About)
     {
@@ -26,9 +18,13 @@
             <div class="card-body">
                 <div class="row">
                     <input type="text" name="ID" value="@about.ID" hidden />
+
                     <div class="col-sm-4">
                         <h2>Durum Seçin:</h2>
-                        @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control", required = "required" })
+                        <select name="Status" class="form-control" required="required">
+                            <option value="1">AKTİF</option>
+                            <option value="2">AKTİF DEĞİL</option>
+                        </select>
                     </div>
 
                     <div class="col-md-4">
@@ -45,7 +41,7 @@
                         <h2>Detaylar:</h2>
                         <textarea name="Content" rows="4" class="form-control col-sm-12" required>@about.Content</textarea>
                     </div>
-
+                        
                     <div class="col-md-6">
                         <h2>Resim Seçin (1):</h2>
                         <select name="ImageUrl1">

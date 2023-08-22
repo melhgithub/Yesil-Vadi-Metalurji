@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,21 +8,20 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 
-    <script>
-        addEventListener("load", function () {
-            setTimeout(hideURLbar, 0);
-        }, false);
-
-        function hideURLbar() {
-            window.scrollTo(0, 1);
-        }
-    </script>
     <link href="~/web/css/bootstrap.css" rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="~/web/css/single.css">
     <link href="~/web/css/style.css" rel='stylesheet' type='text/css' />
     <link href="~/web/css/fontawesome-all.css" rel="stylesheet">
     <link href="//fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800"
           rel="stylesheet">
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script src="~/web/js/jquery-2.2.3.min.js"></script>
+    <script src="~/web/js/move-top.js"></script>
+    <script src="~/web/js/easing.js"></script>
 </head>
 
 <body>
@@ -95,7 +95,7 @@
         </div>
     </header>
 
-    <div class="banner-inner">
+    <div class="banner-inner" style="background-image: url('/Resimler/banner.jpg');">
     </div>
 
     <section class="main-content-w3layouts-agileits">
@@ -161,15 +161,9 @@
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
 
-    <script src="~/web/js/jquery-2.2.3.min.js"></script>
-    <script src="~/web/js/move-top.js"></script>
-    <script src="~/web/js/easing.js"></script>
     <script>
+
         jQuery(document).ready(function ($) {
             $(".scroll").click(function (event) {
                 event.preventDefault();
@@ -178,9 +172,15 @@
                 }, 900);
             });
         });
-    </script>
 
-    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+
         $(document).ready(function () {
 
             $().UItoTop({
@@ -189,10 +189,10 @@
 
         });
     </script>
+
     <a href="#home" class="scroll" id="toTop" style="display: block;">
         <span id="toTopHover" style="opacity: 1;"> </span>
     </a>
-    <script src="~/web/js/bootstrap.js"></script>
 
 
 </body>

@@ -2,24 +2,419 @@
 @using Yesil_Vadi_Metalurji.Dto
 @using System.ComponentModel
 @using Newtonsoft.Json
-@model List<About>
+@model AboutViewModel
 @{
     ViewData["Title"] = "Hakkımızda";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-@foreach (var about in Model)
-{
-    if (about.Status == (AboutStatuses)1)
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link href="~/web/css/bootstrap.css" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="~/web/css/jquery.desoslide.css">
+    <link href="~/web/css/styleurun.css" rel='stylesheet' type='text/css' />
+    <link href="~/web/css/fontawesome-all.css" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800"
+          rel="stylesheet">
+
+    <script src="~/web/js/jquery.flexisel.js"></script>
+    <script src="~/web/js/move-top.js"></script>
+    <script src="~/web/js/easing.js"></script>
+    <script src="~/web/js/jquery.desoslide.js"></script>
+    <script src="~/web/js/bootstrap.js"></script>
+
+</head>
+<body>
+    <header>
+        <div class="top-bar_sub_w3layouts container-fluid">
+            <div class="row">
+                <div class="col-md-4 logo text-left">
+                    <a class="navbar-brand" href="/Home/Index">
+                        Yeşilvadi Metalurji
+                    </a>
+                </div>
+                <!--<div class="col-md-4 log-icons text-right">
+                    <ul class="social_list1 mt-3">
+
+                        <li>
+                            <a href="#" class="facebook1 mx-2">
+                                <i class="fab fa-facebook-f"></i>
+
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="instagram">
+                                <i class="fab fa-instagram"></i>
+
+                            </a>
+                        </li>-->
+                @*<li>
+                        <a href="#" class="pin">
+                            <i class="fab fa-pinterest-p"></i>
+                        </a>
+                    </li>*@
+                <!--<li>
+                            <a href="#" class="webmail">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>-->
+            </div>
+        </div>
+
+        <div class="header_top" id="home">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <button class="navbar-toggler navbar-toggler-right mx-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/Index">
+                                Ana Sayfa
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/About/Index">Hakkımızda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Contact/Index">İletişim</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Urunler/Index">Ürünler</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+        </div>
+    </header>
+    @foreach (var about in Model.About)
     {
+        if (about.Status == (AboutStatuses)1)
+        {
+            <center><h3 class="tittle">@about.Title</h3></center>
+            <center><h4>@about.Subtitle</h4></center>
+            <hr />
+            
+                string description = about.Content;
+                int maxLineLength = 180;
+                List<string> descriptionLines = new List<string>();
 
-        <h2>@about.Title</h2>
-        <h4>@about.Subtitle</h4>
-        <span>@about.Content</span>
-    }
-    else
-    {
-        <h1>DÜZENLEMEDE</h1>
-    }
-}
+                for (int i = 0; i < description.Length; i += maxLineLength)
+                {
+                    int remainingLength = Math.Min(maxLineLength, description.Length - i);
+                    descriptionLines.Add(description.Substring(i, remainingLength));
+                }
 
+            @foreach (string line in descriptionLines)
+            {
+                @line<br />
+            }
+            <hr />
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+
+                    @if (!string.IsNullOrEmpty(about.ImageUrl2))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl3))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl4))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl5))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl6))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl7))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="6"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl8))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="7"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl9))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="8"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl10))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="9"></li>
+                    }
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@about.ImageUrl1');">
+                        <div class="carousel-caption">
+                            <h3>@about.Title</h3>
+                            <p>@about.Subtitle</p>
+                        </div>
+                        <img src="~/Resimler/@about.ImageUrl1" class="d-block w-100" alt="about Image">
+                    </div>
+                    @if (!string.IsNullOrEmpty(about.ImageUrl2))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@about.ImageUrl2');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@about.ImageUrl2" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl3))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@about.ImageUrl3');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@about.ImageUrl3" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl4))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@about.ImageUrl4');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@about.ImageUrl4" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl5))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@about.ImageUrl5');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@about.ImageUrl5" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl6))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@about.ImageUrl6');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@about.ImageUrl6" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl7))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@about.ImageUrl7');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@about.ImageUrl7" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl8))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@about.ImageUrl8');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@about.ImageUrl8" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl9))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@about.ImageUrl9');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@about.ImageUrl9" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(about.ImageUrl10))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@about.ImageUrl10');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@about.ImageUrl10" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                </div>
+
+
+
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Önceki</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Sonraki</span>
+                </a>
+            </div>
+        }
+        else
+        {
+            <h1>DÜZENLEMEDE</h1>
+        }
+
+
+    }
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 footer-grid-agileits-w3ls text-left">
+                    <h3>Yeşilvadi Metalurji Nedir?</h3>
+                    <p>Yazı gelecek..</p>
+                    <div class="read">
+                        <a href="/About/Index" class="btn btn-primary read-m">Devamını Oku</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-cpy text-center">
+                <div class="footer-social">
+                    @*<div class="copyrighttop">
+                            <ul>
+                                <li class="mx-3">
+                                    <a class="facebook" href="#">
+                                        <i class="fab fa-facebook-f"></i>
+                                        <span>Facebook</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="facebook" href="#">
+                                        <i class="fab fa-twitter"></i>
+                                        <span>Twitter</span>
+                                    </a>
+                                </li>
+                                <li class="mx-3">
+                                    <a class="facebook" href="#">
+                                        <i class="fab fa-google-plus-g"></i>
+                                        <span>Google+</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="facebook" href="#">
+                                        <i class="fab fa-pinterest-p"></i>
+                                        <span>Pinterest</span>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </div>*@
+                </div>
+                <div class="w3layouts-agile-copyrightbottom">
+                    <p>
+                        © 2023 Yeşilvadi Metalurji. Tüm hakları saklıdır.
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+
+
+
+    <script>
+        $('#demo1_thumbs').desoSlide({
+            main: {
+                container: '#demo1_main_image',
+                cssClass: 'img-responsive'
+            },
+            effect: 'sideFade',
+            caption: true
+        });
+        $(window).load(function () {
+            $("#flexiselDemo1").flexisel({
+                visibleItems: 3,
+                animationSpeed: 1000,
+                autoPlay: true,
+                autoPlaySpeed: 3000,
+                pauseOnHover: true,
+                enableResponsiveBreakpoints: true,
+                responsiveBreakpoints: {
+                    portrait: {
+                        changePoint: 480,
+                        visibleItems: 1
+                    },
+                    landscape: {
+                        changePoint: 640,
+                        visibleItems: 2
+                    },
+                    tablet: {
+                        changePoint: 768,
+                        visibleItems: 3
+                    }
+                }
+            });
+
+        });
+        $(window).load(function () {
+            $("#flexiselDemo2").flexisel({
+                visibleItems: 3,
+                animationSpeed: 1000,
+                autoPlay: true,
+                autoPlaySpeed: 3000,
+                pauseOnHover: true,
+                enableResponsiveBreakpoints: true,
+                responsiveBreakpoints: {
+                    portrait: {
+                        changePoint: 480,
+                        visibleItems: 1
+                    },
+                    landscape: {
+                        changePoint: 640,
+                        visibleItems: 2
+                    },
+                    tablet: {
+                        changePoint: 768,
+                        visibleItems: 3
+                    }
+                }
+            });
+
+        });
+        jQuery(document).ready(function ($) {
+            $(".scroll").click(function (event) {
+                event.preventDefault();
+                $('html,body').animate({
+                    scrollTop: $(this.hash).offset().top
+                }, 900);
+            });
+        });
+        $(document).ready(function () {
+
+            var defaults = {
+                containerID: 'toTop', // fading element id
+                containerHoverID: 'toTopHover', // fading element hover id
+                scrollSpeed: 1200,
+                easingType: 'linear'
+            };
+
+
+            $().UItoTop({
+                easingType: 'easeOutQuart'
+            });
+
+        });
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+
+    <a href="#home" class="scroll" id="toTop" style="display: block;">
+        <span id="toTopHover" style="opacity: 1;"> </span>
+    </a>
+</body>
+
+
+
+</html>

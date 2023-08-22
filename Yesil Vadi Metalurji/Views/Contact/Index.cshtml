@@ -2,24 +2,75 @@
 @using Yesil_Vadi_Metalurji.Dto
 @using System.ComponentModel
 @using Newtonsoft.Json
-@model List<Contact>
+@model ContactViewModel
 @{
-    ViewData["Title"] = "İletişim";
+    ViewData["Title"] = "Hakkımızda";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@foreach (var contact in Model)
-{
-    if (contact.Status == (ContactStatuses)1)
-    {
+<html lang="tr">
 
-        <h2>@contact.Title</h2>
-        <h4>@contact.Subtitle</h4>
-        <span>@contact.Content</span>
-    }
-    else
-    {
-        <h1>DÜZENLEMEDE</h1>
-    }
-}
+<body>
 
+
+        <h3 class="tittle">İletişim</h3>
+        @foreach (var contact in Model.Contact)
+        {
+            //https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3147.6774883368025!2d32.50435787514658!3d37.91460040409439!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14d090265baa34eb%3A0xa342b510071e7812!2sYe%C5%9FilVadi%20Metalurji!5e0!3m2!1str!2str!4v1692671643655!5m2!1str!2str
+            <div class="contact-map inner-sec">
+                <iframe src="@contact.Map"
+                        class="map" style="border: 0; width: 100%; height: 500px;" allowfullscreen=""></iframe>
+            </div>
+            <br />
+
+            <div class="ad-inf-sec bg-light">
+                <div class="container">
+                    <div class="address row">
+
+                        <div class="col-lg-4 address-grid">
+                            <div class="row address-info">
+                                <div class="col-md-4 address-left text-center">
+                                    <i class="far fa-map"></i>
+                                </div>
+                                <div class="col-md-8 address-right text-left">
+                                    <h6>Adres</h6>
+                                    <p>
+                                        @contact.Address
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-4 address-grid">
+                            <div class="row address-info">
+                                <div class="col-md-4 address-left text-center">
+                                    <i class="far fa-envelope"></i>
+                                </div>
+                                <div class="col-md-8 address-right text-left">
+                                    <h6>E-Mail</h6>
+                                    <p>
+                                        <a href="mailto:@contact.Mail">@contact.Mail</a>
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4 address-grid">
+                            <div class="row address-info">
+                                <div class="col-md-4 address-left text-center">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <div class="col-md-8 address-right text-left">
+                                    <h6>Telefon Numarası</h6>
+                                    <p>@contact.PhoneNumber</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+</body>
+
+</html>

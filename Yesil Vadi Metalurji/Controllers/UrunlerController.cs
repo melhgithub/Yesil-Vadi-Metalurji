@@ -88,38 +88,61 @@ namespace Yesil_Vadi_Metalurji.Controllers
         [HttpGet]
         public async Task<IActionResult> UrunDetaylari(int urunID)
         {
-            var product = await productManager.GetByID(urunID);
-            var products = await productManager.GetList();
-            products = products.Where(p => p.ID == product.ID).ToList();
-            if (product != null && product.ImageUrl1!=null)
-            {
-                if (product.Active == false || product.Status == (ProductStatuses)2)
-                {
-                    return RedirectToAction("Urunler");
-                }
-                else
-                {
-                    var categories = await categoryManager.GetList();
-
-
-                    var filterDto = new ProductFilterDto
-                    {
-                        Categories = categories
-                    };
-
-                    var model = new ProductsViewModel
-                    {
-                        FilterDto = filterDto,
-                        Products = products
-                    };
-
-                    return View(model);
-                }
-            }
-            else
+            if (urunID == null)
             {
                 return RedirectToAction("Urunler");
             }
+            else
+            {
+                try
+                {
+                    var product = await productManager.GetByID(urunID);
+                    if (product == null)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        var products = await productManager.GetList();
+                        products = products.Where(p => p.ID == product.ID).ToList();
+                        if (product != null && product.ImageUrl1 != null)
+                        {
+                            if (product.Active == false || product.Status == (ProductStatuses)2)
+                            {
+                                return RedirectToAction("Index");
+                            }
+                            else
+                            {
+                                var categories = await categoryManager.GetList();
+
+
+                                var filterDto = new ProductFilterDto
+                                {
+                                    Categories = categories
+                                };
+
+                                var model = new ProductsViewModel
+                                {
+                                    FilterDto = filterDto,
+                                    Products = products
+                                };
+
+                                return View(model);
+                            }
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index");
+                        }
+                    }
+                }
+                catch
+                {
+                    return RedirectToAction("Index");
+                }
+                
+            }
+           
             
         }
     }

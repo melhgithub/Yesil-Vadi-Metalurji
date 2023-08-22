@@ -41,11 +41,11 @@ namespace Yesil_Vadi_Metalurji
 
             services.AddMvc();
             services.AddAuthentication(
-    CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
-    {
-        x.LoginPath = "/Login/Index";
-        x.AccessDeniedPath = "/Login/Logout";
-    });
+                CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
+                {
+                    x.LoginPath = "/Login/Index";
+                    x.AccessDeniedPath = "/Login/Logout";
+                });
 
 
             //melhhhhhhhhhhhh
@@ -77,6 +77,7 @@ namespace Yesil_Vadi_Metalurji
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1", "?code={0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

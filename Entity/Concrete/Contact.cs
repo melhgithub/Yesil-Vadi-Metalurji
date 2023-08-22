@@ -26,6 +26,10 @@ namespace Entity.Concrete
         public string Content { get; set; }
         public ContactStatuses Status { get; set; }
         public bool Active { get; set; }
+        public string Mail { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Map { get; set; }
+        public string Address { get; set; }
 
         [MaxLength(200)]
         public string ImageUrl1 { get; set; }

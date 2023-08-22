@@ -45,11 +45,13 @@
                                     }
                                     else
                                     {
-                                        <p class="card-text mb-3">@product.Description @Html.Raw(new string(' ', 120 - product.Description.Length))</p>
+                                        <p class="card-text mb-3">@product.Description</p>
                                     }
                                 }
-                                <a href="/Urunler/UrunDetaylari?urunID=@product.ID" class="btn btn-primary read-m">Ürünü Gör</a>
-                                <a href="/Urunler/HizliTeklif/@product.ID" class="btn btn-primary read-m" id="teklifButon">Hızlı Teklif</a>
+                                <div class="d-flex justify-content-between">
+                                    <a href="/Urunler/UrunDetaylari?urunID=@product.ID" class="btn btn-primary read-m">Ürünü Gör</a>
+                                    <a href="/Urunler/HizliTeklif/@product.ID" class="btn btn-primary read-m" id="teklifButon">Hızlı Teklif</a>
+                                </div>
                             </div>
                         </div>
                         <br />

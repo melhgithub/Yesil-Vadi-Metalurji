@@ -14,11 +14,19 @@ namespace Yesil_Vadi_Metalurji.Controllers
     public class AboutController : Controller
     {
         AboutManager aboutManager = new AboutManager(new EFAboutRepository());
+        ImageManager imageManager = new ImageManager(new EFImageRepository());
         public async Task<IActionResult> Index()
         {
             var about = await aboutManager.GetList();
+            var images = await imageManager.GetList();
 
-            return View(about);
+            var model = new AboutViewModel
+            {
+                About = about,
+                Images = images
+            };
+
+            return View(model);
         }
     }
 }

@@ -14,6 +14,10 @@ namespace Yesil_Vadi_Metalurji.Dto
 
         public string Subtitle { get; set; }
         public string Content { get; set; }
+        public string Mail { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Map { get; set; }
+        public string Address { get; set; }
 
         public ContactStatuses Status { get; set; }
         public bool Active{ get; set; }
