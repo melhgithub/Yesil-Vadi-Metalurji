@@ -17,6 +17,10 @@ namespace Yesil_Vadi_Metalurji.Dto
 
         public HomePageStatuses Status { get; set; }
         public bool Active{ get; set; }
+        public string Banner { get; set; }
+        public string Image { get; set; }
+        public string SubtitleStatus { get; set; }
+        public string ContentStatus { get; set; }
         public string ImageUrl1 { get; set; }
         public string ImageUrl2 { get; set; }
         public string ImageUrl3 { get; set; }

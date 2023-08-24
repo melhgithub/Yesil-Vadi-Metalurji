@@ -2,20 +2,190 @@
 @using Yesil_Vadi_Metalurji.Dto
 @using System.ComponentModel
 @using Newtonsoft.Json
-@model List<HomePage>
+@model HomePageViewModel
 @{
     ViewData["Title"] = "Ana Sayfa";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-<html lang="tr">
+@foreach (var homepage in Model.HomePage)
+{
+    if (homepage.Status == (HomePageStatuses)1)
+    {
+        if (homepage.Banner == true)
+        {
+            @await Html.PartialAsync("_BannerPartial")
+        }
+        <center><h3 class="tittle">@homepage.Title</h3></center>
+        @if (homepage.SubtitleStatus != false)
+        {
+            <center><h4>@homepage.Subtitle</h4></center>
+        }
+        <hr />
 
-<body>
+        @if (homepage.ContentStatus != false)
+        {
+            string description = homepage.Content;
+            int maxLineLength = 136;
+            List<string> descriptionLines = new List<string>();
+
+            for (int i = 0; i < description.Length; i += maxLineLength)
+            {
+                int remainingLength = Math.Min(maxLineLength, description.Length - i);
+                descriptionLines.Add(description.Substring(i, remainingLength));
+            }
+
+            @foreach (string line in descriptionLines)
+            {
+                @line
+                <br />
+            }
+            <hr />
+        }
 
 
-    <h3 class="tittle"></h3>
-    <h4 class="tittle"></h4>
-</body>
+        @if (homepage.Image == true)
+        {
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
 
-</html>
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl2))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl3))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl4))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl5))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl6))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl7))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="6"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl8))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="7"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl9))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="8"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl10))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="9"></li>
+                    }
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@homepage.ImageUrl1');">
+                        <div class="carousel-caption">
+                            <h3>@homepage.Title</h3>
+                        </div>
+                        <img src="~/Resimler/@homepage.ImageUrl1" class="d-block w-100" alt="about Image">
+                    </div>
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl2))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@homepage.ImageUrl2');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@homepage.ImageUrl2" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl3))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@homepage.ImageUrl3');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@homepage.ImageUrl3" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl4))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@homepage.ImageUrl4');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@homepage.ImageUrl4" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl5))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@homepage.ImageUrl5');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@homepage.ImageUrl5" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl6))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@homepage.ImageUrl6');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@homepage.ImageUrl6" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl7))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@homepage.ImageUrl7');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@homepage.ImageUrl7" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl8))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@homepage.ImageUrl8');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@homepage.ImageUrl8" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl9))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@homepage.ImageUrl9');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@homepage.ImageUrl9" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(homepage.ImageUrl10))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@homepage.ImageUrl10');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@homepage.ImageUrl10" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                </div>
+
+
+
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Önceki</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Sonraki</span>
+                </a>
+            </div>
+        }
+    }
+    else
+    {
+        <h1>DÜZENLEMEDE</h1>
+    }
+
+
+}

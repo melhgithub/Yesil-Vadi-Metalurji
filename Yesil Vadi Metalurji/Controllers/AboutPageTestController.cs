@@ -47,6 +47,41 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     updatedAbout.Title = about.Title;
                     updatedAbout.Subtitle = about.Subtitle;
                     updatedAbout.Status = (AboutStatuses)about.Status;
+                    if (about.Image == "1")
+                    {
+                        updatedAbout.Image = true;
+                    }
+                    else
+                    {
+                        updatedAbout.Image = false;
+                    }
+
+
+                    if (about.SubtitleStatus == "1")
+                    {
+                        updatedAbout.SubtitleStatus = true;
+                    }
+                    else
+                    {
+                        updatedAbout.SubtitleStatus = false;
+                    }
+
+                    if (about.ContentStatus == "1")
+                    {
+                        updatedAbout.ContentStatus = true;
+                    }
+                    else
+                    {
+                        updatedAbout.ContentStatus = false;
+                    }
+                    if (about.Banner == "1")
+                    {
+                        updatedAbout.Banner = true;
+                    }
+                    else
+                    {
+                        updatedAbout.Banner = false;
+                    }
                     if (updatedAbout.Status == (AboutStatuses)1)
                     {
                         updatedAbout.Active = true;
@@ -136,8 +171,11 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
                 return RedirectToAction("Index");
             }
+
+            var filter = new AboutEditDto();
             return View("Index", new AboutPageViewModel
             {
+                FilterDto = filter,
                 About = await aboutManager.GetList(),
                 Images = await imageManager.GetList()
             });

@@ -26,6 +26,10 @@ namespace Entity.Concrete
         public string Content { get; set; }
         public HomePageStatuses Status { get; set; }
         public bool Active { get; set; }
+        public bool Banner { get; set; }
+        public bool Image { get; set; }
+        public bool SubtitleStatus { get; set; }
+        public bool ContentStatus { get; set; }
 
         [MaxLength(200)]
         public string ImageUrl1 { get; set; }

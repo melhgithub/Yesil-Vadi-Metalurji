@@ -1,9 +1,10 @@
-﻿@model AboutPageViewModel
-
+﻿@using Entity.Concrete
+@model AboutPageViewModel
 @{
     ViewData["Title"] = "Hakkımızda";
     Layout = "~/Views/Shared/_AdminTest.cshtml";
 }
+
 
 <form method="post" action="/AboutPageTest/Update" id="updateForm">
     @foreach (var about in Model.About)
@@ -19,72 +20,179 @@
                 <div class="row">
                     <input type="text" name="ID" value="@about.ID" hidden />
 
-                    <div class="col-sm-4">
+                    <div class="col-md-4">
                         <h2>Durum Seçin:</h2>
                         <select name="Status" class="form-control" required="required">
-                            <option value="1">AKTİF</option>
-                            <option value="2">AKTİF DEĞİL</option>
+                            @if (about.Status == (AboutStatuses)1)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
                         </select>
                     </div>
 
-                    <div class="col-md-4">
-                        <h2>Başlık:</h2>
-                        <input type="text" name="Title" value="@about.Title" required />
+                    <div class="col-sm-4">
+                        <h2>Resim Durumu:</h2>
+                        <select name="Image" class="form-control" required="required">
+                            @if (about.Image == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-sm-4">
+                        <h2>Banner Durumu:</h2>
+                        <select name="Banner" class="form-control" required="required">
+                            @if (about.Banner == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <h2>İçerik Durumu:</h2>
+                        <select name="ContentStatus" class="form-control" required="required">
+                            @if (about.ContentStatus == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <h2>Alt-Başlık Durumu:</h2>
+                        <select name="SubtitleStatus" class="form-control" required="required">
+                            @if (about.SubtitleStatus == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <h2>Başlık:</h2>
+                        <input type="text" name="Title" value="@about.Title" class="form-control" required />
+                    </div>
+
+                    <div class="col-md-3">
                         <h2>Alt başlık:</h2>
-                        <input type="text" name="Subtitle" value="@about.Subtitle" />
+                        <input type="text" name="Subtitle" value="@about.Subtitle" class="form-control" />
                     </div>
 
                     <div class="col-md-12">
                         <h2>Detaylar:</h2>
-                        <textarea name="Content" rows="4" class="form-control col-sm-12" required>@about.Content</textarea>
+                        <textarea name="Content" rows="7" class="form-control col-sm-12" class="form-control" required>@about.Content</textarea>
                     </div>
-                        
+
                     <div class="col-md-6">
                         <h2>Resim Seçin (1):</h2>
-                        <select name="ImageUrl1">
+                        <select name="ImageUrl1" class="form-control">
                             <option value="">Seçiniz</option>
                             @foreach (var image in Model.Images)
                             {
-                                <option value="@image.ID">@(image.Name)</option>
+                                @if (about.ImageUrl1 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
                             }
                         </select>
 
                         <h2>Resim Seçin (2):</h2>
-                        <select name="ImageUrl2">
+                        <select name="ImageUrl2" class="form-control">
                             <option value="">Seçiniz</option>
                             @foreach (var image in Model.Images)
                             {
-                                <option value="@image.ID">@(image.Name)</option>
+                                @if (about.ImageUrl2 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
                             }
                         </select>
 
                         <h2>Resim Seçin (3):</h2>
-                        <select name="ImageUrl3">
+                        <select name="ImageUrl3" class="form-control">
                             <option value="">Seçiniz</option>
                             @foreach (var image in Model.Images)
                             {
-                                <option value="@image.ID">@(image.Name)</option>
+                                @if (about.ImageUrl3 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
                             }
                         </select>
 
                         <h2>Resim Seçin (4):</h2>
-                        <select name="ImageUrl4">
+                        <select name="ImageUrl4" class="form-control">
                             <option value="">Seçiniz</option>
                             @foreach (var image in Model.Images)
                             {
-                                <option value="@image.ID">@(image.Name)</option>
+                                @if (about.ImageUrl4 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
                             }
                         </select>
 
                         <h2>Resim Seçin (5):</h2>
-                        <select name="ImageUrl5">
+                        <select name="ImageUrl5" class="form-control">
                             <option value="">Seçiniz</option>
                             @foreach (var image in Model.Images)
                             {
-                                <option value="@image.ID">@(image.Name)</option>
+                                @if (about.ImageUrl5 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
                             }
                         </select>
                     </div>
@@ -92,51 +200,86 @@
                     <div class="col-md-6">
 
                         <h2>Resim Seçin (6):</h2>
-                        <select name="ImageUrl6">
+                        <select name="ImageUrl6" class="form-control">
                             <option value="">Seçiniz</option>
                             @foreach (var image in Model.Images)
                             {
-                                <option value="@image.ID">@(image.Name)</option>
+                                @if (about.ImageUrl6 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
                             }
                         </select>
 
                         <h2>Resim Seçin (7):</h2>
-                        <select name="ImageUrl7">
+                        <select name="ImageUrl7" class="form-control">
                             <option value="">Seçiniz</option>
                             @foreach (var image in Model.Images)
                             {
-                                <option value="@image.ID">@(image.Name)</option>
+                                @if (about.ImageUrl7 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
                             }
                         </select>
 
                         <h2>Resim Seçin (8):</h2>
-                        <select name="ImageUrl8">
+                        <select name="ImageUrl8" class="form-control">
                             <option value="">Seçiniz</option>
                             @foreach (var image in Model.Images)
                             {
-                                <option value="@image.ID">@(image.Name)</option>
+                                @if (about.ImageUrl8 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
                             }
                         </select>
 
                         <h2>Resim Seçin (9):</h2>
-                        <select name="ImageUrl9">
+                        <select name="ImageUrl9" class="form-control">
                             <option value="">Seçiniz</option>
                             @foreach (var image in Model.Images)
                             {
-                                <option value="@image.ID">@(image.Name)</option>
+                                @if (about.ImageUrl9 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
                             }
                         </select>
 
                         <h2>Resim Seçin (10):</h2>
-                        <select name="ImageUrl10">
+                        <select name="ImageUrl10" class="form-control">
                             <option value="">Seçiniz</option>
                             @foreach (var image in Model.Images)
                             {
-                                <option value="@image.ID">@(image.Name)</option>
+                                @if (about.ImageUrl10 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
                             }
                         </select>
                     </div>
-
+                    <br />
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">Güncelle</button>
                 </div>
             </div>

@@ -30,6 +30,10 @@ namespace Entity.Concrete
         public string PhoneNumber { get; set; }
         public string Map { get; set; }
         public string Address { get; set; }
+        public bool Banner { get; set; }
+        public bool Image { get; set; }
+        public bool SubtitleStatus { get; set; }
+        public bool ContentStatus { get; set; }
 
         [MaxLength(200)]
         public string ImageUrl1 { get; set; }

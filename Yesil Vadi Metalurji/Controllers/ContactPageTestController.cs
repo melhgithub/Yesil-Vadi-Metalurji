@@ -51,6 +51,42 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     updatedContact.Address = contact.Address;
                     updatedContact.PhoneNumber = contact.PhoneNumber;
                     updatedContact.Status = (ContactStatuses)contact.Status;
+                    if (contact.Image == "1")
+                    {
+                        updatedContact.Image = true;
+                    }
+                    else
+                    {
+                        updatedContact.Image = false;
+                    }
+                    if (contact.Banner == "1")
+                    {
+                        updatedContact.Banner = true;
+                    }
+                    else
+                    {
+                        updatedContact.Banner = false;
+                    }
+
+
+
+                    if (contact.SubtitleStatus == "1")
+                    {
+                        updatedContact.SubtitleStatus = true;
+                    }
+                    else
+                    {
+                        updatedContact.SubtitleStatus = false;
+                    }
+
+                    if (contact.ContentStatus == "1")
+                    {
+                        updatedContact.ContentStatus = true;
+                    }
+                    else
+                    {
+                        updatedContact.ContentStatus = false;
+                    }
                     if (updatedContact.Status == (ContactStatuses)1)
                     {
                         updatedContact.Active = true;

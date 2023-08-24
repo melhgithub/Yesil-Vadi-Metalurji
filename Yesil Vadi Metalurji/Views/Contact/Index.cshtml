@@ -4,73 +4,275 @@
 @using Newtonsoft.Json
 @model ContactViewModel
 @{
-    ViewData["Title"] = "Hakkımızda";
+    ViewData["Title"] = "İletişim";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<html lang="tr">
 
-<body>
-
-
-        <h3 class="tittle">İletişim</h3>
-        @foreach (var contact in Model.Contact)
+@foreach (var contact in Model.Contact)
+{
+    @if (contact.Status == (ContactStatuses)1)
+    {
+        if (contact.Banner == true)
         {
-            //https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3147.6774883368025!2d32.50435787514658!3d37.91460040409439!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14d090265baa34eb%3A0xa342b510071e7812!2sYe%C5%9FilVadi%20Metalurji!5e0!3m2!1str!2str!4v1692671643655!5m2!1str!2str
-            <div class="contact-map inner-sec">
-                <iframe src="@contact.Map"
-                        class="map" style="border: 0; width: 100%; height: 500px;" allowfullscreen=""></iframe>
-            </div>
-            <br />
+            @await Html.PartialAsync("_BannerPartial")
+        }
+        <center><h3 class="tittle">@contact.Title</h3></center>
+        @if (contact.SubtitleStatus != false)
+        {
+            <center><h4>@contact.Subtitle</h4></center>
+        }
+        //https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3147.6774883368025!2d32.50435787514658!3d37.91460040409439!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14d090265baa34eb%3A0xa342b510071e7812!2sYe%C5%9FilVadi%20Metalurji!5e0!3m2!1str!2str!4v1692671643655!5m2!1str!2str
+        <div class="contact-map inner-sec">
+            <iframe src="@contact.Map"
+                    class="map" style="border: 0; width: 100%; height: 500px;" allowfullscreen=""></iframe>
+        </div>
+        <br />
 
-            <div class="ad-inf-sec bg-light">
-                <div class="container">
-                    <div class="address row">
+        <div class="ad-inf-sec bg-light">
+            <div class="container">
+                <div class="address row">
 
-                        <div class="col-lg-4 address-grid">
-                            <div class="row address-info">
-                                <div class="col-md-4 address-left text-center">
-                                    <i class="far fa-map"></i>
-                                </div>
-                                <div class="col-md-8 address-right text-left">
-                                    <h6>Adres</h6>
-                                    <p>
-                                        @contact.Address
-                                    </p>
-                                </div>
+                    <div class="col-lg-4 address-grid">
+                        <div class="row address-info">
+                            <div class="col-md-4 address-left text-center">
+                                <i class="far fa-map"></i>
+                            </div>
+                            <div class="col-md-8 address-right text-left">
+                                <h6>Adres</h6>
+                                <p>
+                                    @contact.Address
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4 address-grid">
+                        <div class="row address-info">
+                            <div class="col-md-4 address-left text-center">
+                                <i class="far fa-envelope"></i>
+                            </div>
+                            <div class="col-md-8 address-right text-left">
+                                <h6>E-Mail</h6>
+                                <p>
+                                    <a href="mailto:@contact.Mail">@contact.Mail</a>
+                                </p>
                             </div>
 
                         </div>
-                        <div class="col-lg-4 address-grid">
-                            <div class="row address-info">
-                                <div class="col-md-4 address-left text-center">
-                                    <i class="far fa-envelope"></i>
-                                </div>
-                                <div class="col-md-8 address-right text-left">
-                                    <h6>E-Mail</h6>
-                                    <p>
-                                        <a href="mailto:@contact.Mail">@contact.Mail</a>
-                                    </p>
-                                </div>
-
+                    </div>
+                    <div class="col-lg-4 address-grid">
+                        <div class="row address-info">
+                            <div class="col-md-4 address-left text-center">
+                                <i class="fas fa-mobile-alt"></i>
                             </div>
-                        </div>
-                        <div class="col-lg-4 address-grid">
-                            <div class="row address-info">
-                                <div class="col-md-4 address-left text-center">
-                                    <i class="fas fa-mobile-alt"></i>
-                                </div>
-                                <div class="col-md-8 address-right text-left">
-                                    <h6>Telefon Numarası</h6>
-                                    <p>@contact.PhoneNumber</p>
-                                </div>
+                            <div class="col-md-8 address-right text-left">
+                                <h6>Telefon Numarası</h6>
+                                <a href="tel:@contact.PhoneNumber"><p>@contact.PhoneNumber</p></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        @if (contact.Image == true)
+        {
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl2))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl3))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl4))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl5))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl6))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl7))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="6"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl8))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="7"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl9))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="8"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl10))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="9"></li>
+                    }
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@contact.ImageUrl1');">
+                        <div class="carousel-caption">
+                            <h3>@contact.Title</h3>
+                        </div>
+                        <img src="~/Resimler/@contact.ImageUrl1" class="d-block w-100" alt="about Image">
+                    </div>
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl2))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@contact.ImageUrl2');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@contact.ImageUrl2" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl3))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@contact.ImageUrl3');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@contact.ImageUrl3" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl4))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@contact.ImageUrl4');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@contact.ImageUrl4" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl5))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@contact.ImageUrl5');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@contact.ImageUrl5" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl6))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@contact.ImageUrl6');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@contact.ImageUrl6" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl7))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@contact.ImageUrl7');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@contact.ImageUrl7" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl8))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@contact.ImageUrl8');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@contact.ImageUrl8" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl9))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@contact.ImageUrl9');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@contact.ImageUrl9" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(contact.ImageUrl10))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@contact.ImageUrl10');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@contact.ImageUrl10" class="d-block w-100" alt="about Image">
+                        </div>
+                    }
+                </div>
+
+
+
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Önceki</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Sonraki</span>
+                </a>
+            </div>
         }
 
-</body>
+        @if (contact.ContentStatus != false)
+        {
+            string description = contact.Content;
+            int maxLineLength = 136;
+            List<string> descriptionLines = new List<string>();
 
-</html>
+            for (int i = 0; i < description.Length; i += maxLineLength)
+            {
+                int remainingLength = Math.Min(maxLineLength, description.Length - i);
+                descriptionLines.Add(description.Substring(i, remainingLength));
+            }
+
+            @foreach (string line in descriptionLines)
+            {
+                @line
+                <br />
+            }
+            <hr />
+        }
+    }
+    else
+    {
+        <h1>DÜZENLEMEDE</h1>
+    }
+
+}
+<script>
+    jQuery(document).ready(function ($) {
+        $(".scroll").click(function (event) {
+            event.preventDefault();
+            $('html,body').animate({
+                scrollTop: $(this.hash).offset().top
+            }, 900);
+        });
+    });
+
+    $(document).ready(function () {
+
+        $().UItoTop({
+            easingType: 'easeOutQuart'
+        });
+
+    });
+    $(document).ready(function () {
+
+
+        var defaults = {
+            containerID: 'toTop', // fading element id
+            containerHoverID: 'toTopHover', // fading element hover id
+            scrollSpeed: 1200,
+            easingType: 'linear'
+        };
+
+
+
+    });
+    addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    }
+</script>

@@ -15,8 +15,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Yeşilvadi Metalurji</title>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <link href="~/web/css/bootstrap.css" rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="~/web/css/jquery.desoslide.css">
     <link href="~/web/css/styleurun.css" rel='stylesheet' type='text/css' />
@@ -24,6 +22,7 @@
     <link href="//fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800"
           rel="stylesheet">
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="~/web/js/jquery.flexisel.js"></script>
     <script src="~/web/js/move-top.js"></script>
     <script src="~/web/js/easing.js"></script>
@@ -260,7 +259,6 @@
                 <div class="carousel-item active" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl1');">
                     <div class="carousel-caption">
                         <h3>@product.Name</h3>
-                        <p>@product.Description</p>
                     </div>
                     <img src="~/Resimler/@product.ImageUrl1" class="d-block w-100" alt="Product Image">
                 </div>
@@ -321,59 +319,7 @@
 
 
 
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 footer-grid-agileits-w3ls text-left">
-                    <h3>Yeşilvadi Metalurji Nedir?</h3>
-                    <p>Yazı gelecek..</p>
-                    <div class="read">
-                        <a href="/About/Index" class="btn btn-primary read-m">Devamını Oku</a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-cpy text-center">
-                <div class="footer-social">
-                    @*<div class="copyrighttop">
-                            <ul>
-                                <li class="mx-3">
-                                    <a class="facebook" href="#">
-                                        <i class="fab fa-facebook-f"></i>
-                                        <span>Facebook</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="facebook" href="#">
-                                        <i class="fab fa-twitter"></i>
-                                        <span>Twitter</span>
-                                    </a>
-                                </li>
-                                <li class="mx-3">
-                                    <a class="facebook" href="#">
-                                        <i class="fab fa-google-plus-g"></i>
-                                        <span>Google+</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="facebook" href="#">
-                                        <i class="fab fa-pinterest-p"></i>
-                                        <span>Pinterest</span>
-                                    </a>
-                                </li>
-                            </ul>
-
-                        </div>*@
-                </div>
-                <div class="w3layouts-agile-copyrightbottom">
-                    <p>
-                        © 2023 Yeşilvadi Metalurji. Tüm hakları saklıdır.
-                    </p>
-
-                </div>
-            </div>
-
-        </div>
-    </footer>
+    @await Html.PartialAsync("_FooterPartial")
 
 
 
@@ -445,7 +391,16 @@
                 }, 900);
             });
         });
+
         $(document).ready(function () {
+
+            $().UItoTop({
+                easingType: 'easeOutQuart'
+            });
+
+        });
+        $(document).ready(function () {
+
 
             var defaults = {
                 containerID: 'toTop', // fading element id
@@ -455,9 +410,6 @@
             };
 
 
-            $().UItoTop({
-                easingType: 'easeOutQuart'
-            });
 
         });
         addEventListener("load", function () {
@@ -474,8 +426,6 @@
     </a>
 
 
-</body>
-
-
+</body>-
 
 </html>

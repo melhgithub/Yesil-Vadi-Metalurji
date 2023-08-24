@@ -4,14 +4,16 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20230824003801_banner-image")]
+    partial class bannerimage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,9 +36,6 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("ContentStatus")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("Image")
                         .HasColumnType("bit");
@@ -86,9 +85,6 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Subtitle")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("SubtitleStatus")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -168,9 +164,6 @@ namespace DataAccess.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("ContentStatus")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("Image")
                         .HasColumnType("bit");
 
@@ -229,9 +222,6 @@ namespace DataAccess.Migrations
                     b.Property<string>("Subtitle")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("SubtitleStatus")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
@@ -255,9 +245,6 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("ContentStatus")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("Image")
                         .HasColumnType("bit");
@@ -307,9 +294,6 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Subtitle")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("SubtitleStatus")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
