@@ -1,0 +1,61 @@
+﻿@model FooterProductsViewModel
+@foreach (var footer in Model.Footer)
+{
+
+
+    @if (footer.LastPosts == true)
+    {
+        <div class="col-lg-4 footer-grid-agileits-w3ls text-left">
+
+            <div class="tech-btm">
+                <h3>Son 3 Ürünümüz:</h3>
+                @foreach (var product in Model.Products)
+                {
+
+                    <div class="blog-grids row mb-3">
+                        <div class="col-md-5 blog-grid-left">
+                            <a href="/Urunler/UrunDetaylari?urunID=@product.ID">
+                                <img src="~/Resimler/@product.ImageUrl1" class="img-fluid" alt="">
+                            </a>
+                        </div>
+                        <div class="col-md-7 blog-grid-right">
+
+                            <h5>
+                                <a href="/Urunler/UrunDetaylari?urunID=@product.ID">@product.Name</a>
+                            </h5>
+                            <div class="sub-meta">
+                                <span>
+                                    <i class="far fa-clock"></i> @(((DateTime)product.CreateDate).ToString("dd-MMM-yyyy"))
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+
+
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-lg-4 footer-grid-agileits-w3ls text-left">
+
+            <div class="tech-btm">
+                <div class="blog-grids row mb-3">
+                    <div class="col-md-5 blog-grid-left">
+                    </div>
+                    <div class="col-md-7 blog-grid-right">
+
+                        <div class="sub-meta">
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+    }
+}

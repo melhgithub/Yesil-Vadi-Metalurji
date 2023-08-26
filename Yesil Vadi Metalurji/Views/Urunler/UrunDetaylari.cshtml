@@ -28,7 +28,15 @@
     <script src="~/web/js/easing.js"></script>
     <script src="~/web/js/jquery.desoslide.js"></script>
     <script src="~/web/js/bootstrap.js"></script>
-
+    <style>
+        .spacing-between {
+            margin-bottom: 20px;
+        }
+        .left-blog-info-w3layouts-agileits img {
+            width: 120%;
+            margin-left: -10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -102,17 +110,19 @@
 
     @foreach (var product in Model.Products)
     {
+        <br />
 
+        <h3 class="tittle">@product.Category.Name</h3>
 
         <section class="main-content-w3layouts-agileits">
             <div class="container">
                 <div class="row">
                     <!--left-->
-                    <div class="col-lg-8 left-blog-info-w3layouts-agileits text-left">
+                    <div class="col-lg-7 left-blog-info-w3layouts-agileits text-left spacing-between">
                         <div class="blog-grid-top">
                             <div class="b-grid-top">
                                 <div class="blog_info_left_grid">
-                                    <a href="/Urunler/UrunDetaylari/@product.ID/">
+                                    <a href="/Urunler/UrunDetaylari?urunID=@product.ID">
                                         <img src="~/Resimler/@product.ImageUrl1" class="img-fluid" alt="">
                                     </a>
                                 </div>
@@ -127,15 +137,22 @@
                             </div>
 
 
-                            <h3>
-                                <a href="/Urunler/UrunDetaylari/@product.ID">@product.Name</a>
-                            </h3>
-                            <hr />
-                            <p>
+
+                        </div>
+
+                    </div>
+                    <!--right-->
+                    <aside class="col-lg-5 agileits-w3ls-right-blog-con text-right spacing-between">
+                        <div class="right-blog-info text-left">
+                            <div class="tech-btm">
+                                <h3>
+                                    <a href="/Urunler/UrunDetaylari?urunID=@product.ID">@product.Name</a>
+                                </h3>
+                                <hr />
                                 <h4>Ürün;</h4>
                                 @{
                                     string description = product.Description;
-                                    int maxLineLength = 70;
+                                    int maxLineLength = 44;
                                     List<string> descriptionLines = new List<string>();
 
                                     for (int i = 0; i < description.Length; i += maxLineLength)
@@ -147,79 +164,12 @@
 
                                 @foreach (string line in descriptionLines)
                                 {
-                                    @line<br />
+                                    <p>@line</p>
                                 }
+                                <br />
 
-                                <h3>Fiyat:</h3> @product.Price
-                            </p>
-                            <a href="/Urunler/Iletisim" class="btn btn-primary read-m">İletişime Geç</a>
-                            <a href="/Urunler/TeklifVer/@product.ID" class="btn btn-primary read-m" id="teklifButon">Teklif Ver</a>
-                        </div>
-
-                    </div>
-                    <!--//left-->
-                    <!--right-->
-                    <aside class="col-lg-4 agileits-w3ls-right-blog-con text-right">
-                        <div class="right-blog-info text-left">
-                            <div class="tech-btm">
-                                <h4>Son eklenen üç ürünümüz :</h4>
-
-                                <div class="blog-grids row mb-3">
-                                    <div class="col-md-5 blog-grid-left">
-                                        <a href="single.html">
-                                            <img src="~/web/images/1.jpg" class="img-fluid" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-md-7 blog-grid-right">
-
-                                        <h5>
-                                            <a href="single.html">Pellentesque dui, non felis. Maecenas male non felis </a>
-                                        </h5>
-                                        <div class="sub-meta">
-                                            <span>
-                                                <i class="far fa-clock"></i> 20 Jan, 2018
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="blog-grids row mb-3">
-                                    <div class="col-md-5 blog-grid-left">
-                                        <a href="single.html">
-                                            <img src="~/web/images/5.jpg" class="img-fluid" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-md-7 blog-grid-right">
-
-                                        <h5>
-                                            <a href="single.html">Pellentesque dui, non felis. Maecenas male non felis </a>
-                                        </h5>
-                                        <div class="sub-meta">
-                                            <span>
-                                                <i class="far fa-clock"></i> 20 Jan, 2018
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"> </div>
-                                </div>
-                                <div class="blog-grids row mb-3">
-                                    <div class="col-md-5 blog-grid-left">
-                                        <a href="single.html">
-                                            <img src="~/web/images/3.jpg" class="img-fluid" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-md-7 blog-grid-right">
-                                        <h5>
-                                            <a href="single.html">Pellentesque dui, non felis. Maecenas male non felis </a>
-                                        </h5>
-                                        <div class="sub-meta">
-                                            <span>
-                                                <i class="far fa-clock"></i> 20 Feb, 2018
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                </div>
+                                <a href="/Contact" class="btn btn-primary read-m">İletişime Geç</a>
+                                <a href="/Urunler/TeklifVer?urunID=@product.ID" class="btn btn-primary read-m" id="teklifButon">Teklif Ver</a>
 
                             </div>
                         </div>
@@ -426,6 +376,6 @@
     </a>
 
 
-</body>-
+</body>
 
 </html>

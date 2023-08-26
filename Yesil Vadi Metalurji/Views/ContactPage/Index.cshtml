@@ -1,8 +1,330 @@
-﻿
+﻿@using Entity.Concrete
+@model ContactPageViewModel
+
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    ViewData["Title"] = "İletişim";
+    Layout = "~/Views/Shared/_AdminTest.cshtml";
 }
 
-<h1>Index</h1>
+<form method="post" action="/ContactPageTest/Update" id="updateForm">
+    @foreach (var contact in Model.Contact)
+    {
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-pencil-alt"></i>
+                    Düzenle
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <input type="text" name="ID" value="@contact.ID" hidden />
 
+                    <div class="col-md-4">
+                        <h2>Durum Seçin:</h2>
+                        <select name="Status" class="form-control" required="required">
+                            @if (contact.Status == (ContactStatuses)1)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <h2>Resim Durumu:</h2>
+                        <select name="Image" class="form-control" required="required">
+                            @if (contact.Image == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <h2>Banner Durumu:</h2>
+                        <select name="Banner" class="form-control" required="required">
+                            @if (contact.Banner == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <h2>İçerik Durumu:</h2>
+                        <select name="ContentStatus" class="form-control" required="required">
+                            @if (contact.ContentStatus == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <h2>Alt-Başlık Durumu:</h2>
+                        <select name="SubtitleStatus" class="form-control" required="required">
+                            @if (contact.SubtitleStatus == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <h2>Başlık:</h2>
+                        <input type="text" name="Title" value="@contact.Title" required class="form-control" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <h2>Alt başlık:</h2>
+                        <input type="text" name="Subtitle" value="@contact.Subtitle" class="form-control" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <h2>Mail:</h2>
+                        <input type="text" name="Mail" value="@contact.Mail" class="form-control" required />
+                    </div>
+
+                    <div class="col-md-3">
+                        <h2>Telefon Numarası:</h2>
+                        <input type="text" name="PhoneNumber" value="@contact.PhoneNumber" class="form-control" required />
+                    </div>
+
+                    <div class="col-md-12">
+                        <h2>Adres:</h2>
+                        <input type="text" name="Address" value="@contact.Address" class="form-control" required />
+                    </div>
+
+                    <div class="col-md-12">
+                        <h2>Map:</h2>
+                        <input type="text" name="Map" value="@contact.Map" class="form-control" required />
+                    </div>
+
+                    <div class="col-md-12">
+                        <h2>Detaylar:</h2>
+                        <textarea name="Content" rows="7" class="form-control col-sm-12" required>@contact.Content</textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h2>Resim Seçin (1):</h2>
+                        <select name="ImageUrl1" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (contact.ImageUrl1 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (2):</h2>
+                        <select name="ImageUrl2" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (contact.ImageUrl2 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (3):</h2>
+                        <select name="ImageUrl3" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (contact.ImageUrl3 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (4):</h2>
+                        <select name="ImageUrl4" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (contact.ImageUrl4 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (5):</h2>
+                        <select name="ImageUrl5" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (contact.ImageUrl5 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <h2>Resim Seçin (6):</h2>
+                        <select name="ImageUrl6" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (contact.ImageUrl6 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (7):</h2>
+                        <select name="ImageUrl7" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (contact.ImageUrl7 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (8):</h2>
+                        <select name="ImageUrl8" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (contact.ImageUrl8 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (9):</h2>
+                        <select name="ImageUrl9" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (contact.ImageUrl9 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>Resim Seçin (10):</h2>
+                        <select name="ImageUrl10" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (contact.ImageUrl10 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <br />
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">Güncelle</button>
+                </div>
+            </div>
+        </div>
+    }
+
+
+</form>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Onay</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bu değişiklikleri kaydetmek istediğinizden emin misiniz?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                <button type="submit" form="updateForm" class="btn btn-primary">Evet, Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>

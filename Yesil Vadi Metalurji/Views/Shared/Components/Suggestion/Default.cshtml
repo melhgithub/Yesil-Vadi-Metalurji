@@ -1,0 +1,45 @@
+﻿@using Entity.Concrete
+@model List<Footer>
+@foreach (var footer in Model)
+{
+    if (footer.Suggestion == true)
+    {
+        <div class="col-lg-4 subscribe-main footer-grid-agileits-w3ls text-left">
+            <h2>Öneri ve görüşleriniz:</h2>
+            <div class="subscribe-main text-left">
+                <style>
+                    .form-control {
+                        width: 100%;
+                    }
+
+                    textarea.form-control {
+                        resize: vertical;
+                    }
+                </style>
+                <div class="subscribe-form">
+                    <form action="#" method="post" class="subscribe_form">
+                        <input class="form-control" type="email" placeholder="E-Mail Adresiniz" required="">
+                        <br />
+                        <textarea class="form-control" placeholder="Öneri ve Görüşleriniz" rows="3" maxlength="500" required=""></textarea>
+                        <button type="submit" class="btn btn-primary submit">Gönder</button>
+                    </form>
+                    <div class="clearfix"> </div>
+                </div>
+                <p>Görüşleriniz bizim için değerlidir!</p>
+            </div>
+        </div>
+
+    }
+    else
+    {
+
+        <div class="col-lg-4 subscribe-main footer-grid-agileits-w3ls text-left">
+            <div class="subscribe-main text-left">
+                <div class="subscribe-form">
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+        </div>
+
+    }
+}

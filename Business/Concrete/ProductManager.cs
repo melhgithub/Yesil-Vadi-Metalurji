@@ -58,5 +58,15 @@ namespace Business.Concrete
         {
             throw new NotImplementedException();
         }
+
+        public async Task<List<Product>> GetLast3Product()
+        {
+            var products = await _productDal.GetList();
+            var latestProducts = products.OrderByDescending(p => p.CreateDate)
+                .Take(3)
+                .ToList();
+
+            return latestProducts;
+        }
     }
 }

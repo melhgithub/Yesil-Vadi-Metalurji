@@ -2,13 +2,12 @@
 <footer>
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 footer-grid-agileits-w3ls text-left">
-                <h3>Yeşilvadi Metalurji Nedir?</h3>
-                <p>Yazı gelecek..</p>
-                <div class="read">
-                    <a href="/About/Index" class="btn btn-primary read-m">Devamını Oku</a>
-                </div>
-            </div>
+
+            @await Component.InvokeAsync("FooterContent")
+
+            @await Component.InvokeAsync("Last3Products")
+
+            @await Component.InvokeAsync("Suggestion") 
         </div>
         <div class="footer-cpy text-center">
             <div class="footer-social">
@@ -44,7 +43,8 @@
             </div>
             <div class="w3layouts-agile-copyrightbottom">
                 <p>
-                    © 2023 Yeşilvadi Metalurji. Tüm hakları saklıdır.
+                    © 2023 Yeşilvadi Metalurji. Tüm hakları saklıdır. | Design by
+                    <a href="https://www.linkedin.com/in/melih-dursun-523b26271/">melh</a>
                 </p>
 
             </div>

@@ -9,6 +9,7 @@ namespace Yesil_Vadi_Metalurji.Models
 {
     public class ProductsViewModel
     {
+        public List<Urunler> Urunlers { get; set; }
         public ProductFilterDto FilterDto { get; set; }
         public List<Product> Products { get; set; }
     }

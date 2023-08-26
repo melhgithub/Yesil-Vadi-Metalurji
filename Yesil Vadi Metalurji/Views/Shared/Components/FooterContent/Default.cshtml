@@ -1,0 +1,14 @@
+﻿@using Entity.Concrete
+@model List<Footer>
+
+@foreach (var footer in Model)
+{
+    <div class="col-lg-4 footer-grid-agileits-w3ls text-left">
+        <h3>@footer.Title</h3>
+        <p>@footer.Content</p>
+        <div class="read">
+            <a href="/About/Index" class="btn btn-primary read-m">Devamını Oku</a>
+        </div>
+    </div>
+
+}

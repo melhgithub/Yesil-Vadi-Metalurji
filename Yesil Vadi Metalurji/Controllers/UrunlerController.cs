@@ -17,6 +17,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
     [AllowAnonymous]
     public class UrunlerController : Controller
     {
+        UrunlerManager urunlerManager = new UrunlerManager(new EFUrunlerRepository());
         ProductManager productManager = new ProductManager(new EFProductRepository());
         CategoryManager categoryManager = new CategoryManager(new EFCategoryRepository());
         public async Task<IActionResult> Index()
@@ -26,14 +27,15 @@ namespace Yesil_Vadi_Metalurji.Controllers
             products = products.Where(p => p.ImageUrl1 != null).ToList();
             var categories = await categoryManager.GetList();
 
-
             var filterDto = new ProductFilterDto
             {
                 Categories = categories
             };
 
+            var urunler = await urunlerManager.GetList();
             var model = new ProductsViewModel
             {
+                Urunlers = urunler,
                 FilterDto = filterDto,
                 Products = products
             };
@@ -41,49 +43,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Filter(ProductFilterDto filterDto)
-        {
-
-            var products = await productManager.GetListWithIncludes();
-
-            if (!string.IsNullOrEmpty(filterDto.Name)) products = products.Where(p => p.Name == filterDto.Name).ToList();
-
-            if (!string.IsNullOrEmpty(filterDto.Material)) products = products.Where(p => p.Material == filterDto.Material).ToList();
-
-            if (!string.IsNullOrEmpty(filterDto.Description)) products = products.Where(p => p.Description == filterDto.Description).ToList();
-
-            if (!string.IsNullOrEmpty(filterDto.Price))
-            {
-                products = products.Where(p => p.Price == filterDto.Price.ToDecimal()).ToList();
-            }
-
-            if (filterDto.Piece > 0) products = products.Where(p => p.Piece == filterDto.Piece).ToList();
-
-            if (filterDto.CategoryID.HasValue) products = products.Where(p => p.CategoryID == filterDto.CategoryID).ToList();
-
-
-            var productData = products.Select(p => new
-            {
-                ID = p.ID,
-                Category = new { p.Category.ID, Name = p.Category.Name },
-                Name = p.Name,
-                Material = p.Material,
-                Price = p.Price,
-                Piece = p.Piece,
-                Status = p.Status,
-                Active = p.Active,
-                Imageurla = p.ImageUrl1,
-                Imageurlb = p.ImageUrl2,
-                Imageurlc = p.ImageUrl3,
-                Imageurld = p.ImageUrl4,
-                Imageurle = p.ImageUrl5,
-                Imageurlf = p.ImageUrl6,
-                Description = p.Description
-            });
-
-            return Json(productData);
-        }
 
         [HttpGet]
         public async Task<IActionResult> UrunDetaylari(int urunID)
@@ -103,7 +62,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     }
                     else
                     {
-                        var products = await productManager.GetList();
+                        var products = await productManager.GetListWithIncludes();
                         products = products.Where(p => p.ID == product.ID).ToList();
                         if (product != null && product.ImageUrl1 != null)
                         {
@@ -120,9 +79,10 @@ namespace Yesil_Vadi_Metalurji.Controllers
                                 {
                                     Categories = categories
                                 };
-
+                                var urunler = await urunlerManager.GetList();
                                 var model = new ProductsViewModel
                                 {
+                                    Urunlers = urunler,
                                     FilterDto = filterDto,
                                     Products = products
                                 };
@@ -145,5 +105,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
            
             
         }
+
     }
 }
