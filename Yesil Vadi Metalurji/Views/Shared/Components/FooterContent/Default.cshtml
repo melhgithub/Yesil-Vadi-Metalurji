@@ -5,7 +5,21 @@
 {
     <div class="col-lg-4 footer-grid-agileits-w3ls text-left">
         <h3>@footer.Title</h3>
-        <p>@footer.Content</p>
+        @{
+            string description = footer.Content;
+            int maxLineLength = 34;
+            List<string> descriptionLines = new List<string>();
+
+            for (int i = 0; i < description.Length; i += maxLineLength)
+            {
+                int remainingLength = Math.Min(maxLineLength, description.Length - i);
+                descriptionLines.Add(description.Substring(i, remainingLength));
+            }
+            @foreach (string line in descriptionLines)
+            {
+                @Html.Raw(line)<br />
+            }
+        }
         <div class="read">
             <a href="/About/Index" class="btn btn-primary read-m">Devamını Oku</a>
         </div>

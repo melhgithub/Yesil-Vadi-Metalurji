@@ -112,7 +112,7 @@
 
                     <div class="col-md-12">
                         <h2>Detaylar:</h2>
-                        <textarea name="Content" rows="7" class="form-control col-sm-12" required>@about.Content</textarea>
+                        <textarea id="contentEditor" name="Content" rows="7" class="form-control col-sm-12" required>@about.Content</textarea>
                     </div>
 
                     <div class="col-md-6">
@@ -308,3 +308,11 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('contentEditor', {
+        removePlugins: 'autogrow',
+        enterMode: CKEDITOR.ENTER_BR,
+        shiftEnterMode: CKEDITOR.ENTER_P,
+    });
+</script>

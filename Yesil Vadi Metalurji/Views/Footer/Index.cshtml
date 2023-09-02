@@ -59,7 +59,7 @@
 
                     <div class="col-md-12">
                         <h2>İçerik:</h2>
-                        <textarea name="Content" rows="7" class="form-control col-sm-12" maxlength="300" required>@footer.Content</textarea>
+                        <textarea id="contentEditor" name="Content" rows="7" class="form-control col-sm-12" required>@footer.Content</textarea>
                     </div>
 
                     <br />
@@ -91,3 +91,11 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('contentEditor', {
+        removePlugins: 'autogrow',
+        enterMode: CKEDITOR.ENTER_BR,
+        shiftEnterMode: CKEDITOR.ENTER_P,
+    });
+</script>

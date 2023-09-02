@@ -59,7 +59,8 @@
 
                     <div class="col-md-12">
                         <h2>İçerik:</h2>
-                        <textarea name="Content" rows="7" class="form-control col-sm-12" maxlength="300" required>@footer.Content</textarea>
+                        <textarea id="contentEditor" name="Content" rows="7" class="form-control col-sm-12" required>@footer.Content</textarea>
+                        <p><span id="charCount">0</span>/300 karakter</p>
                     </div>
 
                     <br />
@@ -91,3 +92,39 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+<script src="path/to/customplugin.js"></script>
+<script>
+    CKEDITOR.plugins.add('customplugin', {
+        init: function (editor) {
+            editor.on('key', function (evt) {
+                if (evt.data.keyCode === 13) {
+                    evt.cancel();
+                }
+            });
+        }
+    });
+
+    CKEDITOR.replace('contentEditor', {
+        removePlugins: 'autogrow',
+        enterMode: CKEDITOR.ENTER_BR,
+        shiftEnterMode: CKEDITOR.ENTER_BR,
+        extraPlugins: 'customplugin',
+        on: {
+            instanceReady: function (ev) {
+                ev.editor.on('change', function () {
+                    var content = ev.editor.getData();
+                    var charCount = content.length;
+                    document.getElementById('charCount').textContent = charCount;
+
+                    var submitButton = document.querySelector('button[type="submit"]');
+                    if (charCount > 300) {
+                        submitButton.disabled = true;
+                    } else {
+                        submitButton.disabled = false;
+                    }
+                });
+            }
+        }
+    });
+</script>

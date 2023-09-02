@@ -32,6 +32,7 @@
         .spacing-between {
             margin-bottom: 20px;
         }
+
         .left-blog-info-w3layouts-agileits img {
             width: 120%;
             margin-left: -10px;
@@ -152,7 +153,7 @@
                                 <h4>Ürün;</h4>
                                 @{
                                     string description = product.Description;
-                                    int maxLineLength = 44;
+                                    int maxLineLength = 56;
                                     List<string> descriptionLines = new List<string>();
 
                                     for (int i = 0; i < description.Length; i += maxLineLength)
@@ -171,6 +172,16 @@
                                 <a href="/Contact" class="btn btn-primary read-m">İletişime Geç</a>
                                 <a href="/Urunler/TeklifVer?urunID=@product.ID" class="btn btn-primary read-m" id="teklifButon">Teklif Ver</a>
 
+                                @if (product.ImageUrl2 != null)
+                                {
+                                    <hr />
+                                    <h4>Ölçüler:</h4>
+                                    <div class="blog_info_right_grid">
+                                        <a href="/Urunler/UrunDetaylari?urunID=@product.ID">
+                                            <img src="~/Resimler/@product.ImageUrl2" class="img-fluid" alt="">
+                                        </a>
+                                    </div>
+                                }
                             </div>
                         </div>
 
@@ -184,10 +195,6 @@
             <ol class="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
 
-                @if (!string.IsNullOrEmpty(product.ImageUrl2))
-                {
-                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                }
                 @if (!string.IsNullOrEmpty(product.ImageUrl3))
                 {
                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
@@ -212,14 +219,6 @@
                     </div>
                     <img src="~/Resimler/@product.ImageUrl1" class="d-block w-100" alt="Product Image">
                 </div>
-                @if (!string.IsNullOrEmpty(product.ImageUrl2))
-                {
-                    <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl2');">
-                        <div class="carousel-caption">
-                        </div>
-                        <img src="~/Resimler/@product.ImageUrl2" class="d-block w-100" alt="Product Image">
-                    </div>
-                }
                 @if (!string.IsNullOrEmpty(product.ImageUrl3))
                 {
                     <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl3');">

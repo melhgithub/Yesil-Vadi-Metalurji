@@ -224,11 +224,12 @@
                 descriptionLines.Add(description.Substring(i, remainingLength));
             }
 
-            @foreach (string line in descriptionLines)
-            {
-                @line
-                <br />
-            }
+            <center>
+                @foreach (string line in descriptionLines)
+                {
+                    @Html.Raw(line)<br />
+                }
+            </center>
             <hr />
         }
     }
