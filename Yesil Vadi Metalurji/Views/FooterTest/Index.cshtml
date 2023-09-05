@@ -63,6 +63,28 @@
                         <p><span id="charCount">0</span>/300 karakter</p>
                     </div>
 
+                    <div class="col-md-9">
+                        <h2>Alt Yazı:</h2>
+                        <input type="text" name="Last" value="@footer.Last" class="form-control col-sm-9" maxlength="50" />
+                    </div>
+
+
+                    <div class="col-sm-3">
+                        <h2>Alt Yazı Durumu:</h2>
+                        <select name="LastBool" class="form-control" required="required">
+                            @if (footer.LastBool == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+                    <br />
                     <br />
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">Güncelle</button>
                 </div>

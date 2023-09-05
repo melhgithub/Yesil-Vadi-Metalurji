@@ -215,7 +215,7 @@
         @if (contact.ContentStatus != false)
         {
             string description = contact.Content;
-            int maxLineLength = 140;
+            int maxLineLength = 128;
             List<string> descriptionLines = new List<string>();
 
             for (int i = 0; i < description.Length; i += maxLineLength)

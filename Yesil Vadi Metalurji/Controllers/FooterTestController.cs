@@ -19,6 +19,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
         {
             var footer = await footerManager.GetList();
 
+
             var filter = new FooterEditDto();
 
             var model = new FooterEditViewModel
@@ -41,6 +42,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     updatedFooter.Title = footer.Title;
                     updatedFooter.Content = footer.Content;
                     updatedFooter.Content = footer.Content;
+                    updatedFooter.Last = footer.Last;
                     if (footer.Suggestion == "2")
                     {
                         updatedFooter.Suggestion = false;
@@ -48,6 +50,14 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     else
                     {
                         updatedFooter.Suggestion = true;
+                    }
+                    if (footer.LastBool == "2")
+                    {
+                        updatedFooter.LastBool = false;
+                    }
+                    else
+                    {
+                        updatedFooter.LastBool = true;
                     }
                     if (footer.LastPosts == "2")
                     {

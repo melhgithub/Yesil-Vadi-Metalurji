@@ -1,0 +1,193 @@
+﻿@using Entity.Concrete
+@model LinkEditViewModel
+@{
+    ViewData["Title"] = "Footer";
+    Layout = "~/Views/Shared/_AdminTest.cshtml";
+}
+
+
+<form method="post" action="/LinkTest/Update" id="updateForm">
+    @foreach (var link in Model.Link)
+    {
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-pencil-alt"></i>
+                    Düzenle
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <input type="text" name="ID" value="@link.ID" hidden />
+
+                    <div class="col-sm-12">
+                        <h2>Link Gösterim Durumu:</h2>
+                        <select name="Status" class="form-control" required="required">
+                            @if (link.Status == (LinkStatuses)1)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <h2>Facebook:</h2>
+                        <select name="FacebookStatus" class="form-control" required="required">
+                            @if (link.FacebookStatus == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <h2>Twitter:</h2>
+                        <select name="TwitterStatus" class="form-control" required="required">
+                            @if (link.TwitterStatus == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <h2>Instagram:</h2>
+                        <select name="InstagramStatus" class="form-control" required="required">
+                            @if (link.InstagramStatus == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <h2>WhatsApp:</h2>
+                        <select name="WhatsappStatus" class="form-control" required="required">
+                            @if (link.WhatsappStatus == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <h2>Pinterest:</h2>
+                        <select name="PinterestStatus" class="form-control" required="required">
+                            @if (link.PinterestStatus == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <h2>Google Plus:</h2>
+                        <select name="GooglePlus" class="form-control" required="required">
+                            @if (link.GooglePStatus == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <h2>Facebook:</h2>
+                        <input type="text" name="Facebook" value="@link.Facebook" class="form-control" maxlength="26" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <h2>Twitter:</h2>
+                        <input type="text" name="Twitter" value="@link.Twitter" class="form-control" maxlength="26" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <h2>Instagram:</h2>
+                        <input type="text" name="Instagram" value="@link.Instagram" class="form-control" maxlength="26" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <h2>WhatsApp:</h2>
+                        <input type="text" name="WhatsApp" value="@link.Whatsapp" class="form-control" maxlength="26" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <h2>Pinterest:</h2>
+                        <input type="text" name="Pinterest" value="@link.Pinterest" class="form-control" maxlength="26" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <h2>Google Plus:</h2>
+                        <input type="text" name="GoogleP" value="@link.GoogleP" class="form-control" maxlength="26" required />
+                    </div>
+
+                    <br />
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">Güncelle</button>
+                </div>
+            </div>
+        </div>
+    }
+
+
+</form>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Onay</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bu değişiklikleri kaydetmek istediğinizden emin misiniz?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                <button type="submit" form="updateForm" class="btn btn-primary">Evet, Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>

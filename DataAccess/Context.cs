@@ -45,6 +45,7 @@ namespace DataAccess
 
 
         public DbSet<Suggestion> Suggestions { get; set; }
+        public DbSet<Link> Links { get; set; }
         public DbSet<Footer> Footers { get; set; }
         public DbSet<Urunler> Urunlers { get; set; }
         public DbSet<Admin> Admins { get; set; }

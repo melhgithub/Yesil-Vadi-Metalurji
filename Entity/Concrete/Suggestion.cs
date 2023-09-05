@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,18 @@ using System.Threading.Tasks;
 
 namespace Entity.Concrete
 {
+    public enum SuggestionStatuses
+    {
+
+        [Description("TÜMÜ")]
+        All = 0,
+
+        [Description("OKUNDU")]
+        Readed = 1,
+
+        [Description("BEKLİYOR")]
+        Pending = 2,
+    }
     public class Suggestion
     {
 
@@ -18,5 +31,7 @@ namespace Entity.Concrete
 
         [MaxLength(500)]
         public string Content { get; set; }
+        public SuggestionStatuses Status { get; set; }
+
     }
 }

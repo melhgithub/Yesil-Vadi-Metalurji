@@ -5,28 +5,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Yesil_Vadi_Metalurji.Dto;
 using Yesil_Vadi_Metalurji.Models;
 
-namespace Yesil_Vadi_Metalurji.ViewComponents.FooterSuggestion
+namespace Yesil_Vadi_Metalurji.ViewComponents.FooterLinks
 {
-    public class Suggestion : ViewComponent
+    public class Link : ViewComponent
     {
         FooterManager footerManager = new FooterManager(new EFFooterRepository());
-        SuggestionManager suggestionManager = new SuggestionManager(new EFSuggestionRepository());
+        LinkManager linkManager = new LinkManager(new EFLinkRepository());
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var footer = await footerManager.GetList();
-            var suggestion = await suggestionManager.GetList();
+            var link = await linkManager.GetList();
 
-
-            var dto = new SuggestionAddDto();
-
-            var model = new FooterSuggestionModel
+            var model = new FooterLinkModel
             {
                 Footer = footer,
-                Suggestion = suggestion,
-                Dto = dto
+                Link = link,
             };
 
             return View(model);

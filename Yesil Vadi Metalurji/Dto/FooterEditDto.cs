@@ -14,6 +14,8 @@ namespace Yesil_Vadi_Metalurji.Dto
         public string Content { get; set; }
         public string LastPosts { get; set; }
         public string Suggestion { get; set; }
+        public string LastBool { get; set; }
+        public string Last { get; set; }
 
     }
 }

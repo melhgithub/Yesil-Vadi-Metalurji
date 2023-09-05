@@ -1,6 +1,7 @@
 ﻿@using Entity.Concrete
-@model List<Footer>
-@foreach (var footer in Model)
+@model FooterSuggestionModel
+
+@foreach (var footer in Model.Footer)
 {
     if (footer.Suggestion == true)
     {
@@ -17,10 +18,12 @@
                     }
                 </style>
                 <div class="subscribe-form">
-                    <form action="#" method="post" class="subscribe_form">
-                        <input class="form-control" type="email" placeholder="E-Mail Adresiniz" required="">
+                    <form method="post" action="/Suggestions/Add" class="subscribe_form" id="addForm">
+                        <input class="form-control" type="email" name="Mail" placeholder="E-Mail Adresiniz" required="">
                         <br />
-                        <textarea class="form-control" placeholder="Öneri ve Görüşleriniz" rows="3" maxlength="500" required=""></textarea>
+                        <textarea class="form-control" name="Content" placeholder="Öneri ve Görüşleriniz" rows="3" maxlength="500" required=""></textarea>
+                        <br />
+                        <span id="charCount">0 / 500</span><br />
                         <button type="submit" class="btn btn-primary submit">Gönder</button>
                     </form>
                     <div class="clearfix"> </div>
@@ -43,3 +46,40 @@
 
     }
 }
+<script>
+    $(document).ready(function () {
+        var contentTextarea = $("textarea[name='Content']");
+        var charCountSpan = $("#charCount");
+
+        contentTextarea.on("input", function () {
+            var charCount = contentTextarea.val().length;
+            charCountSpan.text(charCount + " / 500");
+
+            if (charCount > 500) {
+                charCountSpan.css("color", "red");
+            } else {
+                charCountSpan.css("color", "");
+            }
+        });
+    });
+
+    $(document).on('submit', 'form', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            success: function (response) {
+                var message = response;
+                alert(message);
+            },
+            error: function (error) {
+                alert("Başarısız");
+            }
+        });
+
+    });
+
+
+</script>

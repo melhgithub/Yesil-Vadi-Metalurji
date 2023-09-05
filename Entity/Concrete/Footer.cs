@@ -19,6 +19,9 @@ namespace Entity.Concrete
         public string Content { get; set; }
         public bool LastPosts { get; set; }
         public bool Suggestion { get; set; }
+        public bool Link { get; set; }
+        public bool LastBool { get; set; }
+        public string Last { get; set; }
 
     }
 }

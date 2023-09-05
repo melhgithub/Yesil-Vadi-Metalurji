@@ -7,10 +7,11 @@ using Yesil_Vadi_Metalurji.Dto;
 
 namespace Yesil_Vadi_Metalurji.Models
 {
-    public class FooterEditViewModel
+    public class FooterSuggestionModel
     {
-        public FooterEditDto FilterDto { get; set; }
         public List<Footer> Footer { get; set; }
+        public List<Suggestion> Suggestion { get; set; }
+        public SuggestionAddDto Dto { get; set; }
 
     }
 }

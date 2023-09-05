@@ -4,14 +4,16 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20230903220458_suggestion-status")]
+    partial class suggestionstatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,16 +253,7 @@ namespace DataAccess.Migrations
                         .HasMaxLength(350)
                         .HasColumnType("nvarchar(350)");
 
-                    b.Property<string>("Last")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("LastBool")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("LastPosts")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Link")
                         .HasColumnType("bit");
 
                     b.Property<bool>("Suggestion")
@@ -367,57 +360,6 @@ namespace DataAccess.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Images");
-                });
-
-            modelBuilder.Entity("Entity.Concrete.Link", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Facebook")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("FacebookStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("GoogleP")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("GooglePStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Instagram")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("InstagramStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Pinterest")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PinterestStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Twitter")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwitterStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Whatsapp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("WhatsappStatus")
-                        .HasColumnType("bit");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Links");
                 });
 
             modelBuilder.Entity("Entity.Concrete.Offer", b =>
