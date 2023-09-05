@@ -89,6 +89,7 @@ namespace Yesil_Vadi_Metalurji
 
             app.UseAuthorization();
 
+
             app.UseEndpoints(endpoints =>
             {
 

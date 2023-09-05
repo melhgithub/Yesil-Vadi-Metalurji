@@ -210,19 +210,28 @@ ul.social_list1 li a {
     }
 
 .facebook1 {
-    background: #3b5998;
+    background: green;
 }
 
 .twitter2 {
-    background: #1da1f2;
+    background: green;
 }
 
 .dribble3 {
-    background: #ea4c89;
+    background: green;
 }
 
 .pin {
-    background: #BD081C;
+    background: green;
+}
+.instagram {
+    background: green;
+}
+.whatsapp {
+    background: green;
+}
+.googlep {
+    background: green;
 }
 /*-- top-bar_sub_w3layouts --*/
 
@@ -245,7 +254,7 @@ a.navbar-brand {
 }
 
 .logo i {
-    color: #01cd74;
+    color: green;
     text-shadow: none;
 }
 
@@ -865,19 +874,31 @@ ul.blog-icons i {
         }
 
         .widget_social li a.twitter {
-            background: #57baf7;
+            background: green;
         }
 
         .widget_social li a.facebook {
-            background: #3b5998;
+            background: green;
         }
 
         .widget_social li a.dribble {
-            background: #ea4c89;
+            background: green;
         }
 
         .widget_social li a.pin {
-            background: #BD081C;
+            background: green;
+        }
+
+        .widget_social li a.whatsapp {
+            background: green;
+        }
+
+        .widget_social li a.googlep {
+            background: green;
+        }
+
+        .widget_social li a.instagram {
+            background: green;
         }
 
         .widget_social li a i {

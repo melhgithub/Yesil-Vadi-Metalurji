@@ -1,0 +1,126 @@
+﻿@using Entity.Concrete
+@model List<Link>
+
+@foreach (var link in Model)
+{
+
+
+    <header style="position: sticky; top: 0; background-color: #ffffff; z-index: 100; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+        <div class="top-bar_sub_w3layouts container-fluid">
+            <div class="row">
+
+                <div class="col-md-4 logo text-left">
+                    <a class="navbar-brand" href="/Home/Index">
+                        <i class="fab fa-linode"></i>  <span style="color: green;">Yeşilvadi</span> Metalurji
+                    </a>
+                </div>
+
+                <div class="col-md-4 top-forms text-center mt-lg-3 mt-md-1 mt-0">
+                    @*<span>Welcome Back!</span>
+                        <span class="mx-lg-4 mx-md-2  mx-1">
+                            <a href="login.html">
+                                <i class="fas fa-lock"></i> Sign In
+                            </a>
+                        </span>
+                        <span>
+                            <a href="register.html">
+                                <i class="far fa-user"></i> Register
+                            </a>
+                        </span>*@
+                </div>
+
+                <div class="col-md-4 log-icons text-right">
+                    @if (link.Status == (LinkStatuses)1)
+                    {
+                        <ul class="social_list1 mt-3">
+                            @if (link.FacebookStatus == true)
+                            {
+                                <li>
+                                    <a href="@link.Facebook" style="background-color: #292929; ">
+                                        <i class="fab fa-facebook"></i>
+                                    </a>
+                                </li>
+                            }
+                            @if (link.TwitterStatus == true)
+                            {
+                                <li>
+                                    <a href="@link.Twitter" style="background-color: green;">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                </li>
+                            }
+                            @if (link.GooglePStatus == true)
+                            {
+                                <li>
+                                    <a href="@link.GoogleP" style="background-color: #292929; ">
+                                        <i class="fab fa-google-plus"></i>
+                                    </a>
+                                </li>
+                            }
+                            @if (link.PinterestStatus == true)
+                            {
+                                <li>
+                                    <a href="@link.Pinterest" style="background-color: green;">
+                                        <i class="fab fa-pinterest"></i>
+                                    </a>
+                                </li>
+                            }
+                            @if (link.InstagramStatus == true)
+                            {
+                                <li>
+                                    <a href="@link.Instagram" style="background-color: #292929; ">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                </li>
+                            }
+                            @if (link.WhatsappStatus == true)
+                            {
+                                <li>
+                                    <a href="tel:@link.Whatsapp" style="background-color: green;">
+                                        <i class="fab fa-whatsapp"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+
+            </div>
+        </div>
+
+        <div class="header_top" id="home">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <button class="navbar-toggler navbar-toggler-right mx-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/Index">
+                                Ana Sayfa
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/About/Index">Hakkımızda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Contact/Index">İletişim</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Urunler/Index">Ürünler</a>
+                        </li>
+                    </ul>
+                    <form action="#" method="post" class="form-inline my-2 my-lg-0 header-search">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Ara..." name="Search" required="">
+                        <button class="btn btn1 my-2 my-sm-0" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </nav>
+
+        </div>
+    </header>
+}
