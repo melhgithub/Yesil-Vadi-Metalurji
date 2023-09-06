@@ -848,7 +848,7 @@ ul.blog-icons i {
     }
 
         .tech-btm input[type="submit"]:hover {
-            background: #05b166;
+            background: green;
         }
 
 .widget_social li {
@@ -1278,7 +1278,7 @@ footer {
 
     .subscribe-main button[type="submit"]:hover {
         color: #fff;
-        background: #01cd74;
+        background: green;
     }
 
 .instagram-posts {

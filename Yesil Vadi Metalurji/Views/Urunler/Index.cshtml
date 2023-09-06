@@ -52,7 +52,7 @@
                         <div class="row">
                             @foreach (var product in Model.Products.OrderByDescending(p => p.CreateDate))
                             {
-                                <div class="col-lg-3 card">
+                                <div class="col-lg-4 card">
                                     <div class="card-body">
                                         @if (!string.IsNullOrEmpty(product.ImageUrl1))
                                         {

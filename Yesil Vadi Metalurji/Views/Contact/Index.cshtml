@@ -99,33 +99,33 @@
                         <div class="row contact_left_grid">
                             <div class="col-md-6 con-left">
                                 <div class="form-group">
-                                    <label for="validationCustom01 my-2">İsim Soyisim:</label>
+                                    <label for="validationCustom01 my-2">İsim Soyisim :</label>
                                     <input class="form-control" type="text" name="Name" placeholder="" required="">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleFormControlInput1">E-Mail</label>
+                                    <label for="exampleFormControlInput1">E-Mail :</label>
                                     <input class="form-control" type="email" name="Email" placeholder="" required="">
                                 </div>
                                 <div class="form-group">
-                                    <label for="validationCustom03 my-2">Konu</label>
+                                    <label for="validationCustom03 my-2">Konu :</label>
                                     <input class="form-control" type="text" name="Subject" placeholder="" required="">
                                 </div>
                             </div>
                             <div class="col-md-6 con-right">
                                 <div class="form-group">
-                                    <label for="textarea">Mesaj</label>
+                                    <label for="textarea">Mesaj :</label>
                                     <textarea id="textarea" placeholder=""></textarea>
                                 </div>
-                                <input class="form-control" type="submit" value="Gönder">
-
+                                <input class="form-control" type="submit" value="Gönder"
+                                       onmouseover="this.style.backgroundColor='green'"
+                                       onmouseout="this.style.backgroundColor='black'">
+                                <br />
                             </div>
+                            <br />
                         </div>
                     </form>
                 </div>
             </div>
-
-            <br />
-            <br />
 
             @if (contact.Image == true)
             {
