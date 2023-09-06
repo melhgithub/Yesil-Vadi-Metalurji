@@ -36,11 +36,11 @@ namespace DataAccess
         //}
 
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=YesilVadiMetalurjiDB;integrated security=True;");
+            optionsBuilder.UseSqlServer("Server=176.53.40.162\\MSSQLSERVER2016;Database=YesilVadiMetalurjiDB;user=admindb;password=8M1fr79^t");
         }
-        
+
 
 
 
