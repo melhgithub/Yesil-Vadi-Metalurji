@@ -41,6 +41,7 @@
             if (about.Banner == true)
             {
                 @await Html.PartialAsync("_BannerPartial")
+                <br />
             }
             <center><h3 class="tittle">@about.Title</h3></center>
             @if (about.SubtitleStatus != false)
@@ -113,7 +114,6 @@
                     <div class="carousel-inner" role="listbox">
                         <div class="carousel-item active" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@about.ImageUrl1');">
                             <div class="carousel-caption">
-                                <h3>@about.Title</h3>
                             </div>
                             <img src="~/Resimler/@about.ImageUrl1" class="d-block w-100" alt="about Image">
                         </div>
@@ -301,7 +301,7 @@
 
 
 
-                        });
+                            });
         addEventListener("load", function () {
             setTimeout(hideURLbar, 0);
         }, false);

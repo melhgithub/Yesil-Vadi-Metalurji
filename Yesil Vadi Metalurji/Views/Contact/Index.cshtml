@@ -34,6 +34,7 @@
         if (contact.Banner == true)
         {
             @await Html.PartialAsync("_BannerPartial")
+
         }
         <section class="main-content-w3layouts-agileits">
             <center><h3 class="tittle">@contact.Title</h3></center>
@@ -173,7 +174,6 @@
                     <div class="carousel-inner" role="listbox">
                         <div class="carousel-item active" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@contact.ImageUrl1');">
                             <div class="carousel-caption">
-                                <h3>@contact.Title</h3>
                             </div>
                             <img src="~/Resimler/@contact.ImageUrl1" class="d-block w-100" alt="about Image">
                         </div>

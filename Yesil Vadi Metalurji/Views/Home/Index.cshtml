@@ -13,40 +13,7 @@
 {
     if (homepage.Status == (HomePageStatuses)1)
     {
-        if (homepage.Banner == true)
-        {
-            @await Html.PartialAsync("_BannerPartial")
-        }
-        <center><h3 class="tittle">@homepage.Title</h3></center>
-        @if (homepage.SubtitleStatus != false)
-        {
-            <center><h4>@homepage.Subtitle</h4></center>
-        }
-        <hr />
-
-        @if (homepage.ContentStatus != false)
-        {
-            string description = homepage.Content;
-            int maxLineLength = 129;
-            List<string> descriptionLines = new List<string>();
-
-            for (int i = 0; i < description.Length; i += maxLineLength)
-            {
-                int remainingLength = Math.Min(maxLineLength, description.Length - i);
-                descriptionLines.Add(description.Substring(i, remainingLength));
-            }
-
-            <center>
-                @foreach (string line in descriptionLines)
-                {
-                    @Html.Raw(line)<br />
-                }
-            </center>
-            <hr />
-        }
-
-
-        @if (homepage.Image == true)
+        if (homepage.Image == true)
         {
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
@@ -92,7 +59,6 @@
                 <div class="carousel-inner" role="listbox">
                     <div class="carousel-item active" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@homepage.ImageUrl1');">
                         <div class="carousel-caption">
-                            <h3>@homepage.Title</h3>
                         </div>
                         <img src="~/Resimler/@homepage.ImageUrl1" class="d-block w-100" alt="about Image">
                     </div>
@@ -181,7 +147,38 @@
                     <span class="sr-only">Sonraki</span>
                 </a>
             </div>
+
+            <br />
         }
+        <center><h3 class="tittle">@homepage.Title</h3></center>
+        @if (homepage.SubtitleStatus != false)
+        {
+            <center><h4>@homepage.Subtitle</h4></center>
+        }
+        <hr />
+
+        @if (homepage.ContentStatus != false)
+        {
+            string description = homepage.Content;
+            int maxLineLength = 129;
+            List<string> descriptionLines = new List<string>();
+
+            for (int i = 0; i < description.Length; i += maxLineLength)
+            {
+                int remainingLength = Math.Min(maxLineLength, description.Length - i);
+                descriptionLines.Add(description.Substring(i, remainingLength));
+            }
+
+            <center>
+                @foreach (string line in descriptionLines)
+                {
+                    @Html.Raw(line)<br />
+                }
+            </center>
+            <hr />
+        }
+
+
     }
     else
     {

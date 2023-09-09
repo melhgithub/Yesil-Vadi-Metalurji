@@ -39,6 +39,10 @@
                 <dt>@Html.LabelFor(m => m.FilterDto.Name, "Kategori Adı:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Name, new { @class = "form-control", placeholder = "Kategori Adı" })
             </div>
+            <div class="col-sm-6">
+                <dt>@Html.LabelFor(m => m.FilterDto.Description, "Açıklama:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Description, new { @class = "form-control", placeholder = "Kategori Adı" })
+            </div>
         </div>
     </div>
 </div>
@@ -108,7 +112,8 @@
             categoryGrid.jqGrid({
                 data: data,
                 colModel: [
-                    { name: 'name', label: 'Kategori Adı', width: 500 },
+                    { name: 'name', label: 'Kategori Adı', width: 280 },
+                    { name: 'description', label: 'Açıklama', width: 280 },
                     {
                         name: 'status',
                         label: 'Durum',
@@ -140,6 +145,7 @@
                                 var buttons = '<button class="btn btn-primary open-edit-modal" ' +
                                     'data-categoryid="' + rowObject.id + '" ' +
                                     'data-categoryname="' + rowObject.name + '" ' +
+                                    'data-categorydescription="' + rowObject.description + '" ' +
                                     'data-categorystatus="' + rowObject.status + '" ' +
                                     'data-categoryactive="' + rowObject.active + '">Düzenle</button>' +
                                     '<button class="btn btn-warning open-delete-modal" ' +
@@ -149,6 +155,7 @@
                                 var buttons = '<button class="btn btn-primary open-edit-modal" ' +
                                     'data-categoryid="' + rowObject.id + '" ' +
                                     'data-categoryname="' + rowObject.name + '" ' +
+                                    'data-categorydescription="' + rowObject.description + '" ' +
                                     'data-categorystatus="' + rowObject.status + '" ' +
                                     'data-categoryactive="' + rowObject.active + '">Düzenle</button>' +
                                     '<button class="btn btn-success open-approve-modal" ' +
@@ -243,6 +250,11 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="Description">Açıklama:</label>
+                    <input type="text" id="Description" name="Description" class="form-control" value="${data.categorydescription}" required />
+                </div>
+
+                <div class="form-group">
                     <label for="Status">Durum :</label>
                     <select id="Status" name="Status" class="form-control" data="${data.categorystatus}" required>
                         <option value="1" ${data.categorystatus == "1" ? 'selected' : ''}>AKTİF</option>
@@ -275,6 +287,11 @@
     <div class="form-group">
         <label for="Name">Kategori Adı:</label>
         <input type="text" id="Name" name="Name" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Description">Açıklama:</label>
+        <input type="text" id="Description" name="Description" class="form-control" required />
     </div>
 
     <div class="form-group">

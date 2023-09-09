@@ -12,5 +12,6 @@ namespace Yesil_Vadi_Metalurji.Dto
         public string Name { get; set; }
         public CategoryStatuses Status { get; set; }
         public string Active { get; set; }
+        public string Description { get; set; }
     }
 }

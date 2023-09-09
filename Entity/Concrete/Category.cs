@@ -31,6 +31,7 @@ namespace Entity.Concrete
         [Required]
         public CategoryStatuses Status { get; set; }
         public bool Active { get; set; }
+        public string Description { get; set; }
 
 
         //BAĞLANTILAR

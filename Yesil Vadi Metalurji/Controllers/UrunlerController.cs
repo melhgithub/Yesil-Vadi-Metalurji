@@ -27,6 +27,8 @@ namespace Yesil_Vadi_Metalurji.Controllers
             products = products.Where(p => p.ImageUrl1 != null).ToList();
             var categories = await categoryManager.GetList();
 
+            var firstActiveCategory = categories.Where(c => c.Status == (CategoryStatuses)1 && c.Active == true).Take(1).ToList();
+
             var filterDto = new ProductFilterDto
             {
                 Categories = categories
@@ -36,11 +38,74 @@ namespace Yesil_Vadi_Metalurji.Controllers
             var model = new ProductsViewModel
             {
                 Urunlers = urunler,
+                Categories = categories,
                 FilterDto = filterDto,
-                Products = products
+                Products = products,
+                Category = firstActiveCategory
             };
 
             return View(model);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Kategori(int kategoriID)
+        {
+            if (kategoriID == null)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                try
+                {
+                    var category = await categoryManager.GetByID(kategoriID);
+                    if (category == null || category.Active!=true || category.Status!=(CategoryStatuses)1)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        var products = await productManager.GetListWithIncludes();
+                        products = products.Where(p => p.CategoryID == category.ID).ToList();
+                        products = products.Where(p => p.Active == true && p.Status == (ProductStatuses)1).ToList();
+                        products = products.Where(p => p.ImageUrl1 != null).ToList();
+                        var categories = await categoryManager.GetList();
+                        var categoryy = categories.Where(p => p.ID == kategoriID).ToList();
+                        if (products != null && category.Active != false && category.Status == (CategoryStatuses)1)
+                        {
+                            var filterDto = new ProductFilterDto
+                            {
+                                Categories = categories
+                            };
+
+                            var urunler = await urunlerManager.GetList();
+                            var model = new ProductsViewModel
+                            {
+                                Urunlers = urunler,
+                                Categories = categories,
+                                Category = categoryy,
+                                FilterDto = filterDto,
+                                Products = products
+                            };
+
+                            return View(model);
+
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index");
+                        }
+                    }
+                }
+                catch
+                {
+                    return RedirectToAction("Index");
+                }
+                
+            }
+           
+            
         }
 
 
@@ -56,7 +121,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 try
                 {
                     var product = await productManager.GetByID(urunID);
-                    if (product == null)
+                    if (product == null && product.Active==true && product.Status==(ProductStatuses)1)
                     {
                         return RedirectToAction("Index");
                     }
@@ -83,6 +148,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                                 var model = new ProductsViewModel
                                 {
                                     Urunlers = urunler,
+                                    Categories = categories,
                                     FilterDto = filterDto,
                                     Products = products
                                 };

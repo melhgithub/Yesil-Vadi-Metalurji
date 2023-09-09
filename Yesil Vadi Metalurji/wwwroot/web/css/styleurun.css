@@ -10,26 +10,25 @@
     letter-spacing: 1px;
     background: #007bff;
     border: none;
-    margin-left: 10px;
+    margin-left: 1px;
 }
 
-    #teklifButon:hover,
-    #teklifButon:focus {
-        background: #fff;
-        color: #222;
+    #teklifButon:hover,  #teklifButon:focus {
+        background: black;
+        color: white;
         box-shadow: none !important;
     }
 a.btn.btn-primary.read-m {
     border-radius: 0;
     padding: 0.55em 2em;
     letter-spacing: 1px;
-    background: #01cd74;
+    background: #007bff;
     border: none;
 }
 
     a.btn.btn-primary.read-m:hover, a.btn.btn-primary.read-m:focus {
-        background: #fff;
-        color: #222;
+        background: black;
+        color: white;
         box-shadow: none !important;
     }
 html,
@@ -563,7 +562,7 @@ h4.sub-tittle {
 
 /*--//banner-bottom --*/
 .bottom-slider, .main-content-w3layouts-agileits {
-    padding: 5em 0;
+    padding: 0.4em 0;
 }
 
 section.bottom-slider {

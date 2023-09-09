@@ -53,22 +53,6 @@
                     </div>
 
                     <div class="col-sm-4">
-                        <h2>Banner Durumu:</h2>
-                        <select name="Banner" class="form-control" required="required">
-                            @if (homepage.Banner == true)
-                            {
-                                <option value="1" selected>AKTİF</option>
-                                <option value="2">AKTİF DEĞİL</option>
-                            }
-                            else
-                            {
-                                <option value="1">AKTİF</option>
-                                <option value="2" selected>AKTİF DEĞİL</option>
-                            }
-                        </select>
-                    </div>
-
-                    <div class="col-sm-3">
                         <h2>İçerik Durumu:</h2>
                         <select name="ContentStatus" class="form-control" required="required">
                             @if (homepage.ContentStatus == true)
@@ -84,7 +68,7 @@
                         </select>
                     </div>
 
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <h2>Alt-Başlık Durumu:</h2>
                         <select name="SubtitleStatus" class="form-control" required="required">
                             @if (homepage.SubtitleStatus == true)
@@ -100,12 +84,12 @@
                         </select>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <h2>Başlık:</h2>
                         <input type="text" name="Title" value="@homepage.Title" class="form-control" required />
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <h2>Alt başlık:</h2>
                         <input type="text" name="Subtitle" value="@homepage.Subtitle" class="form-control" />
                     </div>

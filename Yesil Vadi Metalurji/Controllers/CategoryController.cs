@@ -43,6 +43,11 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 categories = categories.Where(p => p.Name == filterDto.Name).ToList();
             }
 
+            if (!string.IsNullOrEmpty(filterDto.Description))
+            {
+                categories = categories.Where(p => p.Description == filterDto.Description).ToList();
+            }
+
             if (filterDto.Status > 0)
             {
                 categories = categories.Where(p => p.Status.Equals(filterDto.Status)).ToList();
@@ -52,7 +57,8 @@ namespace Yesil_Vadi_Metalurji.Controllers
             {
                 ID = p.ID,
                 Name = p.Name,
-                Status = p.Status
+                Status = p.Status,
+                Description = p.Description
             });
 
             return Json(categoryData);
@@ -83,6 +89,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
                     categoryEntity.Name = category.Name;
                     categoryEntity.Status = category.Status;
+                    categoryEntity.Description = category.Description;
                     if (categoryEntity.Status == (CategoryStatuses)1)
                     {
 
