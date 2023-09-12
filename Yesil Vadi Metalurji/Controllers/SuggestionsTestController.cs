@@ -95,15 +95,15 @@ namespace Yesil_Vadi_Metalurji.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ApproveSuggestion(SuggestionApproveDto category)
+        public async Task<IActionResult> ApproveSuggestion(SuggestionApproveDto suggestion)
         {
             string message = "";
 
-            if (category != null)
+            if (suggestion != null)
             {
                 try
                 {
-                    var suggestionToApprove = await suggestionManager.GetByID(category.ID);
+                    var suggestionToApprove = await suggestionManager.GetByID(suggestion.ID);
 
                     if (suggestionToApprove != null)
                     {

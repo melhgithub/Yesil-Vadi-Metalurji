@@ -160,7 +160,7 @@
         @if (homepage.ContentStatus != false)
         {
             string description = homepage.Content;
-            int maxLineLength = 129;
+            int maxLineLength = 64;
             List<string> descriptionLines = new List<string>();
 
             for (int i = 0; i < description.Length; i += maxLineLength)
@@ -168,15 +168,109 @@
                 int remainingLength = Math.Min(maxLineLength, description.Length - i);
                 descriptionLines.Add(description.Substring(i, remainingLength));
             }
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            @foreach (string line in descriptionLines)
+                            {
+                                @Html.Raw(line)<br />
+                            }
+                            <div class="read">
+                                <a href="/About/Index" class="btn btn-primary read-m">Devamını Oku</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            ilk foto
+                        </div>
+                        <div class="col-sm-3">
+                            İkinci foto
+                        </div>
+                    </div>
+                </div>
 
-            <center>
-                @foreach (string line in descriptionLines)
-                {
-                    @Html.Raw(line)<br />
-                }
-            </center>
-            <hr />
+            </div>
+            <br />
+            <br />
+            <div class="ad-inf-sec bg-light" style="background-color: #F5F5DC;">
+                <div class="container">
+                    <div class="address row">
+                        <div class="col-lg-5 address-grid">
+                            UZUN YAZI
+                        </div>
+                        <div class="col-lg-4 address-grid">
+                            SAYISAL VERİ 1
+                        </div>
+                        <div class="col-lg-3 address-grid">
+                            SAYISAL VERİ 2
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+
+            <div class="card">
+                <div class="card-title">
+                    <center><h3>hizmetlerimiz</h3></center>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            ilk foto
+                            <hr />
+                            ilk açıklama
+                        </div>
+                        <div class="col-sm-4">
+                            ikinci foto
+                            <hr />
+                            ikinci açıklama
+                        </div>
+                        <div class="col-sm-4">
+                            üçüncü foto
+                            <hr />
+                            üçüncü açıklama
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+
+            <div class="card" style="background-color: #F5F5DC;">
+                <div class="card-title">
+                    <center><h3>iş ortaklarımız</h3></center>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            ilk foto
+                        </div>
+                        <div class="col-sm-4">
+                            ikinci foto
+                        </div>
+                        <div class="col-sm-4">
+                            üçüncü foto
+                        </div>
+                        <div class="col-sm-4">
+                            dördüncü foto
+                        </div>
+                        <div class="col-sm-4">
+                            beşinci foto
+                        </div>
+                        <div class="col-sm-4">
+                            altıncı foto
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
         }
+
+
+
+
 
 
     }

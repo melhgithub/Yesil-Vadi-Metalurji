@@ -1,0 +1,298 @@
+﻿@using Entity.Concrete
+@using Yesil_Vadi_Metalurji.Dto
+@using System.ComponentModel
+@using Newtonsoft.Json
+@model MessageViewModel
+
+@{
+    ViewData["Title"] = "Mesajlar";
+    Layout = "~/Views/Shared/_AdminTest.cshtml";
+}
+
+
+@await Html.PartialAsync("_ScriptImports")
+
+@using (Html.BeginForm("Filter", "MessagesTest", FormMethod.Post, new { id = "filterForm" }))
+{
+
+    var statusList = new List<SelectListItem>
+{
+        new SelectListItem { Value = "0", Text = "TÜMÜ" },
+        new SelectListItem { Value = "1", Text = "OKUNDU" },
+        new SelectListItem { Value = "2", Text = "BEKLİYOR" },
+    };
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-filter"></i>
+            Filtrele
+        </h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Status, "Durum:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Mail, "E-Mail:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Mail, new { @class = "form-control", placeholder = "E-Mail" })
+            </div>
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Name, "İsim-Soyisim:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Name, new { @class = "form-control", placeholder = "İsim-Soyisim" })
+            </div>
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Subject, "Konu:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Subject, new { @class = "form-control", placeholder = "Konu" })
+            </div>
+            <div class="col-sm-6">
+                <dt>@Html.LabelFor(m => m.FilterDto.Content, "İçerik:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Content, new { @class = "form-control", placeholder = "İçerik" })
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-cubes"></i>
+            Mesajlar
+        </h3>
+    </div>
+
+    <div class="card-body">
+
+        <div id="messageTable" class="table-responsive">
+            <table id="messageGrid" class="table table-bordered table-striped"></table>
+            <div id="messageGridPager"></div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+    var firstModal = null;
+
+    $(document).ready(function () {
+        filterMessages();
+
+        $('#filterForm select, #filterForm input[type="text"]').on('change', function () {
+            filterMessages();
+        });
+    });
+
+    function filterMessages() {
+        var formData = $('#filterForm').serialize();
+        console.log(formData);
+
+        var messageGrid = $('#messageGrid');
+
+        $.ajax({
+            url: '@Url.Action("Filter", "MessagesTest")',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (response) {
+                var data = response;
+                console.log(data);
+                showDatas(data);
+            },
+            error: function (error) {
+                console.log("Listeleme esnasında hata oluştu: ", error);
+            }
+        });
+    }
+
+    function showDatas(data) {
+        var messageGrid = $('#messageGrid');
+
+        if (messageGrid.length) {
+            messageGrid.jqGrid('GridUnload');
+
+            messageGrid.jqGrid({
+                data: data,
+                colModel: [
+                    { name: 'id', label: 'ID', width: 40 },
+                    { name: 'mail', label: 'E-Mail', width: 200 },
+                    { name: 'name', label: 'İsim-Soyisim', width: 200 },
+                    { name: 'subject', label: 'Konu', width: 200 },
+                    { name: 'content', label: 'İçerik', width: 250 },
+                    {
+                        name: 'status',
+                        label: 'Durum',
+                        width: 130,
+                        formatter: function (cellValue) {
+                            var statusText = '';
+                            var statusStyle = '';
+
+                            switch (cellValue) {
+                                case 1:
+                                    statusText = 'OKUNDU';
+                                    statusStyle = 'color: green;';
+                                    break;
+                                case 2:
+                                    statusText = 'BEKLİYOR';
+                                    statusStyle = 'color: red;';
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            return '<span style="' + statusStyle + '">' + statusText + '</span>';
+                        }
+                    },
+                    {
+                        name: 'actions', label: '', width: 300,
+                        formatter: function (cellValue, options, rowObject) {
+                            if (rowObject.status === 1) {
+                                var buttons = '<button class="btn btn-warning open-detail-modal" ' +
+                                    'data-messageid="' + rowObject.id + '">Detaylar</button>';
+                            }
+                            if (rowObject.status === 2) {
+                                var buttons = '<button class="btn btn-success open-approve-modal" ' +
+                                    'data-messageid="' + rowObject.id + '">Onayla</button>' +
+                                    '<button class="btn btn-warning open-detail-modal" ' +
+                                    'data-messageid="' + rowObject.id + '">Detaylar</button>';
+                            }
+                            return buttons;
+                        }
+                    }
+                ],
+                pager: '#messageGridPager',
+                rowNum: 10,
+                rowList: [10, 20, 30, 40, 50],
+                sortname: 'id',
+                viewrecords: true,
+                autoheight: true,
+                autoWidth: true,
+                responsive: true,
+
+            });
+        }
+    }
+
+
+    function openDetailModal(button) {
+        var data = button.dataset;
+
+        $.ajax({
+            url: '@Url.Action("GetMessageDetails", "MessagesTest")',
+            type: 'GET',
+            data: { messageId: data.messageid },
+            dataType: 'json',
+            success: function (response) {
+                var detailHtml = '';
+
+                if (response.length > 0) {
+                    var firstDetail = response[0];
+
+                    detailHtml += `
+                        <div class="message-detail">
+                            <p>E-Mail: ${firstDetail.name}</p>
+                            <p>E-Mail: ${firstDetail.mail}</p>
+                            <p>E-Mail: ${firstDetail.subject}</p>
+                        </div>
+                        <hr class="divider">
+                    `;
+
+                    for (var i = 0; i < response.length; i++) {
+                        var detail = response[i];
+                        detailHtml += `
+                            <div class="message-detail">
+                                <p>İçerik: ${detail.content}</p>
+                            </div>
+                            <hr class="divider">
+                        `;
+                    }
+                }
+
+                firstModal = $.dialog({
+                    title: 'Mesaj Detayları',
+                    content: detailHtml
+                });
+            },
+            error: function (error) {
+                console.log("Detayları getirirken hata oluştu: ", error);
+            }
+        });
+    }
+
+
+
+    function openApproveMessageModal(button) {
+    var data = button.dataset;
+        firstModal = $.dialog({
+        title: 'Onayla',
+         content: `
+            <!-- ${JSON.stringify(data)} -->
+            <form method="post" action="@Url.Action("ApproveMessage", "MessagesTest")">
+
+                <div class="form-group">
+                    <label>Onaylamak istiyor musunuz ?</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="ID" name="ID" class="form-control" value="${data.messageid}" required/>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Onayla" class="btn btn-primary w-100" />
+                </div>
+
+            </form>
+        `
+    });
+    }
+
+
+    $(document).on('click', '.open-detail-modal', function () {
+        openDetailModal(this);
+    });
+
+    $(document).on('click', '.open-approve-modal', function () {
+        openApproveMessageModal(this);
+    });
+
+
+    $(document).on('submit', 'form', function (e) {
+        e.preventDefault();
+        var form = $(this);
+
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            success: function (response) {
+                var message = response;
+                mesajDialog = $.dialog({
+                    title: 'İşlem Sonucu',
+                    content: message,
+                    closeButton: false
+                });
+                setTimeout(function () {
+                    mesajDialog.close();
+                    if (firstModal) {
+                        firstModal.close();
+                    }
+                    filterMessages();
+                }, 1500);
+            },
+            error: function (error) {
+                alert("Başarısız");
+            }
+        });
+    });
+
+</script>
+
+
+
+
+

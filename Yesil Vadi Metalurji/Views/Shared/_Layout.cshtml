@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-
+    <link rel="icon" href="~/Resimler/favicon.png" type="image/x-icon" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/web/css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -45,14 +45,6 @@
 
     <script>
 
-        jQuery(document).ready(function ($) {
-            $(".scroll").click(function (event) {
-                event.preventDefault();
-                $('html,body').animate({
-                    scrollTop: $(this.hash).offset().top
-                }, 900);
-            });
-        });
 
         addEventListener("load", function () {
             setTimeout(hideURLbar, 0);
@@ -62,18 +54,9 @@
             window.scrollTo(0, 1);
         }
 
-        $(document).ready(function () {
-
-            $().UItoTop({
-                easingType: 'easeOutQuart'
-            });
-
-        });
     </script>
 
-    <a href="#home" class="scroll" id="toTop" style="display: block;">
-        <span id="toTopHover" style="opacity: 1;"> </span>
-    </a>
+    
 
 
 </body>

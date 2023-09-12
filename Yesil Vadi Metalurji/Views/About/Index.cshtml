@@ -15,6 +15,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <link rel="icon" href="~/Resimler/favicon.png" type="image/x-icon" />
     <link href="~/web/css/bootstrap.css" rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="~/web/css/jquery.desoslide.css">
     <link href="~/web/css/styleurun.css" rel='stylesheet' type='text/css' />
@@ -49,25 +50,33 @@
                 <center><h4>@about.Subtitle</h4></center>
             }
             <hr />
-            @if (about.ContentStatus != false)
-            {
-                string description = about.Content;
-                int maxLineLength = 128;
-                List<string> descriptionLines = new List<string>();
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @if (about.ContentStatus != false)
+                            {
+                                string description = about.Content;
+                                int maxLineLength = 128;
+                                List<string> descriptionLines = new List<string>();
 
-                for (int i = 0; i < description.Length; i += maxLineLength)
-                {
-                    int remainingLength = Math.Min(maxLineLength, description.Length - i);
-                    descriptionLines.Add(description.Substring(i, remainingLength));
-                }
-                <center>
-                    @foreach (string line in descriptionLines)
-                    {
-                        @Html.Raw(line)<br />
-                    }
-                </center>
-                <hr />
-            }
+                                for (int i = 0; i < description.Length; i += maxLineLength)
+                                {
+                                    int remainingLength = Math.Min(maxLineLength, description.Length - i);
+                                    descriptionLines.Add(description.Substring(i, remainingLength));
+                                }
+                                <center>
+                                    @foreach (string line in descriptionLines)
+                                    {
+                                        @Html.Raw(line)<br />
+                                    }
+                                </center>
+                                <hr />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
             @if (about.Image == true)
             {
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -301,7 +310,7 @@
 
 
 
-                            });
+                                    });
         addEventListener("load", function () {
             setTimeout(hideURLbar, 0);
         }, false);
@@ -311,9 +320,6 @@
         }
     </script>
 
-    <a href="#home" class="scroll" id="toTop" style="display: block;">
-        <span id="toTopHover" style="opacity: 1;"> </span>
-    </a>
 </body>
 
 
