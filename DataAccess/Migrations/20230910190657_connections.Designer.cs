@@ -4,20 +4,52 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20230910190657_connections")]
+    partial class connections
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("AboutFooter", b =>
+                {
+                    b.Property<int>("AboutID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FooterID")
+                        .HasColumnType("int");
+
+                    b.HasKey("AboutID", "FooterID");
+
+                    b.HasIndex("FooterID");
+
+                    b.ToTable("AboutFooter");
+                });
+
+            modelBuilder.Entity("ContactFooter", b =>
+                {
+                    b.Property<int>("ContactID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FooterID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ContactID", "FooterID");
+
+                    b.HasIndex("FooterID");
+
+                    b.ToTable("ContactFooter");
+                });
 
             modelBuilder.Entity("Entity.Concrete.About", b =>
                 {
@@ -266,14 +298,24 @@ namespace DataAccess.Migrations
                     b.Property<bool>("Link")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("LinkID")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Suggestion")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("SuggestionID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasMaxLength(26)
                         .HasColumnType("nvarchar(26)");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("LinkID");
+
+                    b.HasIndex("SuggestionID");
 
                     b.ToTable("Footers");
                 });
@@ -430,6 +472,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ContactID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
@@ -449,6 +494,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("nvarchar(500)");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ContactID");
 
                     b.ToTable("Messages");
                 });
@@ -801,6 +848,84 @@ namespace DataAccess.Migrations
                     b.ToTable("Urunlers");
                 });
 
+            modelBuilder.Entity("FooterHomePage", b =>
+                {
+                    b.Property<int>("FooterID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HomePageID")
+                        .HasColumnType("int");
+
+                    b.HasKey("FooterID", "HomePageID");
+
+                    b.HasIndex("HomePageID");
+
+                    b.ToTable("FooterHomePage");
+                });
+
+            modelBuilder.Entity("FooterUrunler", b =>
+                {
+                    b.Property<int>("FooterID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UrunlerID")
+                        .HasColumnType("int");
+
+                    b.HasKey("FooterID", "UrunlerID");
+
+                    b.HasIndex("UrunlerID");
+
+                    b.ToTable("FooterUrunler");
+                });
+
+            modelBuilder.Entity("AboutFooter", b =>
+                {
+                    b.HasOne("Entity.Concrete.About", null)
+                        .WithMany()
+                        .HasForeignKey("AboutID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entity.Concrete.Footer", null)
+                        .WithMany()
+                        .HasForeignKey("FooterID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ContactFooter", b =>
+                {
+                    b.HasOne("Entity.Concrete.Contact", null)
+                        .WithMany()
+                        .HasForeignKey("ContactID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entity.Concrete.Footer", null)
+                        .WithMany()
+                        .HasForeignKey("FooterID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Entity.Concrete.Footer", b =>
+                {
+                    b.HasOne("Entity.Concrete.Link", null)
+                        .WithMany("Footer")
+                        .HasForeignKey("LinkID");
+
+                    b.HasOne("Entity.Concrete.Suggestion", null)
+                        .WithMany("Footer")
+                        .HasForeignKey("SuggestionID");
+                });
+
+            modelBuilder.Entity("Entity.Concrete.Message", b =>
+                {
+                    b.HasOne("Entity.Concrete.Contact", null)
+                        .WithMany("Message")
+                        .HasForeignKey("ContactID");
+                });
+
             modelBuilder.Entity("Entity.Concrete.OfferDetail", b =>
                 {
                     b.HasOne("Entity.Concrete.Offer", "Offer")
@@ -853,14 +978,59 @@ namespace DataAccess.Migrations
                     b.Navigation("Offer");
                 });
 
+            modelBuilder.Entity("FooterHomePage", b =>
+                {
+                    b.HasOne("Entity.Concrete.Footer", null)
+                        .WithMany()
+                        .HasForeignKey("FooterID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entity.Concrete.HomePage", null)
+                        .WithMany()
+                        .HasForeignKey("HomePageID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FooterUrunler", b =>
+                {
+                    b.HasOne("Entity.Concrete.Footer", null)
+                        .WithMany()
+                        .HasForeignKey("FooterID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entity.Concrete.Urunler", null)
+                        .WithMany()
+                        .HasForeignKey("UrunlerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Entity.Concrete.Category", b =>
                 {
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Entity.Concrete.Contact", b =>
+                {
+                    b.Navigation("Message");
+                });
+
+            modelBuilder.Entity("Entity.Concrete.Link", b =>
+                {
+                    b.Navigation("Footer");
+                });
+
             modelBuilder.Entity("Entity.Concrete.Offer", b =>
                 {
                     b.Navigation("OfferDetail");
+                });
+
+            modelBuilder.Entity("Entity.Concrete.Suggestion", b =>
+                {
+                    b.Navigation("Footer");
                 });
 #pragma warning restore 612, 618
         }

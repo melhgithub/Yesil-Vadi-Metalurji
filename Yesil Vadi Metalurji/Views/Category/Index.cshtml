@@ -8,8 +8,6 @@
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<h1>Kategori Listesi</h1>
-
 @await Html.PartialAsync("_ScriptImports")
 
 @using (Html.BeginForm("Filter", "Category", FormMethod.Post, new { id = "filterForm" }))

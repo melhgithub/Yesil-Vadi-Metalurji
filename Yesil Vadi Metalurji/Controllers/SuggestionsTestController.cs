@@ -12,7 +12,8 @@ using Yesil_Vadi_Metalurji.Models;
 
 namespace Yesil_Vadi_Metalurji.Controllers
 {
-    public class SuggestionsController : Controller
+    [Authorize(Policy = "MelhOnly")]
+    public class SuggestionsTestController : Controller
     {
         SuggestionManager suggestionManager = new SuggestionManager(new EFSuggestionRepository());
 
@@ -30,6 +31,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
             return View(model);
         }
 
+        
         [HttpGet]
         public async Task<IActionResult> GetSuggestionDetails(int suggestionId)
         {
@@ -129,7 +131,6 @@ namespace Yesil_Vadi_Metalurji.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> Add(SuggestionAddDto suggestion)
         {
             string message;

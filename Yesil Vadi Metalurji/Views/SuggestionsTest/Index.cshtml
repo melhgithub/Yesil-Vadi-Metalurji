@@ -1,0 +1,284 @@
+﻿@using Entity.Concrete
+@using Yesil_Vadi_Metalurji.Dto
+@using System.ComponentModel
+@using Newtonsoft.Json
+@model SuggestionViewModel
+@{
+    ViewData["Title"] = "Öneriler ve Görüşler";
+    Layout = "~/Views/Shared/_AdminTest.cshtml";
+}
+
+
+@await Html.PartialAsync("_ScriptImports")
+
+@using (Html.BeginForm("Filter", "SuggestionsTest", FormMethod.Post, new { id = "filterForm" }))
+{
+
+    var statusList = new List<SelectListItem>
+{
+        new SelectListItem { Value = "0", Text = "TÜMÜ" },
+        new SelectListItem { Value = "1", Text = "OKUNDU" },
+        new SelectListItem { Value = "2", Text = "BEKLİYOR" },
+    };
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-filter"></i>
+            Filtrele
+        </h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Status, "Durum:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.Status, statusList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.Mail, "E-Mail:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Mail, new { @class = "form-control", placeholder = "E-Mail" })
+            </div>
+            <div class="col-sm-6">
+                <dt>@Html.LabelFor(m => m.FilterDto.Content, "İçerik:")</dt>
+                @Html.TextBoxFor(m => m.FilterDto.Content, new { @class = "form-control", placeholder = "İçerik" })
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-cubes"></i>
+            Öneriler ve Görüşler
+        </h3>
+    </div>
+
+    <div class="card-body">
+
+        <div id="suggestionTable" class="table-responsive">
+            <table id="suggestionGrid" class="table table-bordered table-striped"></table>
+            <div id="suggestionGridPager"></div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+    var firstModal = null;
+
+    $(document).ready(function () {
+        filterSuggestions();
+
+        $('#filterForm select, #filterForm input[type="text"]').on('change', function () {
+            filterSuggestions();
+        });
+    });
+
+    function filterSuggestions() {
+        var formData = $('#filterForm').serialize();
+        console.log(formData);
+
+        var suggestionGrid = $('#suggestionGrid');
+
+        $.ajax({
+            url: '@Url.Action("Filter", "SuggestionsTest")',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (response) {
+                var data = response;
+                console.log(data);
+                showDatas(data);
+            },
+            error: function (error) {
+                console.log("Listeleme esnasında hata oluştu: ", error);
+            }
+        });
+    }
+
+    function showDatas(data) {
+        var suggestionGrid = $('#suggestionGrid');
+
+        if (suggestionGrid.length) {
+            suggestionGrid.jqGrid('GridUnload');
+
+            suggestionGrid.jqGrid({
+                data: data,
+                colModel: [
+                    { name: 'id', label: 'ID', width: 40 },
+                    { name: 'mail', label: 'E-Mail', width: 200 },
+                    { name: 'content', label: 'İçerik', width: 250 },
+                    {
+                        name: 'status',
+                        label: 'Durum',
+                        width: 130,
+                        formatter: function (cellValue) {
+                            var statusText = '';
+                            var statusStyle = '';
+
+                            switch (cellValue) {
+                                case 1:
+                                    statusText = 'OKUNDU';
+                                    statusStyle = 'color: green;';
+                                    break;
+                                case 2:
+                                    statusText = 'BEKLİYOR';
+                                    statusStyle = 'color: red;';
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            return '<span style="' + statusStyle + '">' + statusText + '</span>';
+                        }
+                    },
+                    {
+                        name: 'actions', label: '', width: 300,
+                        formatter: function (cellValue, options, rowObject) {
+                            if (rowObject.status === 1) {
+                                var buttons = '<button class="btn btn-warning open-detail-modal" ' +
+                                    'data-suggestionid="' + rowObject.id + '">Detaylar</button>';
+                            }
+                            if (rowObject.status === 2) {
+                                var buttons = '<button class="btn btn-success open-approve-modal" ' +
+                                    'data-suggestionid="' + rowObject.id + '">Onayla</button>' +
+                                    '<button class="btn btn-warning open-detail-modal" ' +
+                                    'data-suggestionid="' + rowObject.id + '">Detaylar</button>';
+                            }
+                            return buttons;
+                        }
+                    }
+                ],
+                pager: '#suggestionGridPager',
+                rowNum: 10,
+                rowList: [10, 20, 30, 40, 50],
+                sortname: 'id',
+                viewrecords: true,
+                autoheight: true,
+                autoWidth: true,
+                responsive: true,
+
+            });
+        }
+    }
+
+
+    function openDetailModal(button) {
+        var data = button.dataset;
+
+        $.ajax({
+            url: '@Url.Action("GetSuggestionDetails", "SuggestionsTest")',
+            type: 'GET',
+            data: { suggestionId: data.suggestionid },
+            dataType: 'json',
+            success: function (response) {
+                var detailHtml = '';
+
+                if (response.length > 0) {
+                    var firstDetail = response[0];
+
+                    detailHtml += `
+                        <div class="offer-detail">
+                            <p>E-Mail: ${firstDetail.mail}</p>
+                        </div>
+                        <hr class="divider">
+                    `;
+
+                    for (var i = 0; i < response.length; i++) {
+                        var detail = response[i];
+                        detailHtml += `
+                            <div class="offer-detail">
+                                <p>İçerik: ${detail.content}</p>
+                            </div>
+                            <hr class="divider">
+                        `;
+                    }
+                }
+
+                firstModal = $.dialog({
+                    title: 'Öneri/Görüş Detayları',
+                    content: detailHtml
+                });
+            },
+            error: function (error) {
+                console.log("Detayları getirirken hata oluştu: ", error);
+            }
+        });
+    }
+
+
+
+    function openApproveSuggestionModal(button) {
+    var data = button.dataset;
+        firstModal = $.dialog({
+        title: 'Onayla',
+         content: `
+            <!-- ${JSON.stringify(data)} -->
+            <form method="post" action="@Url.Action("ApproveSuggestion", "SuggestionsTest")">
+
+                <div class="form-group">
+                    <label>Onaylamak istiyor musunuz ?</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="ID" name="ID" class="form-control" value="${data.suggestionid}" required/>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Onayla" class="btn btn-primary w-100" />
+                </div>
+
+            </form>
+        `
+    });
+    }
+
+
+    $(document).on('click', '.open-detail-modal', function () {
+        openDetailModal(this);
+    });
+
+    $(document).on('click', '.open-approve-modal', function () {
+        openApproveSuggestionModal(this);
+    });
+
+
+    $(document).on('submit', 'form', function (e) {
+        e.preventDefault();
+        var form = $(this);
+
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            success: function (response) {
+                var message = response;
+                mesajDialog = $.dialog({
+                    title: 'İşlem Sonucu',
+                    content: message,
+                    closeButton: false
+                });
+                setTimeout(function () {
+                    mesajDialog.close();
+                    if (firstModal) {
+                        firstModal.close();
+                    }
+                    filterSuggestions();
+                }, 1500);
+            },
+            error: function (error) {
+                alert("Başarısız");
+            }
+        });
+    });
+
+</script>
+
+
+
+

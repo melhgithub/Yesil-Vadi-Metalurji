@@ -96,7 +96,7 @@
             <br />
             <div class="container">
                 <div class="contact_grid_right">
-                    <form action="#" method="post">
+                    <form method="post" action="/Messages/Add" class="subscribe_form" id="addForm">
                         <div class="row contact_left_grid">
                             <div class="col-md-6 con-left">
                                 <div class="form-group">
@@ -105,7 +105,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleFormControlInput1">E-Mail :</label>
-                                    <input class="form-control" type="email" name="Email" placeholder="" required="">
+                                    <input class="form-control" type="email" name="Mail" placeholder="" required="">
                                 </div>
                                 <div class="form-group">
                                     <label for="validationCustom03 my-2">Konu :</label>
@@ -115,12 +115,12 @@
                             <div class="col-md-6 con-right">
                                 <div class="form-group">
                                     <label for="textarea">Mesaj :</label>
-                                    <textarea id="textarea" placeholder=""></textarea>
+                                    <textarea id="textarea" name="Content" placeholder=""></textarea>
+                                    <input class="w-100" type="submit" value="Gönder"
+                                           onmouseover="this.style.backgroundColor='green'"
+                                           onmouseout="this.style.backgroundColor='black'">
+                                    <br />
                                 </div>
-                                <input class="form-control" type="submit" value="Gönder"
-                                       onmouseover="this.style.backgroundColor='green'"
-                                       onmouseout="this.style.backgroundColor='black'">
-                                <br />
                             </div>
                             <br />
                         </div>
