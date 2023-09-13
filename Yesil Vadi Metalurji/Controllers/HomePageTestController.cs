@@ -46,6 +46,14 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     updatedPage.Content = homepage.Content;
                     updatedPage.Title = homepage.Title;
                     updatedPage.Subtitle = homepage.Subtitle;
+                    updatedPage.IsOrtaklarimiz = homepage.IsOrtaklarimiz;
+                    updatedPage.SayisalVeri1 = homepage.SayisalVeri1;
+                    updatedPage.SayisalVeri2 = homepage.SayisalVeri2;
+                    updatedPage.SayisalVeriYazisi = homepage.SayisalVeriYazisi;
+                    updatedPage.Hizmetlerimiz = homepage.Hizmetlerimiz;
+                    updatedPage.Aciklama1 = homepage.Aciklama1;
+                    updatedPage.Aciklama2 = homepage.Aciklama2;
+                    updatedPage.Aciklama3 = homepage.Aciklama3;
                     updatedPage.Status = (HomePageStatuses)homepage.Status;
                     if (homepage.Image == "1")
                     {
@@ -64,6 +72,16 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     else
                     {
                         updatedPage.SubtitleStatus = false;
+                    }
+
+
+                    if (homepage.TitleStatus == "1")
+                    {
+                        updatedPage.TitleStatus = true;
+                    }
+                    else
+                    {
+                        updatedPage.TitleStatus = false;
                     }
 
                     if (homepage.ContentStatus == "1")
@@ -92,6 +110,72 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     }
 
 
+                    if (homepage.HakkimizdaFoto1 != null)
+                    {
+                        int imageid = int.Parse(homepage.HakkimizdaFoto1);
+                        var image = await imageManager.GetByID(imageid);
+                        homepage.HakkimizdaFoto1 = image.Name;
+                    }
+                    if (homepage.HakkimizdaFoto2 != null)
+                    {
+                        int imageid = int.Parse(homepage.HakkimizdaFoto2);
+                        var image = await imageManager.GetByID(imageid);
+                        homepage.HakkimizdaFoto2 = image.Name;
+                    }
+                    if (homepage.HizmetlerimizFoto1 != null)
+                    {
+                        int imageid = int.Parse(homepage.HizmetlerimizFoto1);
+                        var image = await imageManager.GetByID(imageid);
+                        homepage.HizmetlerimizFoto1 = image.Name;
+                    }
+                    if (homepage.HizmetlerimizFoto2 != null)
+                    {
+                        int imageid = int.Parse(homepage.HizmetlerimizFoto2);
+                        var image = await imageManager.GetByID(imageid);
+                        homepage.HizmetlerimizFoto2 = image.Name;
+                    }
+                    if (homepage.HizmetlerimizFoto3 != null)
+                    {
+                        int imageid = int.Parse(homepage.HizmetlerimizFoto3);
+                        var image = await imageManager.GetByID(imageid);
+                        homepage.HizmetlerimizFoto3 = image.Name;
+                    }
+                    if (homepage.IsOrtaklarimizFoto1 != null)
+                    {
+                        int imageid = int.Parse(homepage.IsOrtaklarimizFoto1);
+                        var image = await imageManager.GetByID(imageid);
+                        homepage.IsOrtaklarimizFoto1 = image.Name;
+                    }
+                    if (homepage.IsOrtaklarimizFoto2 != null)
+                    {
+                        int imageid = int.Parse(homepage.IsOrtaklarimizFoto2);
+                        var image = await imageManager.GetByID(imageid);
+                        homepage.IsOrtaklarimizFoto2 = image.Name;
+                    }
+                    if (homepage.IsOrtaklarimizFoto3 != null)
+                    {
+                        int imageid = int.Parse(homepage.IsOrtaklarimizFoto3);
+                        var image = await imageManager.GetByID(imageid);
+                        homepage.IsOrtaklarimizFoto3 = image.Name;
+                    }
+                    if (homepage.IsOrtaklarimizFoto4 != null)
+                    {
+                        int imageid = int.Parse(homepage.IsOrtaklarimizFoto4);
+                        var image = await imageManager.GetByID(imageid);
+                        homepage.IsOrtaklarimizFoto4 = image.Name;
+                    }
+                    if (homepage.IsOrtaklarimizFoto5 != null)
+                    {
+                        int imageid = int.Parse(homepage.IsOrtaklarimizFoto5);
+                        var image = await imageManager.GetByID(imageid);
+                        homepage.IsOrtaklarimizFoto5 = image.Name;
+                    }
+                    if (homepage.IsOrtaklarimizFoto6 != null)
+                    {
+                        int imageid = int.Parse(homepage.IsOrtaklarimizFoto6);
+                        var image = await imageManager.GetByID(imageid);
+                        homepage.IsOrtaklarimizFoto6 = image.Name;
+                    }
                     if (homepage.ImageUrl1 != null)
                     {
                         int imageid = int.Parse(homepage.ImageUrl1);
@@ -156,6 +240,17 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
 
 
+                    updatedPage.HakkimizdaFoto1 = homepage.HakkimizdaFoto1;
+                    updatedPage.HakkimizdaFoto2 = homepage.HakkimizdaFoto2;
+                    updatedPage.HizmetlerimizFoto1 = homepage.HizmetlerimizFoto1;
+                    updatedPage.HizmetlerimizFoto2 = homepage.HizmetlerimizFoto2;
+                    updatedPage.HizmetlerimizFoto3 = homepage.HizmetlerimizFoto3;
+                    updatedPage.IsOrtaklarimizFoto1 = homepage.IsOrtaklarimizFoto1;
+                    updatedPage.IsOrtaklarimizFoto2 = homepage.IsOrtaklarimizFoto2;
+                    updatedPage.IsOrtaklarimizFoto3 = homepage.IsOrtaklarimizFoto3;
+                    updatedPage.IsOrtaklarimizFoto4 = homepage.IsOrtaklarimizFoto4;
+                    updatedPage.IsOrtaklarimizFoto5 = homepage.IsOrtaklarimizFoto5;
+                    updatedPage.IsOrtaklarimizFoto6 = homepage.IsOrtaklarimizFoto6;
                     updatedPage.ImageUrl1 = homepage.ImageUrl1;
                     updatedPage.ImageUrl2 = homepage.ImageUrl2;
                     updatedPage.ImageUrl3 = homepage.ImageUrl3;

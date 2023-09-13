@@ -21,6 +21,7 @@ namespace Yesil_Vadi_Metalurji.Dto
         public string Image { get; set; }
         public string SubtitleStatus { get; set; }
         public string ContentStatus { get; set; }
+        public string TitleStatus { get; set; }
 
     }
 }

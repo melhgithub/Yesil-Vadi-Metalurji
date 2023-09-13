@@ -21,11 +21,18 @@
         <br />
 
         <section class="main-content-w3layouts-agileits">
-            <center><h3 class="tittle">@urunler.Title</h3></center>
-            @if (urunler.SubtitleStatus != false)
+            @if (urunler.TitleStatus == true)
             {
-                <center><h4>@urunler.Subtitle</h4></center>
-                <hr />
+                <center><h4 class="tittle">@urunler.Title</h4></center>
+                if (urunler.SubtitleStatus == false)
+                {
+                    <hr />
+                }
+                else
+                {
+                    <center><h4>@urunler.Subtitle</h4></center>
+                    <hr />
+                }
             }
             @if (urunler.ContentStatus != false)
             {
@@ -40,10 +47,18 @@
                 }
 
                 <center>
-                    @foreach (string line in descriptionLines)
-                    {
-                        @Html.Raw(line)<br />
-                    }
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    @foreach (string line in descriptionLines)
+                                    {
+                                        @Html.Raw(line)
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </center>
                 <hr />
             }
@@ -51,10 +66,27 @@
                 <div class="inner-sec">
                     <div class="row">
                         <div class="col-md-3">
-                            <div class="list-group">
+                            <div class="list-group list-group-flush">
                                 @foreach (var category in Model.Categories)
                                 {
-                                    <a href="/Urunler/Kategori?kategoriID=@category.ID" class="list-group-item list-group-item-action">@category.Name</a>
+                                    @foreach (var selected in Model.Category)
+                                    {
+                                        if (selected.Name == category.Name)
+                                        {
+                                            <a href="/Urunler/Kategori?kategoriID=@category.ID" class="list-group-item list-group-item-action active"> >> @category.Name</a>
+                                        }
+                                        else
+                                        {
+                                            if (category.Active == false)
+                                            {
+                                                <a href="/Urunler/Kategori?kategoriID=@category.ID" class="list-group-item list-group-item-action disabled"> >> @category.Name</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/Urunler/Kategori?kategoriID=@category.ID" class="list-group-item list-group-item-action"> >> @category.Name</a>
+                                            }
+                                        }
+                                    }
                                 }
                             </div>
                         </div>
@@ -65,9 +97,21 @@
                             }
                             @foreach (var category in Model.Category)
                             {
-                                <div class="categoryInfo" style="margin-left: 10px;">
-                                    <h4 class="title">@category.Name</h4><br />
-                                    <p>@category.Description</p>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="categoryInfo" style="margin-left: 10px;">
+                                                    <h4 class="title">@category.Name</h4>
+                                                    @if (category.Description != null)
+                                                    {
+                                                        <br />
+                                                        <p>@category.Description</p>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             }
                             <hr />

@@ -150,17 +150,24 @@
 
             <br />
         }
-        <center><h3 class="tittle">@homepage.Title</h3></center>
-        @if (homepage.SubtitleStatus != false)
-        {
-            <center><h4>@homepage.Subtitle</h4></center>
-        }
-        <hr />
 
+        if (homepage.TitleStatus == true)
+        {
+            <center><h3 class="tittle">@homepage.Title</h3></center>
+            if (homepage.SubtitleStatus == false)
+            {
+                <hr />
+            }
+            else
+            {
+                <center><h4>@homepage.Subtitle</h4></center>
+                <hr />
+            }
+        }
         @if (homepage.ContentStatus != false)
         {
-            string description = homepage.Content;
             int maxLineLength = 64;
+            string description = homepage.Content;
             List<string> descriptionLines = new List<string>();
 
             for (int i = 0; i < description.Length; i += maxLineLength)
@@ -168,104 +175,302 @@
                 int remainingLength = Math.Min(maxLineLength, description.Length - i);
                 descriptionLines.Add(description.Substring(i, remainingLength));
             }
+
+
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-6">
-                            @foreach (string line in descriptionLines)
+                        @if (homepage.Content != null || homepage.HakkimizdaFoto1 != null || homepage.HakkimizdaFoto2 != null)
+                        {
+                            maxLineLength = 64;
+
+
+                            @if (homepage.Content != null)
                             {
-                                @Html.Raw(line)<br />
+                                <div class="col-sm-6">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-10">
+                                        @foreach (string line in descriptionLines)
+                                        {
+                                            @Html.Raw(line)
+                                        }
+                                        <div class="read">
+                                            <a href="/About/Index" class="btn btn-primary read-m">Devamını Oku</a>
+                                        </div>
+                                    </div>
+                                </div>
                             }
-                            <div class="read">
-                                <a href="/About/Index" class="btn btn-primary read-m">Devamını Oku</a>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            ilk foto
-                        </div>
-                        <div class="col-sm-3">
-                            İkinci foto
-                        </div>
+                            else
+                            {
+                                <div class="col-sm-6">
+                                    <div class="col-sm-12">
+                                    </div>
+                                </div>
+                            }
+                            @if (homepage.HakkimizdaFoto1 != null && homepage.HakkimizdaFoto2 != null)
+                            {
+                                <div class="col-sm-3">
+                                    <img src="/Resimler/@homepage.HakkimizdaFoto1" alt="Image" class="img-fluid" style="border: 5px solid transparent; transition: border 0.5s ease-in-out;"
+                                         onmouseover="this.style.border = '5px solid green';"
+                                         onmouseout="this.style.border = '5px solid transparent';">
+                                </div>
+                                <div class="col-sm-3">
+                                    <img src="/Resimler/@homepage.HakkimizdaFoto2" alt="Image" class="img-fluid" style="border: 5px solid transparent; transition: border 0.5s ease-in-out;"
+                                         onmouseover="this.style.border = '5px solid green';"
+                                         onmouseout="this.style.border = '5px solid transparent';">
+                                </div>
+                            }
+                            @if (homepage.HakkimizdaFoto1 != null && homepage.HakkimizdaFoto2 == null)
+                            {
+                                <div class="col-sm-6">
+                                    <img src="/Resimler/@homepage.HakkimizdaFoto1" alt="Image" class="img-fluid" style="border: 5px solid transparent; transition: border 0.5s ease-in-out;"
+                                         onmouseover="this.style.border = '5px solid green';"
+                                         onmouseout="this.style.border = '5px solid transparent';">
+                                </div>
+                            }
+                            @if (homepage.HakkimizdaFoto2 != null && homepage.HakkimizdaFoto1 == null)
+                            {
+                                <div class="col-sm-6">
+                                    <img src="/Resimler/@homepage.HakkimizdaFoto2" alt="Image" class="img-fluid" style="border: 5px solid transparent; transition: border 0.5s ease-in-out;"
+                                         onmouseover="this.style.border = '5px solid green';"
+                                         onmouseout="this.style.border = '5px solid transparent';">
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            maxLineLength = 120;
+                            @if (homepage.Content != null)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-8">
+                                        @foreach (string line in descriptionLines)
+                                        {
+                                            @Html.Raw(line)
+                                        }
+                                        <div class="read">
+                                            <a href="/About/Index" class="btn btn-primary read-m">Devamını Oku</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-6">
+                                    <div class="col-sm-12">
+                                    </div>
+                                </div>
+                            }
+                        }
                     </div>
                 </div>
 
             </div>
-            <br />
-            <br />
-            <div class="ad-inf-sec bg-light" style="background-color: #F5F5DC;">
-                <div class="container">
-                    <div class="address row">
-                        <div class="col-lg-5 address-grid">
-                            UZUN YAZI
-                        </div>
-                        <div class="col-lg-4 address-grid">
-                            SAYISAL VERİ 1
-                        </div>
-                        <div class="col-lg-3 address-grid">
-                            SAYISAL VERİ 2
+            @if (homepage.SayisalVeriYazisi != null)
+            {
+                <br />
+                <br />
+                <div class="card" style="background-color: #F5F5DC;">
+                    <div class="card-body">
+                        <div class="row">
+                            @if (homepage.SayisalVeriYazisi != null)
+                            {
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-5">@Html.Raw(@homepage.SayisalVeriYazisi)</div>
+                                <div class="col-sm-1"></div>
+                            }
+                            @if (homepage.SayisalVeri1 != null)
+                            {
+                                <div class="col-sm-2">@Html.Raw(@homepage.SayisalVeri1)</div>
+                                @if (homepage.SayisalVeri2 == null)
+                                {
+                                    <div class="col-sm-3"></div>
+                                }
+                            }
+                            @if (homepage.SayisalVeri2 != null)
+                            {
+                                <div class="col-sm-2">@Html.Raw(@homepage.SayisalVeri2)</div>
+                                @if (homepage.SayisalVeri1 == null)
+                                {
+                                    <div class="col-sm-3"></div>
+                                }
+                            }
+                            @if (homepage.SayisalVeri1 != null || homepage.SayisalVeri2 != null)
+                            {
+                                <div class="col-sm-1"></div>
+                            }
                         </div>
                     </div>
                 </div>
-            </div>
-            <br />
-            <br />
+                <br />
+                <br />
+            }
 
-            <div class="card">
-                <div class="card-title">
-                    <center><h3>hizmetlerimiz</h3></center>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            ilk foto
-                            <hr />
-                            ilk açıklama
-                        </div>
-                        <div class="col-sm-4">
-                            ikinci foto
-                            <hr />
-                            ikinci açıklama
-                        </div>
-                        <div class="col-sm-4">
-                            üçüncü foto
-                            <hr />
-                            üçüncü açıklama
-                        </div>
+            @if (homepage.HizmetlerimizFoto1 != null || homepage.HizmetlerimizFoto2 != null || homepage.HizmetlerimizFoto3 != null)
+            {
+                <div class="card">
+                    <div class="card-title">
+                        <center>
+                            @if (homepage.Hizmetlerimiz != null)
+                            {
+                                <h3>
+                                    @homepage.Hizmetlerimiz
+                                </h3>
+                            }
+                            else
+                            {
+                                <h3>
+                                    Hizmetlerimiz
+                                </h3>
+                            }
+                        </center>
                     </div>
-                </div>
-            </div>
-            <br />
-            <br />
+                    <div class="card-body">
+                        <div class="row">
+                            @if (homepage.HizmetlerimizFoto1 != null)
+                            {
+                                <div class="col-sm-4">
+                                    <img src="/Resimler/@homepage.HizmetlerimizFoto1" alt="Image" class="img-fluid" style="border: 5px solid transparent; transition: border 0.5s ease-in-out;"
+                                         onmouseover="this.style.border = '5px solid green';"
+                                         onmouseout="this.style.border = '5px solid transparent';">
+                                    <hr />
+                                    @if (homepage.Aciklama1 != null)
+                                    {
+                                        <p>
+                                            @Html.Raw(@homepage.Aciklama1)
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p>Açıklama 1</p>
+                                    }
+                                </div>
+                            }
+                            @if (homepage.HizmetlerimizFoto2 != null)
+                            {
+                                <div class="col-sm-4">
+                                    <img src="/Resimler/@homepage.HizmetlerimizFoto2" alt="Image" class="img-fluid" style="border: 5px solid transparent; transition: border 0.5s ease-in-out;"
+                                         onmouseover="this.style.border = '5px solid green';"
+                                         onmouseout="this.style.border = '5px solid transparent';">
+                                    <hr />
+                                    @if (homepage.Aciklama2 != null)
+                                    {
 
-            <div class="card" style="background-color: #F5F5DC;">
-                <div class="card-title">
-                    <center><h3>iş ortaklarımız</h3></center>
+                                        <p>
+                                            @Html.Raw(@homepage.Aciklama2)
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p>Açıklama 2</p>
+                                    }
+                                </div>
+                            }
+                            @if (homepage.HizmetlerimizFoto3 != null)
+                            {
+                                <div class="col-sm-4">
+                                    <img src="/Resimler/@homepage.HizmetlerimizFoto3" alt="Image" class="img-fluid" style="border: 5px solid transparent; transition: border 0.5s ease-in-out;"
+                                         onmouseover="this.style.border = '5px solid green';"
+                                         onmouseout="this.style.border = '5px solid transparent';">
+                                    <hr />
+                                    @if (homepage.Aciklama3 != null)
+                                    {
+
+                                        <p>
+                                            @Html.Raw(@homepage.Aciklama3)
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p>Açıklama 3</p>
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            ilk foto
-                        </div>
-                        <div class="col-sm-4">
-                            ikinci foto
-                        </div>
-                        <div class="col-sm-4">
-                            üçüncü foto
-                        </div>
-                        <div class="col-sm-4">
-                            dördüncü foto
-                        </div>
-                        <div class="col-sm-4">
-                            beşinci foto
-                        </div>
-                        <div class="col-sm-4">
-                            altıncı foto
+                <br />
+                <br />
+            }
+
+            @if (homepage.IsOrtaklarimizFoto1 != null || homepage.IsOrtaklarimizFoto2 != null || homepage.IsOrtaklarimizFoto3 != null || homepage.IsOrtaklarimizFoto4 != null || homepage.IsOrtaklarimizFoto5 != null || homepage.IsOrtaklarimizFoto6 != null)
+            {
+                <div class="card" style="background-color: #F5F5DC;">
+                    <br />
+                    <div class="card-title">
+                        <center>
+                            @if (homepage.IsOrtaklarimiz != null)
+                            {
+
+                                <h3>
+                                    @homepage.IsOrtaklarimiz
+                                </h3>
+                            }
+                            else
+                            {
+                                <h3>
+                                    İş Ortaklarımız
+                                </h3>
+                            }
+                        </center>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @if (homepage.IsOrtaklarimizFoto1 != null)
+                            {
+                                <div class="col-sm-4">
+                                    <img src="/Resimler/@homepage.IsOrtaklarimizFoto1" alt="Image" class="img-fluid" style="border: 5px solid transparent; transition: border 0.5s ease-in-out;"
+                                         onmouseover="this.style.border = '5px solid green';"
+                                         onmouseout="this.style.border = '5px solid transparent';">
+                                </div>
+                            }
+                            @if (homepage.IsOrtaklarimizFoto2 != null)
+                            {
+                                <div class="col-sm-4">
+                                    <img src="/Resimler/@homepage.IsOrtaklarimizFoto2" alt="Image" class="img-fluid" style="border: 5px solid transparent; transition: border 0.5s ease-in-out;"
+                                         onmouseover="this.style.border = '5px solid green';"
+                                         onmouseout="this.style.border = '5px solid transparent';">
+                                </div>
+                            }
+                            @if (homepage.IsOrtaklarimizFoto3 != null)
+                            {
+                                <div class="col-sm-4">
+                                    <img src="/Resimler/@homepage.IsOrtaklarimizFoto3" alt="Image" class="img-fluid" style="border: 5px solid transparent; transition: border 0.5s ease-in-out;"
+                                         onmouseover="this.style.border = '5px solid green';"
+                                         onmouseout="this.style.border = '5px solid transparent';">
+                                </div>
+                            }
+                            @if (homepage.IsOrtaklarimizFoto4 != null)
+                            {
+                                <div class="col-sm-4">
+                                    <img src="/Resimler/@homepage.IsOrtaklarimizFoto4" alt="Image" class="img-fluid" style="border: 5px solid transparent; transition: border 0.5s ease-in-out;"
+                                         onmouseover="this.style.border = '5px solid green';"
+                                         onmouseout="this.style.border = '5px solid transparent';">
+                                </div>
+                            }
+                            @if (homepage.IsOrtaklarimizFoto5 != null)
+                            {
+                                <div class="col-sm-4">
+                                    <img src="/Resimler/@homepage.IsOrtaklarimizFoto5" alt="Image" class="img-fluid" style="border: 5px solid transparent; transition: border 0.5s ease-in-out;"
+                                         onmouseover="this.style.border = '5px solid green';"
+                                         onmouseout="this.style.border = '5px solid transparent';">
+                                </div>
+                            }
+                            @if (homepage.IsOrtaklarimizFoto6 != null)
+                            {
+                                <div class="col-sm-4">
+                                    <img src="/Resimler/@homepage.IsOrtaklarimizFoto6" alt="Image" class="img-fluid" style="border: 5px solid transparent; transition: border 0.5s ease-in-out;"
+                                         onmouseover="this.style.border = '5px solid green';"
+                                         onmouseout="this.style.border = '5px solid transparent';">
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
-            </div>
-            <br />
-            <br />
+            }
         }
 
 

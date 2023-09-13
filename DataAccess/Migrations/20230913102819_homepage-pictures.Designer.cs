@@ -4,14 +4,16 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20230913102819_homepage-pictures")]
+    partial class homepagepictures
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,9 +94,6 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TitleStatus")
-                        .HasColumnType("bit");
 
                     b.HasKey("ID");
 
@@ -241,9 +240,6 @@ namespace DataAccess.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("TitleStatus")
-                        .HasColumnType("bit");
-
                     b.HasKey("ID");
 
                     b.ToTable("Contacts");
@@ -291,15 +287,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Aciklama1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Aciklama2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Aciklama3")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
@@ -319,9 +306,6 @@ namespace DataAccess.Migrations
                     b.Property<string>("HakkimizdaFoto2")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Hizmetlerimiz")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HizmetlerimizFoto1")
                         .HasMaxLength(200)
@@ -378,9 +362,6 @@ namespace DataAccess.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("IsOrtaklarimiz")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("IsOrtaklarimizFoto1")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -405,15 +386,6 @@ namespace DataAccess.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("SayisalVeri1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SayisalVeri2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SayisalVeriYazisi")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -425,9 +397,6 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TitleStatus")
-                        .HasColumnType("bit");
 
                     b.HasKey("ID");
 
@@ -872,9 +841,6 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TitleStatus")
-                        .HasColumnType("bit");
 
                     b.HasKey("ID");
 

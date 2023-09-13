@@ -78,7 +78,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
             }
             else
             {
-                return Json(new { success = false });
+                return Json(new { success = false, message = "Geçersiz kullanıcı adı veya şifre." });
             }
         }
 

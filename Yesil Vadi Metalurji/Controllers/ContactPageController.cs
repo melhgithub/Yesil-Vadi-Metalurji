@@ -77,6 +77,16 @@ namespace Yesil_Vadi_Metalurji.Controllers
                         updatedContact.SubtitleStatus = false;
                     }
 
+
+                    if (contact.TitleStatus == "1")
+                    {
+                        updatedContact.TitleStatus = true;
+                    }
+                    else
+                    {
+                        updatedContact.TitleStatus = false;
+                    }
+
                     if (contact.ContentStatus == "1")
                     {
                         updatedContact.ContentStatus = true;

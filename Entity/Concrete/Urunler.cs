@@ -30,5 +30,6 @@ namespace Entity.Concrete
         public bool Image { get; set; }
         public bool SubtitleStatus { get; set; }
         public bool ContentStatus { get; set; }
+        public bool TitleStatus { get; set; }
     }
 }

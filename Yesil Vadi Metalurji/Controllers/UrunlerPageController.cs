@@ -52,6 +52,15 @@ namespace Yesil_Vadi_Metalurji.Controllers
                         updatedUrunler.SubtitleStatus = false;
                     }
 
+                    if (urunler.TitleStatus == "1")
+                    {
+                        updatedUrunler.TitleStatus = true;
+                    }
+                    else
+                    {
+                        updatedUrunler.TitleStatus = false;
+                    }
+
                     if (urunler.ContentStatus == "1")
                     {
                         updatedUrunler.ContentStatus = true;

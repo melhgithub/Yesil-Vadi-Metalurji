@@ -46,162 +46,162 @@
 
     @foreach (var product in Model.Products)
     {
-        <br />
+        if (product.Category.Active == true && product.Active == true)
+        {
+            <br />
 
-        <h3 class="tittle">@product.Category.Name</h3>
+            <h3 class="tittle">@product.Category.Name</h3>
 
-        <section class="main-content-w3layouts-agileits">
-            <div class="container">
-                <div class="row">
-                    <!--left-->
-                    <div class="col-lg-7 left-blog-info-w3layouts-agileits text-left spacing-between">
-                        <div class="blog-grid-top">
-                            <div class="b-grid-top">
-                                <div class="blog_info_left_grid">
-                                    <a href="/Urunler/UrunDetaylari?urunID=@product.ID">
-                                        <img src="~/Resimler/@product.ImageUrl1" class="img-fluid" alt="">
-                                    </a>
-                                </div>
-                                <div class="blog-info-middle">
-                                    <ul>
-                                        <li>
-                                            <a href="#">
-                                                <i class="far fa-calendar-alt"></i> @(((DateTime)product.CreateDate).ToString("dd-MMM-yyyy"))
+            
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-1"></div>
+                                    <div class="col-sm-5">
+                                        <div class="blog_info_left_grid">
+                                            <a href="/Urunler/UrunDetaylari?urunID=@product.ID">
+                                                <img src="~/Resimler/@product.ImageUrl1" class="img-fluid" alt="">
                                             </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="b-grid-bottom">
-                                @if (product.ImageUrl2 != null)
-                                {
-                                    <hr />
-                                    <h4>Ölçüler:</h4><br />
-                                    <div class="blog_info_right_grid">
-                                        <a href="/Urunler/UrunDetaylari?urunID=@product.ID">
-                                            <img src="~/Resimler/@product.ImageUrl2" class="img-fluid" alt="">
-                                        </a>
+                                        </div>
+                                        <div class="blog-info-middle">
+                                            <ul>
+                                                <li>
+                                                    <a href="#">
+                                                        <i class="far fa-calendar-alt"></i> @(((DateTime)product.CreateDate).ToString("dd-MMM-yyyy"))
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                }
+                                    <div class="col-sm-1"></div>
+                                    <div class="col-sm-4">
+                                        <h3>
+                                            <a href="/Urunler/UrunDetaylari?urunID=@product.ID">@product.Name</a>
+                                        </h3>
+                                        <hr />
+                                        <h4>Ürün;</h4>
+                                        @{
+                                            string description = product.Description;
+                                            int maxLineLength = 54;
+                                            List<string> descriptionLines = new List<string>();
+
+                                            for (int i = 0; i < description.Length; i += maxLineLength)
+                                            {
+                                                int remainingLength = Math.Min(maxLineLength, description.Length - i);
+                                                descriptionLines.Add(description.Substring(i, remainingLength));
+                                            }
+                                        }
+
+                                        @foreach (string line in descriptionLines)
+                                        {
+                                            <p>@line</p>
+                                        }
+                                        <br />
+
+                                        <a href="/Contact" class="btn btn-primary read-m">İletişime Geç</a>
+                                        <a href="/Urunler/TeklifVer?urunID=@product.ID" class="btn btn-primary read-m" id="teklifButon">Teklif Ver</a>
+                                    </div>
+                                    <div class="col-sm-1"></div>
+                                    <div class="col-sm-1"> </div>
+                                    <div class="col-sm-10">
+                                        @if (product.ImageUrl2 != null)
+                                        {
+                                            <hr />
+                                            <h4>Ölçüler:</h4><br />
+                                            <div class="blog_info_right_grid">
+                                                <a href="/Urunler/UrunDetaylari?urunID=@product.ID">
+                                                    <img src="~/Resimler/@product.ImageUrl2" class="img-fluid" alt="">
+                                                </a>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="col-sm-1"> </div>
+                                </div>
+                                
                             </div>
-
                         </div>
 
+
+
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+
+                    @if (!string.IsNullOrEmpty(product.ImageUrl3))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(product.ImageUrl4))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(product.ImageUrl5))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                    }
+                    @if (!string.IsNullOrEmpty(product.ImageUrl6))
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+                    }
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl1');">
+                        <div class="carousel-caption">
+                            <h3>@product.Name</h3>
+                        </div>
+                        <img src="~/Resimler/@product.ImageUrl1" class="d-block w-100" alt="Product Image">
                     </div>
-                    <!--right-->
-                    <aside class="col-lg-5 agileits-w3ls-right-blog-con text-right spacing-between">
-                        <div class="right-blog-info text-left">
-                            <div class="tech-btm">
-                                <h3>
-                                    <a href="/Urunler/UrunDetaylari?urunID=@product.ID">@product.Name</a>
-                                </h3>
-                                <hr />
-                                <h4>Ürün;</h4>
-                                @{
-                                    string description = product.Description;
-                                    int maxLineLength = 54;
-                                    List<string> descriptionLines = new List<string>();
-
-                                    for (int i = 0; i < description.Length; i += maxLineLength)
-                                    {
-                                        int remainingLength = Math.Min(maxLineLength, description.Length - i);
-                                        descriptionLines.Add(description.Substring(i, remainingLength));
-                                    }
-                                }
-
-                                @foreach (string line in descriptionLines)
-                                {
-                                    <p>@line</p>
-                                }
-                                <br />
-
-                                <a href="/Contact" class="btn btn-primary read-m">İletişime Geç</a>
-                                <a href="/Urunler/TeklifVer?urunID=@product.ID" class="btn btn-primary read-m" id="teklifButon">Teklif Ver</a>
-
-
+                    @if (!string.IsNullOrEmpty(product.ImageUrl3))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl3');">
+                            <div class="carousel-caption">
                             </div>
+                            <img src="~/Resimler/@product.ImageUrl3" class="d-block w-100" alt="Product Image">
                         </div>
-
-                    </aside>
+                    }
+                    @if (!string.IsNullOrEmpty(product.ImageUrl4))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl4');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@product.ImageUrl4" class="d-block w-100" alt="Product Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(product.ImageUrl5))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl5');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@product.ImageUrl5" class="d-block w-100" alt="Product Image">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(product.ImageUrl6))
+                    {
+                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl6');">
+                            <div class="carousel-caption">
+                            </div>
+                            <img src="~/Resimler/@product.ImageUrl6" class="d-block w-100" alt="Product Image">
+                        </div>
+                    }
                 </div>
+
+
+
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Önceki</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Sonraki</span>
+                </a>
             </div>
-        </section>
-
-
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-
-                @if (!string.IsNullOrEmpty(product.ImageUrl3))
-                {
-                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                }
-                @if (!string.IsNullOrEmpty(product.ImageUrl4))
-                {
-                    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-                }
-                @if (!string.IsNullOrEmpty(product.ImageUrl5))
-                {
-                    <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
-                }
-                @if (!string.IsNullOrEmpty(product.ImageUrl6))
-                {
-                    <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
-                }
-            </ol>
-            <div class="carousel-inner" role="listbox">
-                <div class="carousel-item active" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl1');">
-                    <div class="carousel-caption">
-                        <h3>@product.Name</h3>
-                    </div>
-                    <img src="~/Resimler/@product.ImageUrl1" class="d-block w-100" alt="Product Image">
-                </div>
-                @if (!string.IsNullOrEmpty(product.ImageUrl3))
-                {
-                    <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl3');">
-                        <div class="carousel-caption">
-                        </div>
-                        <img src="~/Resimler/@product.ImageUrl3" class="d-block w-100" alt="Product Image">
-                    </div>
-                }
-                @if (!string.IsNullOrEmpty(product.ImageUrl4))
-                {
-                    <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl4');">
-                        <div class="carousel-caption">
-                        </div>
-                        <img src="~/Resimler/@product.ImageUrl4" class="d-block w-100" alt="Product Image">
-                    </div>
-                }
-                @if (!string.IsNullOrEmpty(product.ImageUrl5))
-                {
-                    <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl5');">
-                        <div class="carousel-caption">
-                        </div>
-                        <img src="~/Resimler/@product.ImageUrl5" class="d-block w-100" alt="Product Image">
-                    </div>
-                }
-                @if (!string.IsNullOrEmpty(product.ImageUrl6))
-                {
-                    <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl6');">
-                        <div class="carousel-caption">
-                        </div>
-                        <img src="~/Resimler/@product.ImageUrl6" class="d-block w-100" alt="Product Image">
-                    </div>
-                }
-            </div>
-
-
-
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Önceki</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Sonraki</span>
-            </a>
-        </div>
+        }
+        else
+        {
+            <br />
+            <center><h2>DÜZENLEMEDE</h2></center>
+        }
     }
 
 

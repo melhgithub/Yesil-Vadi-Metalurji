@@ -64,6 +64,16 @@ namespace Yesil_Vadi_Metalurji.Controllers
                         updatedAbout.SubtitleStatus = false;
                     }
 
+
+                    if (about.TitleStatus == "1")
+                    {
+                        updatedAbout.TitleStatus = true;
+                    }
+                    else
+                    {
+                        updatedAbout.TitleStatus = false;
+                    }
+
                     if (about.ContentStatus == "1")
                     {
                         updatedAbout.ContentStatus = true;

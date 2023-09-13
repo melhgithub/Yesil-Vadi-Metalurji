@@ -1,12 +1,12 @@
 ﻿@using Entity.Concrete
-@model HomePageTestViewModel
+@model HomePageAdminViewModel
 @{
     ViewData["Title"] = "Ana Sayfa";
-    Layout = "~/Views/Shared/_AdminTest.cshtml";
+    Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
 
-<form method="post" action="/HomePageTest/Update" id="updateForm">
+<form method="post" action="/HomePage/Update" id="updateForm">
     @foreach (var homepage in Model.HomePage)
     {
         <div class="card">
@@ -53,6 +53,22 @@
                     </div>
 
                     <div class="col-sm-4">
+                        <h2>Başlık Durumu:</h2>
+                        <select name="TitleStatus" class="form-control" required="required">
+                            @if (homepage.TitleStatus == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-3">
                         <h2>İçerik Durumu:</h2>
                         <select name="ContentStatus" class="form-control" required="required">
                             @if (homepage.ContentStatus == true)
@@ -68,7 +84,7 @@
                         </select>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <h2>Alt-Başlık Durumu:</h2>
                         <select name="SubtitleStatus" class="form-control" required="required">
                             @if (homepage.SubtitleStatus == true)
@@ -84,12 +100,12 @@
                         </select>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <h2>Başlık:</h2>
                         <input type="text" name="Title" value="@homepage.Title" class="form-control" required />
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <h2>Alt başlık:</h2>
                         <input type="text" name="Subtitle" value="@homepage.Subtitle" class="form-control" />
                     </div>
@@ -100,6 +116,126 @@
                     </div>
 
                     <div class="col-md-6">
+                        <h2>Hizmetlerimiz Yazısı:</h2>
+                        <input type="text" name="Hizmetlerimiz" value="@homepage.Hizmetlerimiz" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <h2>İş Ortaklarımız Yazısı:</h2>
+                        <input type="text" name="IsOrtaklarimiz" value="@homepage.IsOrtaklarimiz" class="form-control" />
+                    </div>
+
+                    <div class="col-md-12">
+                        <h2>Sayısal Veri Yazısı:</h2>
+                        <textarea id="contentEditorr" name="SayisalVeriYazisi" rows="4" class="form-control col-sm-12" required>@homepage.SayisalVeriYazisi</textarea>
+                    </div>
+
+                    <div class="col-md-12">
+                        <h2>Sayısal Veri 1:</h2>
+                        <textarea id="sayisalEditor1" name="SayisalVeri1" rows="4" class="form-control col-sm-12" required>@homepage.SayisalVeri1</textarea>
+                    </div>
+
+                    <div class="col-md-12">
+                        <h2>Sayısal Veri 2:</h2>
+                        <textarea id="sayisalEditor2" name="SayisalVeri2" rows="4" class="form-control col-sm-12" required>@homepage.SayisalVeri2</textarea>
+                    </div>
+
+                    <div class="col-md-12">
+                        <h2>Açıklama 1:</h2>
+                        <textarea id="aciklamaEditor1" name="Aciklama1" rows="3" class="form-control col-sm-12" required>@homepage.Aciklama1</textarea>
+                    </div>
+
+                    <div class="col-md-12">
+                        <h2>Açıklama 2:</h2>
+                        <textarea id="aciklamaEditor2" name="Aciklama2" rows="3" class="form-control col-sm-12" required>@homepage.Aciklama2</textarea>
+                    </div>
+
+                    <div class="col-md-12">
+                        <h2>Açıklama 3:</h2>
+                        <textarea id="aciklamaEditor3" name="Aciklama3" rows="3" class="form-control col-sm-12" required>@homepage.Aciklama3</textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h2>Hakkımızda Fotoğraf 1:</h2>
+                        <select name="HakkimizdaFoto1" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (homepage.HakkimizdaFoto1 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>Hakkımızda Fotoğraf 2:</h2>
+                        <select name="HakkimizdaFoto2" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (homepage.HakkimizdaFoto2 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>Hizmetlerimiz Fotoğraf 1:</h2>
+                        <select name="HizmetlerimizFoto1" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (homepage.HizmetlerimizFoto1 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>Hizmetlerimiz Fotoğraf 2:</h2>
+                        <select name="HizmetlerimizFoto2" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (homepage.HizmetlerimizFoto2 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>Hizmetlerimiz Fotoğraf 3:</h2>
+                        <select name="HizmetlerimizFoto3" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (homepage.HizmetlerimizFoto3 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
                         <h2>Resim Seçin (1):</h2>
                         <select name="ImageUrl1" class="form-control">
                             <option value="">Seçiniz</option>
@@ -182,6 +318,102 @@
                     </div>
 
                     <div class="col-md-6">
+
+                        <h2>İş Ortaklarımız Fotoğraf 1:</h2>
+                        <select name="IsOrtaklarimizFoto1" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (homepage.IsOrtaklarimizFoto1 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>İş Ortaklarımız Fotoğraf 2:</h2>
+                        <select name="IsOrtaklarimizFoto2" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (homepage.IsOrtaklarimizFoto2 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>İş Ortaklarımız Fotoğraf 3:</h2>
+                        <select name="IsOrtaklarimizFoto3" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (homepage.IsOrtaklarimizFoto3 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>İş Ortaklarımız Fotoğraf 4:</h2>
+                        <select name="IsOrtaklarimizFoto4" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (homepage.IsOrtaklarimizFoto4 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>İş Ortaklarımız Fotoğraf 5:</h2>
+                        <select name="IsOrtaklarimizFoto5" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (homepage.IsOrtaklarimizFoto5 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
+
+                        <h2>İş Ortaklarımız Fotoğraf 6:</h2>
+                        <select name="IsOrtaklarimizFoto6" class="form-control">
+                            <option value="">Seçiniz</option>
+                            @foreach (var image in Model.Images)
+                            {
+                                @if (homepage.IsOrtaklarimizFoto6 == image.Name)
+                                {
+                                    <option value="@image.ID" selected>@(image.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@image.ID">@(image.Name)</option>
+                                }
+                            }
+                        </select>
 
                         <h2>Resim Seçin (6):</h2>
                         <select name="ImageUrl6" class="form-control">
@@ -295,6 +527,36 @@
 <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
 <script>
     CKEDITOR.replace('contentEditor', {
+        removePlugins: 'autogrow',
+        enterMode: CKEDITOR.ENTER_BR,
+        shiftEnterMode: CKEDITOR.ENTER_P,
+    });
+    CKEDITOR.replace('contentEditorr', {
+        removePlugins: 'autogrow',
+        enterMode: CKEDITOR.ENTER_BR,
+        shiftEnterMode: CKEDITOR.ENTER_P,
+    });
+    CKEDITOR.replace('aciklamaEditor1', {
+        removePlugins: 'autogrow',
+        enterMode: CKEDITOR.ENTER_BR,
+        shiftEnterMode: CKEDITOR.ENTER_P,
+    });
+    CKEDITOR.replace('aciklamaEditor2', {
+        removePlugins: 'autogrow',
+        enterMode: CKEDITOR.ENTER_BR,
+        shiftEnterMode: CKEDITOR.ENTER_P,
+    });
+    CKEDITOR.replace('aciklamaEditor3', {
+        removePlugins: 'autogrow',
+        enterMode: CKEDITOR.ENTER_BR,
+        shiftEnterMode: CKEDITOR.ENTER_P,
+    });
+    CKEDITOR.replace('sayisalEditor1', {
+        removePlugins: 'autogrow',
+        enterMode: CKEDITOR.ENTER_BR,
+        shiftEnterMode: CKEDITOR.ENTER_P,
+    });
+    CKEDITOR.replace('sayisalEditor2', {
         removePlugins: 'autogrow',
         enterMode: CKEDITOR.ENTER_BR,
         shiftEnterMode: CKEDITOR.ENTER_P,

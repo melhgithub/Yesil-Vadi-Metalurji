@@ -34,6 +34,7 @@ namespace Entity.Concrete
         public bool Image { get; set; }
         public bool SubtitleStatus { get; set; }
         public bool ContentStatus { get; set; }
+        public bool TitleStatus { get; set; }
 
         [MaxLength(200)]
         public string ImageUrl1 { get; set; }

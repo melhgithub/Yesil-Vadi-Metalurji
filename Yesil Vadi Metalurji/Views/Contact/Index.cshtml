@@ -37,10 +37,13 @@
 
         }
         <section class="main-content-w3layouts-agileits">
-            <center><h3 class="tittle">@contact.Title</h3></center>
-            @if (contact.SubtitleStatus != false)
+            @if (contact.TitleStatus == true)
             {
-                <center><h4>@contact.Subtitle</h4></center>
+                <center><h3 class="tittle">@contact.Title</h3></center>
+                if (contact.SubtitleStatus != false)
+                {
+                    <center><h4>@contact.Subtitle</h4></center>
+                }
             }
             <div class="contact-map inner-sec">
                 <iframe src="@contact.Map"
@@ -277,10 +280,18 @@
                 }
 
                 <center>
-                    @foreach (string line in descriptionLines)
-                    {
-                        @Html.Raw(line)<br />
-                    }
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    @foreach (string line in descriptionLines)
+                                    {
+                                        @Html.Raw(line)
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </center>
                 <hr />
             }

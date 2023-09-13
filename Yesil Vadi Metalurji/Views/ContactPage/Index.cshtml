@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "İletişim";
-    Layout = "~/Views/Shared/_AdminTest.cshtml";
+    Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
 <form method="post" action="/ContactPage/Update" id="updateForm">
@@ -68,10 +68,10 @@
                         </select>
                     </div>
 
-                    <div class="col-sm-6">
-                        <h2>İçerik Durumu:</h2>
-                        <select name="ContentStatus" class="form-control" required="required">
-                            @if (contact.ContentStatus == true)
+                    <div class="col-sm-4">
+                        <h2>Başlık Durumu:</h2>
+                        <select name="TitleStatus" class="form-control" required="required">
+                            @if (contact.TitleStatus == true)
                             {
                                 <option value="1" selected>AKTİF</option>
                                 <option value="2">AKTİF DEĞİL</option>
@@ -84,10 +84,26 @@
                         </select>
                     </div>
 
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <h2>Alt-Başlık Durumu:</h2>
                         <select name="SubtitleStatus" class="form-control" required="required">
                             @if (contact.SubtitleStatus == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <h2>İçerik Durumu:</h2>
+                        <select name="ContentStatus" class="form-control" required="required">
+                            @if (contact.ContentStatus == true)
                             {
                                 <option value="1" selected>AKTİF</option>
                                 <option value="2">AKTİF DEĞİL</option>

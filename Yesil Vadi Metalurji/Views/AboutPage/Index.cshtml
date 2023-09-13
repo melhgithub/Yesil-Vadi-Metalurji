@@ -2,7 +2,7 @@
 @model AboutPageViewModel
 @{
     ViewData["Title"] = "Hakkımızda";
-    Layout = "~/Views/Shared/_AdminTest.cshtml";
+    Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
 
@@ -68,10 +68,10 @@
                         </select>
                     </div>
 
-                    <div class="col-sm-3">
-                        <h2>İçerik Durumu:</h2>
-                        <select name="ContentStatus" class="form-control" required="required">
-                            @if (about.ContentStatus == true)
+                    <div class="col-sm-4">
+                        <h2>Başlık Durumu:</h2>
+                        <select name="TitleStatus" class="form-control" required="required">
+                            @if (about.TitleStatus == true)
                             {
                                 <option value="1" selected>AKTİF</option>
                                 <option value="2">AKTİF DEĞİL</option>
@@ -84,7 +84,7 @@
                         </select>
                     </div>
 
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <h2>Alt-Başlık Durumu:</h2>
                         <select name="SubtitleStatus" class="form-control" required="required">
                             @if (about.SubtitleStatus == true)
@@ -100,12 +100,28 @@
                         </select>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-sm-4">
+                        <h2>İçerik Durumu:</h2>
+                        <select name="ContentStatus" class="form-control" required="required">
+                            @if (about.ContentStatus == true)
+                            {
+                                <option value="1" selected>AKTİF</option>
+                                <option value="2">AKTİF DEĞİL</option>
+                            }
+                            else
+                            {
+                                <option value="1">AKTİF</option>
+                                <option value="2" selected>AKTİF DEĞİL</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
                         <h2>Başlık:</h2>
                         <input type="text" name="Title" value="@about.Title" class="form-control" required />
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         <h2>Alt başlık:</h2>
                         <input type="text" name="Subtitle" value="@about.Subtitle" class="form-control" />
                     </div>
