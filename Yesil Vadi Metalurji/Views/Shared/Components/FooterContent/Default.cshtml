@@ -7,7 +7,7 @@
         <h3>@footer.Title</h3>
         @{
             string description = footer.Content;
-            int maxLineLength = 34;
+            int maxLineLength = 33;
             List<string> descriptionLines = new List<string>();
 
             for (int i = 0; i < description.Length; i += maxLineLength)
@@ -17,12 +17,11 @@
             }
             @foreach (string line in descriptionLines)
             {
-                @Html.Raw(line)
+                @Html.Raw(line)<br />
             }
         }
         <div class="read">
             <a href="/About/Index" class="btn btn-primary read-m">Devamını Oku</a>
         </div>
     </div>
-
 }

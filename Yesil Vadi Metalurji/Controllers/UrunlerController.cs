@@ -29,6 +29,11 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
             var firstActiveCategory = categories.Where(c => c.Status == (CategoryStatuses)1 && c.Active == true).Take(1).ToList();
 
+            foreach(var category in firstActiveCategory)
+            {
+                products = products.Where(p => p.Category.Name == category.Name).ToList();
+            }
+
             var filterDto = new ProductFilterDto
             {
                 Categories = categories
@@ -139,6 +144,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                             {
                                 var categories = await categoryManager.GetList();
 
+                                var category = categories.Where(p => p.ID == product.CategoryID).ToList();
 
                                 var filterDto = new ProductFilterDto
                                 {
@@ -150,6 +156,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                                     Urunlers = urunler,
                                     Categories = categories,
                                     FilterDto = filterDto,
+                                    Category = category,
                                     Products = products
                                 };
 

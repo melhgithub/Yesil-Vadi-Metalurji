@@ -47,10 +47,22 @@
                 }
 
                 <center>
-                    @foreach (string line in descriptionLines)
-                    {
-                        @Html.Raw(line)<br />
-                    }
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <center>
+                                        <p>
+                                            @foreach (string line in descriptionLines)
+                                            {
+                                                @Html.Raw(line)
+                                            }
+                                        </p>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </center>
                 <hr />
             }
@@ -69,11 +81,7 @@
                                         }
                                         else
                                         {
-                                            if (category.Active == false)
-                                            {
-                                                <a href="/Urunler/Kategori?kategoriID=@category.ID" class="list-group-item list-group-item-action disabled"> >> @category.Name</a>
-                                            }
-                                            else
+                                            if (category.Active != false)
                                             {
                                                 <a href="/Urunler/Kategori?kategoriID=@category.ID" class="list-group-item list-group-item-action"> >> @category.Name</a>
                                             }
@@ -110,7 +118,7 @@
                             <div class="row">
                                 @foreach (var product in Model.Products.OrderByDescending(p => p.CreateDate))
                                 {
-                                    <div class="col-lg-4 card">
+                                    <div class="col-lg-4 card" style="display: flex; flex-direction: column;">
                                         <div class="card-body">
                                             @if (!string.IsNullOrEmpty(product.ImageUrl1))
                                             {
@@ -125,7 +133,13 @@
                                                     </a>
                                                 </li>
                                             </ul>
-                                            <a href="/Urunler/HizliTeklif/@product.ID" class="btn btn-primary read-m" id="teklifButon" style="width: 100%; margin-left: 0px; background: green; ">Hızlı Teklif</a>
+                                            @foreach (var category in Model.Category)
+                                            {
+                                                if (category.Name == "Alüminyum Ekstrüzyon (Alüminyum Çekme)")
+                                                {
+                                                    <a href="/Urunler/HizliTeklif/@product.ID" class="btn btn-primary read-m" id="teklifButon" style="width: 100%; margin-left: 0px; background: green; ">Hızlı Teklif</a>
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 }

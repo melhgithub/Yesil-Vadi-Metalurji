@@ -98,8 +98,18 @@
                                         }
                                         <br />
 
-                                        <a href="/Contact" class="btn btn-primary read-m">İletişime Geç</a>
-                                        <a href="/Urunler/TeklifVer?urunID=@product.ID" class="btn btn-primary read-m" id="teklifButon">Teklif Ver</a>
+                                        @foreach (var category in Model.Category)
+                                        {
+                                            if (category.Name == "Ekstrüzyon")
+                                            {
+                                                <a href="/Contact" class="btn btn-primary read-m">İletişime Geç</a>
+                                                <a href="/Urunler/TeklifVer?urunID=@product.ID" class="btn btn-primary read-m" id="teklifButon">Teklif Ver</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/Contact" class="btn btn-primary read-m">İletişime Geç</a>
+                                            }
+                                        }
                                     </div>
                                     <div class="col-sm-1"></div>
                                     <div class="col-sm-1"> </div>
