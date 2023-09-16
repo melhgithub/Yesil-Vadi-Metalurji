@@ -46,6 +46,7 @@
 
     }
 }
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function () {
         var contentTextarea = $("textarea[name='Content']");
@@ -72,7 +73,13 @@
             data: form.serialize(),
             success: function (response) {
                 var message = response;
-                alert(message);
+                Swal.fire({
+                    title: 'İşlem Sonucu',
+                    text: message,
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
             },
             error: function (error) {
                 alert("Başarısız");

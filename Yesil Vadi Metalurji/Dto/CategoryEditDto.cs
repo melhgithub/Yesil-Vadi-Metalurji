@@ -13,5 +13,6 @@ namespace Yesil_Vadi_Metalurji.Dto
         public CategoryStatuses Status { get; set; }
         public string Active { get; set; }
         public string Description { get; set; }
+        public string TeklifStatus { get; set; }
     }
 }

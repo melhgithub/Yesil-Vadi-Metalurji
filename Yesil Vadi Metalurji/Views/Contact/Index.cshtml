@@ -306,7 +306,30 @@
 }
 
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    $(document).on('submit', 'form', function (e) {
+        e.preventDefault();
+        var form = $(this);
+
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            success: function (response) {
+                Swal.fire({
+                    title: 'İşlem Sonucu',
+                    text: response,
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            },
+            error: function (error) {
+                alert("Başarısız");
+            }
+        });
+    });
     jQuery(document).ready(function ($) {
         $(".scroll").click(function (event) {
             event.preventDefault();

@@ -20,6 +20,13 @@
         new SelectListItem { Value = "2", Text = "KALDIRILDI" },
     };
 
+    var teklifStatusList = new List<SelectListItem>
+{
+        new SelectListItem { Value = "0", Text = "TÜMÜ" },
+        new SelectListItem { Value = "1", Text = "TEKLİFTE" },
+        new SelectListItem { Value = "2", Text = "TEKLİF DEĞİL" },
+    };
+
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">
@@ -37,7 +44,11 @@
                 <dt>@Html.LabelFor(m => m.FilterDto.Name, "Kategori Adı:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Name, new { @class = "form-control", placeholder = "Kategori Adı" })
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-2">
+                <dt>@Html.LabelFor(m => m.FilterDto.TeklifStatus, "Teklif:")</dt>
+                @Html.DropDownListFor(m => m.FilterDto.TeklifStatus, teklifStatusList, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-4">
                 <dt>@Html.LabelFor(m => m.FilterDto.Description, "Açıklama:")</dt>
                 @Html.TextBoxFor(m => m.FilterDto.Description, new { @class = "form-control", placeholder = "Kategori Adı" })
             </div>
@@ -137,17 +148,59 @@
                         }
                     },
                     {
-                        name: 'actions', label: '', width: 200,
+                        name: 'teklifstatus',
+                        label: 'Teklif Durumu',
+                        width: 130,
+                        formatter: function (cellValue) {
+                            var statusText = '';
+                            var statusStyle = '';
+
+                            switch (cellValue) {
+                                case true:
+                                    statusText = 'TEKLİFTE';
+                                    statusStyle = 'color: green;';
+                                    break;
+                                case false:
+                                    statusText = 'TEKLİFTE DEĞİL';
+                                    statusStyle = 'color: red;';
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            return '<span style="' + statusStyle + '">' + statusText + '</span>';
+                        }
+                    },
+                    {
+                        name: 'actions', label: '', width: 300,
                         formatter: function (cellValue, options, rowObject) {
                             if (rowObject.status === 1) {
-                                var buttons = '<button class="btn btn-primary open-edit-modal" ' +
-                                    'data-categoryid="' + rowObject.id + '" ' +
-                                    'data-categoryname="' + rowObject.name + '" ' +
-                                    'data-categorydescription="' + rowObject.description + '" ' +
-                                    'data-categorystatus="' + rowObject.status + '" ' +
-                                    'data-categoryactive="' + rowObject.active + '">Düzenle</button>' +
-                                    '<button class="btn btn-warning open-delete-modal" ' +
-                                    'data-categoryid="' + rowObject.id + '">Kaldır</button>';
+                                if (rowObject.teklifstatus === true) {
+                                    var buttons = '<button class="btn btn-primary open-edit-modal" ' +
+                                        'data-categoryid="' + rowObject.id + '" ' +
+                                        'data-categoryname="' + rowObject.name + '" ' +
+                                        'data-categorydescription="' + rowObject.description + '" ' +
+                                        'data-categorystatus="' + rowObject.status + '" ' +
+                                        'data-categoryteklifstatus="' + rowObject.teklifstatus + '" ' +
+                                        'data-categoryactive="' + rowObject.active + '">Düzenle</button>' +
+                                        '<button class="btn btn-warning open-delete-modal" ' +
+                                        'data-categoryid="' + rowObject.id + '">Kaldır</button>' +
+                                        '<button class="btn btn-warning open-teklifkapat-modal" ' +
+                                        'data-categoryid="' + rowObject.id + '">TEKLİF KAPAT</button>';
+                                }
+                                else {
+                                    var buttons = '<button class="btn btn-primary open-edit-modal" ' +
+                                        'data-categoryid="' + rowObject.id + '" ' +
+                                        'data-categoryname="' + rowObject.name + '" ' +
+                                        'data-categorydescription="' + rowObject.description + '" ' +
+                                        'data-categorystatus="' + rowObject.status + '" ' +
+                                        'data-categoryteklifstatus="' + rowObject.teklifstatus + '" ' +
+                                        'data-categoryactive="' + rowObject.active + '">Düzenle</button>' +
+                                        '<button class="btn btn-warning open-delete-modal" ' +
+                                        'data-categoryid="' + rowObject.id + '">Kaldır</button>' +
+                                        '<button class="btn btn-success open-teklifac-modal" ' +
+                                        'data-categoryid="' + rowObject.id + '">TEKLİF AÇ</button>';
+                                }
                             }
                             if (rowObject.status === 2) {
                                 var buttons = '<button class="btn btn-primary open-edit-modal" ' +
@@ -155,6 +208,7 @@
                                     'data-categoryname="' + rowObject.name + '" ' +
                                     'data-categorydescription="' + rowObject.description + '" ' +
                                     'data-categorystatus="' + rowObject.status + '" ' +
+                                    'data-categoryteklifstatus="' + rowObject.teklifstatus + '" ' +
                                     'data-categoryactive="' + rowObject.active + '">Düzenle</button>' +
                                     '<button class="btn btn-success open-approve-modal" ' +
                                     'data-categoryid="' + rowObject.id + '">Onayla</button>';
@@ -179,6 +233,54 @@
 
 
 
+    function openTeklifAcKategoriModal(button) {
+    var data = button.dataset;
+        firstModal = $.dialog({
+        title: 'Kategori Teklifi Aç',
+         content: `
+            <!-- ${JSON.stringify(data)} -->
+            <form method="post" action="@Url.Action("ApproveTeklifCategory", "Category")">
+
+                <div class="form-group">
+                    <label>Onaylamak istiyor musunuz ?</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="ID" name="ID" class="form-control" value="${data.categoryid}" required hidden/>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Onayla" class="btn btn-primary w-100" />
+                </div>
+
+            </form>
+        `
+    });
+    }
+    function openTeklifKapatKategoriModal(button) {
+    var data = button.dataset;
+        firstModal = $.dialog({
+        title: 'Kategori Teklifi Kapat',
+         content: `
+            <!-- ${JSON.stringify(data)} -->
+            <form method="post" action="@Url.Action("RemoveTeklifCategory", "Category")">
+
+                <div class="form-group">
+                    <label>Onaylamak istiyor musunuz ?</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="ID" name="ID" class="form-control" value="${data.categoryid}" required hidden/>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Onayla" class="btn btn-primary w-100" />
+                </div>
+
+            </form>
+        `
+    });
+    }
 
     function openApproveKategoriModal(button) {
     var data = button.dataset;
@@ -261,6 +363,14 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="TeklifStatus">Teklif Durumu :</label>
+                    <select id="TeklifStatus" name="TeklifStatus" class="form-control" data="${data.categoryteklifstatus}" required>
+                        <option value="1" ${data.categoryteklifstatus == "1" ? 'selected' : ''}>TEKLİFTE</option>
+                        <option value="2" ${data.categoryteklifstatus == "2" ? 'selected' : ''}>TEKLİFTE DEĞİL</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <select id="Active" name="Active" class="form-control" required hidden>
                         <option value="1" ${data.categoryactive == 'true' ? 'selected' : ''}>AKTİF</option>
                         <option value="2" ${data.categoryactive == 'false' ? 'selected' : ''}>AKTİF DEĞİL</option>
@@ -301,6 +411,14 @@
     </div>
 
     <div class="form-group">
+        <label for="TeklifStatus">Teklif Durumu :</label>
+        <select id="TeklifStatus" name="TeklifStatus" class="form-control" required>
+            <option value="1">TEKLİFTE</option>
+            <option value="2">TEKLİFTE DEĞİL</option>
+        </select>
+    </div>
+
+    <div class="form-group">
         <select id="Active" name="Active" class="form-control" required hidden>
             <option value="1">AKTİF</option>
             <option value="2">AKTİF DEĞİL</option>
@@ -317,6 +435,14 @@
         });
 
     }
+
+
+    $(document).on('click', '.open-teklifac-modal', function () {
+        openTeklifAcKategoriModal(this);
+    });
+    $(document).on('click', '.open-teklifkapat-modal', function () {
+        openTeklifKapatKategoriModal(this);
+    });
 
 
     $(document).on('click', '.open-delete-modal', function () {

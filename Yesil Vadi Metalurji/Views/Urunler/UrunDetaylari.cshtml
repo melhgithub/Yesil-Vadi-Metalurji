@@ -52,84 +52,82 @@
 
             <h3 class="tittle">@product.Category.Name</h3>
 
-            
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-sm-1"></div>
-                                    <div class="col-sm-5">
-                                        <div class="blog_info_left_grid">
-                                            <a href="/Urunler/UrunDetaylari?urunID=@product.ID">
-                                                <img src="~/Resimler/@product.ImageUrl1" class="img-fluid" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="blog-info-middle">
-                                            <ul>
-                                                <li>
-                                                    <a href="#">
-                                                        <i class="far fa-calendar-alt"></i> @(((DateTime)product.CreateDate).ToString("dd-MMM-yyyy"))
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-1"></div>
-                                    <div class="col-sm-4">
-                                        <h3>
-                                            <a href="/Urunler/UrunDetaylari?urunID=@product.ID">@product.Name</a>
-                                        </h3>
-                                        <hr />
-                                        <h4>Ürün;</h4>
-                                        @{
-                                            string description = product.Description;
-                                            int maxLineLength = 54;
-                                            List<string> descriptionLines = new List<string>();
 
-                                            for (int i = 0; i < description.Length; i += maxLineLength)
-                                            {
-                                                int remainingLength = Math.Min(maxLineLength, description.Length - i);
-                                                descriptionLines.Add(description.Substring(i, remainingLength));
-                                            }
-                                        }
-
-                                        @foreach (string line in descriptionLines)
-                                        {
-                                            <p>@line</p>
-                                        }
-                                        <br />
-
-                                        @foreach (var category in Model.Category)
-                                        {
-                                            if (category.Name == "Ekstrüzyon")
-                                            {
-                                                <a href="/Contact" class="btn btn-primary read-m">İletişime Geç</a>
-                                                <a href="/Urunler/TeklifVer?urunID=@product.ID" class="btn btn-primary read-m" id="teklifButon">Teklif Ver</a>
-                                            }
-                                            else
-                                            {
-                                                <a href="/Contact" class="btn btn-primary read-m">İletişime Geç</a>
-                                            }
-                                        }
-                                    </div>
-                                    <div class="col-sm-1"></div>
-                                    <div class="col-sm-1"> </div>
-                                    <div class="col-sm-10">
-                                        @if (product.ImageUrl2 != null)
-                                        {
-                                            <hr />
-                                            <h4>Ölçüler:</h4><br />
-                                            <div class="blog_info_right_grid">
-                                                <a href="/Urunler/UrunDetaylari?urunID=@product.ID">
-                                                    <img src="~/Resimler/@product.ImageUrl2" class="img-fluid" alt="">
-                                                </a>
-                                            </div>
-                                        }
-                                    </div>
-                                    <div class="col-sm-1"> </div>
-                                </div>
-                                
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-5">
+                            <div class="blog_info_left_grid">
+                                <a href="/Urunler/UrunDetaylari?urunID=@product.ID">
+                                    <img src="~/Resimler/@product.ImageUrl1" class="img-fluid" alt="">
+                                </a>
+                            </div>
+                            <div class="blog-info-middle">
+                                <ul>
+                                    <li>
+                                        <a href="#">
+                                            <i class="far fa-calendar-alt"></i> @(((DateTime)product.CreateDate).ToString("dd-MMM-yyyy"))
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-4">
+                            <h3>
+                                <a href="/Urunler/UrunDetaylari?urunID=@product.ID">@product.Name</a>
+                            </h3>
+                            <hr />
+                            <h4>Ürün;</h4>
+                            @{
+                                string description = product.Description;
+                                int maxLineLength = 33;
+                                List<string> descriptionLines = new List<string>();
+
+                                for (int i = 0; i < description.Length; i += maxLineLength)
+                                {
+                                    int remainingLength = Math.Min(maxLineLength, description.Length - i);
+                                    descriptionLines.Add(description.Substring(i, remainingLength));
+                                }
+                            }
+
+                                <p>@product.Description</p>
+                            <br />
+
+                            @foreach (var category in Model.Category)
+                            {
+                                @if (product.Category.TeklifStatus == true)
+                                {
+                                    <a href="#" class="btn btn-primary read-m teklif-al" style="width: 49%; margin-left: 0px; background: green; " data-productid="@product.ID">Teklif Al</a>
+
+                                    <a href="/Contact" class="btn btn-primary read-m" style="width: 49%; margin-left: 0px;">İletişime Geç</a>
+                                }
+                                else
+                                {
+                                    <a href="/Contact" class="btn btn-primary read-m">İletişime Geç</a>
+                                }
+                            }
+                        </div>
+                        <div class="col-sm-1"> </div>
+                        <div class="col-sm-1"> </div>
+                        <div class="col-sm-10">
+                            @if (product.ImageUrl2 != null)
+                            {
+                                <hr />
+                                <h4>Ölçüler:</h4><br />
+                                <div class="blog_info_right_grid">
+                                    <a href="/Urunler/UrunDetaylari?urunID=@product.ID">
+                                        <img src="~/Resimler/@product.ImageUrl2" class="img-fluid" alt="">
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-sm-1"> </div>
+                    </div>
+
+                </div>
+            </div>
 
 
 
@@ -156,41 +154,30 @@
                 </ol>
                 <div class="carousel-inner" role="listbox">
                     <div class="carousel-item active" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl1');">
-                        <div class="carousel-caption">
-                            <h3>@product.Name</h3>
-                        </div>
-                        <img src="~/Resimler/@product.ImageUrl1" class="d-block w-100" alt="Product Image">
+                        <img src="~/Resimler/@product.ImageUrl1" class="d-block w-100 img-fluid" alt="Product Image">
                     </div>
                     @if (!string.IsNullOrEmpty(product.ImageUrl3))
                     {
-                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl3');">
-                            <div class="carousel-caption">
-                            </div>
-                            <img src="~/Resimler/@product.ImageUrl3" class="d-block w-100" alt="Product Image">
+                        <div class="carousel-item item2" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl3');">
+                            <img src="~/Resimler/@product.ImageUrl3" class="d-block w-100 img-fluid" alt="Product Image">
                         </div>
                     }
                     @if (!string.IsNullOrEmpty(product.ImageUrl4))
                     {
-                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl4');">
-                            <div class="carousel-caption">
-                            </div>
-                            <img src="~/Resimler/@product.ImageUrl4" class="d-block w-100" alt="Product Image">
+                        <div class="carousel-item item3" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl4');">
+                            <img src="~/Resimler/@product.ImageUrl4" class="d-block w-100 img-fluid" alt="Product Image">
                         </div>
                     }
                     @if (!string.IsNullOrEmpty(product.ImageUrl5))
                     {
-                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl5');">
-                            <div class="carousel-caption">
-                            </div>
-                            <img src="~/Resimler/@product.ImageUrl5" class="d-block w-100" alt="Product Image">
+                        <div class="carousel-item item4" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl5');">
+                            <img src="~/Resimler/@product.ImageUrl5" class="d-block w-100 img-fluid" alt="Product Image">
                         </div>
                     }
                     @if (!string.IsNullOrEmpty(product.ImageUrl6))
                     {
-                        <div class="carousel-item" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl6');">
-                            <div class="carousel-caption">
-                            </div>
-                            <img src="~/Resimler/@product.ImageUrl6" class="d-block w-100" alt="Product Image">
+                        <div class="carousel-item item5" style="background-image: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url('~/Resimler/@product.ImageUrl6');">
+                            <img src="~/Resimler/@product.ImageUrl6" class="d-block w-100 img-fluid" alt="Product Image">
                         </div>
                     }
                 </div>
@@ -213,6 +200,7 @@
             <center><h2>DÜZENLEMEDE</h2></center>
         }
     }
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 
@@ -221,7 +209,79 @@
 
 
 
-    <script>
+<script>
+        function openTeklifAlModal(button) {
+        var data = button.dataset;
+
+        Swal.fire({
+            title: 'Teklif Al',
+            html: `
+            <form id="teklifAlForm" method="post" action="/Urunler/SubmitOffer">
+
+                    <input type="text" id="ProductID" name="ProductID" class="form-control" value="${data.productid}" required hidden />
+
+                <div class="form-group">
+                    <label for="Name">İsim :</label>
+                    <input type="text" id="Name" name="Name" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="LastName">Soyisim :</label>
+                    <input type="text" id="LastName" name="LastName" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="Mail">E-Mail :</label>
+                    <input type="email" id="Mail" name="Mail" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="PhoneNumber">Tel. No :</label>
+                    <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" required pattern="^[0-9]{10}$" title="Lütfen 10 haneli telefon numarası girin." />
+                </div>
+                <div class="form-group">
+                    <label for="ProductPiece">Adet :</label>
+                    <input type="number" id="ProductPiece" name="ProductPiece" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary w-100">Teklif Al</button>
+                </div>
+            </form>
+        `,
+            showCloseButton: true,
+            showCancelButton: false,
+            showConfirmButton: false
+        });
+    }
+
+
+
+    $(document).on('submit', 'form', function (e) {
+        e.preventDefault();
+        var form = $(this);
+
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            success: function (response) {
+                Swal.fire({
+                    title: 'İşlem Sonucu',
+                    text: response,
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            },
+            error: function (error) {
+                alert("Başarısız");
+            }
+        });
+    });
+
+
+    $(document).on('click', '.teklif-al', function () {
+        openTeklifAlModal(this);
+    });
+
+
         $('#demo1_thumbs').desoSlide({
             main: {
                 container: '#demo1_main_image',
@@ -316,7 +376,7 @@
         function hideURLbar() {
             window.scrollTo(0, 1);
         }
-    </script>
+</script>
 
 
 

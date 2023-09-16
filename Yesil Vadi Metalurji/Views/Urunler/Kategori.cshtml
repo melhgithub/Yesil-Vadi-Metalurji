@@ -3,13 +3,11 @@
 @using System.ComponentModel
 @using Newtonsoft.Json
 @model ProductsViewModel
-
 @{
     ViewData["Title"] = "Ürünler";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@await Html.PartialAsync("_ScriptImports")
 @foreach (var urunler in Model.Urunlers)
 {
     if (urunler.Status == (UrunlerStatuses)1)
@@ -133,12 +131,13 @@
                                                     </a>
                                                 </li>
                                             </ul>
-                                            @foreach (var category in Model.Category)
+                                            @if (product.Category.TeklifStatus == true)
                                             {
-                                                if (category.Name == "Alüminyum Ekstrüzyon (Alüminyum Çekme)")
-                                                {
-                                                    <a href="/Urunler/HizliTeklif/@product.ID" class="btn btn-primary read-m" id="teklifButon" style="width: 100%; margin-left: 0px; background: green; ">Hızlı Teklif</a>
-                                                }
+                                                <a href="#" class="btn btn-primary read-m teklif-al"
+                                                   style="width: 100%; margin-left: 0px; background: green;"
+                                                   data-productid="@product.ID">
+                                                    Teklif Al
+                                                </a>
                                             }
                                         </div>
                                     </div>
@@ -155,9 +154,79 @@
         <center><h1>DÜZENLEMEDE</h1></center>
     }
 }
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+
+    function openTeklifAlModal(button) {
+        var data = button.dataset;
+
+        Swal.fire({
+            title: 'Teklif Al',
+            html: `
+            <form id="teklifAlForm" method="post" action="/Urunler/SubmitOffer">
+
+                    <input type="text" id="ProductID" name="ProductID" class="form-control" value="${data.productid}" required hidden />
+
+                <div class="form-group">
+                    <label for="Name">İsim :</label>
+                    <input type="text" id="Name" name="Name" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="LastName">Soyisim :</label>
+                    <input type="text" id="LastName" name="LastName" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="Mail">E-Mail :</label>
+                    <input type="email" id="Mail" name="Mail" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="PhoneNumber">Tel. No :</label>
+                    <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" required pattern="^[0-9]{10}$" title="Lütfen 10 haneli telefon numarası girin." />
+                </div>
+                <div class="form-group">
+                    <label for="ProductPiece">Adet :</label>
+                    <input type="number" id="ProductPiece" name="ProductPiece" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary w-100">Teklif Al</button>
+                </div>
+            </form>
+        `,
+            showCloseButton: true,
+            showCancelButton: false,
+            showConfirmButton: false
+        });
+    }
+
+    $(document).on('submit', 'form', function (e) {
+        e.preventDefault();
+        var form = $(this);
+
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            success: function (response) {
+                Swal.fire({
+                    title: 'İşlem Sonucu',
+                    text: response,
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            },
+            error: function (error) {
+                alert("Başarısız");
+            }
+        });
+    });
+
+
+    $(document).on('click', '.teklif-al', function () {
+        openTeklifAlModal(this);
+    });
+
     jQuery(document).ready(function ($) {
         $(".scroll").click(function (event) {
             event.preventDefault();
@@ -166,6 +235,7 @@
             }, 900);
         });
     });
+
     $(document).ready(function () {
 
         $().UItoTop({

@@ -21,5 +21,8 @@ namespace Yesil_Vadi_Metalurji.Dto
         public string PhoneNumber { get; set; }
 
         public string Mail { get; set; }
+        public int ProductID { get; set; }
+        public int ProductPiece { get; set; }
+        public int ProductPrice { get; set; }
     }
 }

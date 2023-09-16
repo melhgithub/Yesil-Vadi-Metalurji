@@ -20,6 +20,8 @@ namespace Yesil_Vadi_Metalurji.Controllers
         UrunlerManager urunlerManager = new UrunlerManager(new EFUrunlerRepository());
         ProductManager productManager = new ProductManager(new EFProductRepository());
         CategoryManager categoryManager = new CategoryManager(new EFCategoryRepository());
+        OfferManager offerManager = new OfferManager(new EFOfferRepository());
+        OfferDetailManager offerDetailManager = new OfferDetailManager(new EFOfferDetailRepository());
         public async Task<IActionResult> Index()
         {
             var products = await productManager.GetListWithIncludes();
@@ -49,7 +51,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 Category = firstActiveCategory
             };
 
-            return View(model);
+            return View("Kategori",model);
         }
 
 
@@ -178,6 +180,67 @@ namespace Yesil_Vadi_Metalurji.Controllers
            
             
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitOffer(OfferAddDto offer)
+        {
+            string message = "Bir hata oluştu, lütfen sistem yöneticisi ile irtibata geçiniz.";
+            var products = await productManager.GetListWithIncludes();
+            var product = products.Where(p => p.ID == offer.ProductID).ToList();
+            if (product != null)
+            {
+                foreach(var p in product)
+                {
+                    if (p.Active == true)
+                    {
+                        var toplamfiyat = offer.ProductPiece * p.Price;
+                        var offerToAdd = new Offer
+                        {
+                            Status = (OfferStatuses)5,
+                            Active = true,
+                            Name =offer.Name,
+                            LastName=offer.LastName,
+                            PhoneNumber=offer.PhoneNumber,
+                            Mail=offer.Mail,
+                            ProductPiece=1,
+                            TotalPiece=offer.ProductPiece,
+                            TotalPrice=toplamfiyat,
+                            CreateDate= DateTime.Parse(DateTime.Now.ToShortDateString()),
+
+                        };
+
+                        await offerManager.Add(offerToAdd);
+
+                        var addedOffer = await offerManager.GetByID(offerToAdd.ID);
+
+                        var offerDetailToAdd = new OfferDetail
+                        {
+                            OfferID = addedOffer.ID,
+                            Name = addedOffer.Name,
+                            LastName = addedOffer.LastName,
+                            Mail = addedOffer.Mail,
+                            PhoneNumber = addedOffer.PhoneNumber,
+                            ProductID = offer.ProductID,
+                            ProductName = p.Name,
+                            Price = toplamfiyat,
+                            Piece = offer.ProductPiece,
+                            CreateDate = addedOffer.CreateDate
+                        };
+
+                        await offerDetailManager.Add(offerDetailToAdd);
+
+                        message = "Başarılı.";
+                    }
+                    else
+                    {
+                        message = "Bir sorun oluştu, lütfen yöneticiyle irtibata geçiniz.";
+                    }
+                }
+            }
+
+            return Json(message);
+        }
+
 
     }
 }

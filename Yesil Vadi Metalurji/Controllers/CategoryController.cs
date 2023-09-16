@@ -53,11 +53,21 @@ namespace Yesil_Vadi_Metalurji.Controllers
                 categories = categories.Where(p => p.Status.Equals(filterDto.Status)).ToList();
             }
 
+            if (filterDto.TeklifStatus == "1")
+            {
+                categories = categories.Where(p => p.TeklifStatus == true).ToList();
+            }
+            else if (filterDto.TeklifStatus == "2")
+            {
+                categories = categories.Where(p => p.TeklifStatus == false).ToList();
+            }
+
             var categoryData = categories.Select(p => new
             {
                 ID = p.ID,
                 Name = p.Name,
                 Status = p.Status,
+                Teklifstatus = p.TeklifStatus,
                 Description = p.Description
             });
 
@@ -98,6 +108,14 @@ namespace Yesil_Vadi_Metalurji.Controllers
                     else
                     {
                         categoryEntity.Active = false;
+                    }
+                    if (category.TeklifStatus == "1")
+                    {
+                        categoryEntity.TeklifStatus = true;
+                    }
+                    else
+                    {
+                        categoryEntity.TeklifStatus = false;
                     }
 
                     if (isUpdate)
@@ -200,5 +218,77 @@ namespace Yesil_Vadi_Metalurji.Controllers
             return Json(message);
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveTeklifCategory(CategoryRemoveDto category)
+        {
+            string message = "";
+
+            if (category != null)
+            {
+                try
+                {
+                    var categoryToApprove = await categoryManager.GetByID(category.ID);
+
+                    if (categoryToApprove != null)
+                    {
+                        categoryToApprove.TeklifStatus = false;
+                        await categoryManager.Update(categoryToApprove);
+
+                        message = "Kategori teklifi başarıyla kapatıldı!";
+                    }
+                    else
+                    {
+                        message = "Teklifi kapatılmak istenen kategori bulunamadı!";
+                    }
+                }
+                catch (Exception)
+                {
+                    message = "Kategorinin teklifi kapatılırken bir sorun oluştu! Lütfen bilgileri kontrol ediniz.";
+                }
+            }
+            else
+            {
+                message = "Hata oluştu!";
+            }
+
+            return Json(message);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApproveTeklifCategory(CategoryApproveDto category)
+        {
+            string message = "";
+
+            if (category != null)
+            {
+                try
+                {
+                    var categoryToApprove = await categoryManager.GetByID(category.ID);
+
+                    if (categoryToApprove != null)
+                    {
+                        categoryToApprove.TeklifStatus = true;
+                        await categoryManager.Update(categoryToApprove);
+
+                        message = "Kategori teklifi başarıyla açıldı!";
+                    }
+                    else
+                    {
+                        message = "Teklifi açılmak istenen kategori bulunamadı!";
+                    }
+                }
+                catch (Exception)
+                {
+                    message = "Kategorinin teklifi açılırken bir sorun oluştu! Lütfen bilgileri kontrol ediniz.";
+                }
+            }
+            else
+            {
+                message = "Hata oluştu!";
+            }
+
+            return Json(message);
+        }
     }
 }
