@@ -96,22 +96,138 @@
         }
         @if (footer.LastBool == true)
         {
-            <div class="w3layouts-agile-copyrightbottom">
-                <p>
-                    @footer.Last <yazi>
-                        | Design by
-                        <a href="https://www.linkedin.com/in/melih-dursun-523b26271/"> melh </a>
-                    </yazi>
-                </p>
+            <div class="footer-cpy text-center">
+                <div class="footer-social">
+                    <div class="copyrighttop">
+                        <ul>
+                            @*<li class="mx-3">
+                                    <a class="facebook" href="@link.Facebook">
+                                        <i class="fab fa-facebook"></i>
+                                        <span>Facebook</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="facebook" href="@link.Twitter">
+                                        <i class="fab fa-twitter"></i>
+                                        <span>Twitter</span>
+                                    </a>
+                                </li>
+                                <li class="mx-3">
+                                    <a class="facebook" href="@link.GoogleP">
+                                        <i class="fab fa-google-plus"></i>
+                                        <span>Google+</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="facebook" href="@link.Pinterest">
+                                        <i class="fab fa-pinterest"></i>
+                                        <span>Pinterest</span>
+                                    </a>
+                                </li>
+                                <li class="mx-3">
+                                    <a class="facebook" href="@link.Instagram">
+                                        <i class="fab fa-instagram"></i>
+                                        <span>Instagram</span>
+                                    </a>
+                                </li>
+                                <li class="mx-3">
+                                    <a class="facebook" href="tel:@link.Whatsapp">
+                                        <i class="fab fa-whatsapp"></i>
+                                        <span>WhatsApp (@link.Whatsapp)</span>
+                                    </a>
+                                </li>*@
+                        </ul>
+
+                    </div>
+                </div>
+
+                @if (footer.LastBool == true)
+                {
+                    <div class="w3layouts-agile-copyrightbottom">
+                        <p>
+                            @footer.Last <yazi>
+                                | Design by
+                                <a href="https://www.linkedin.com/in/melih-dursun-523b26271/"> melh </a>
+                            </yazi>
+                        </p>
+                    </div>
+                }@if (footer.LastBool == false)
+                {
+                    <div class="w3layouts-agile-copyrightbottom">
+                        <p>
+                            Design by
+                            <a href="https://www.linkedin.com/in/melih-dursun-523b26271/"> melh </a>
+                        </p>
+                    </div>
+                }
             </div>
         }
         @if (footer.LastBool == false)
         {
-            <div class="w3layouts-agile-copyrightbottom">
-                <p>
-                    Design by
-                    <a href="https://www.linkedin.com/in/melih-dursun-523b26271/"> melh </a>
-                </p>
+            <div class="footer-cpy text-center">
+                <div class="footer-social">
+                    <div class="copyrighttop">
+                        <ul>
+                            @*<li class="mx-3">
+                                    <a class="facebook" href="@link.Facebook">
+                                        <i class="fab fa-facebook"></i>
+                                        <span>Facebook</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="facebook" href="@link.Twitter">
+                                        <i class="fab fa-twitter"></i>
+                                        <span>Twitter</span>
+                                    </a>
+                                </li>
+                                <li class="mx-3">
+                                    <a class="facebook" href="@link.GoogleP">
+                                        <i class="fab fa-google-plus"></i>
+                                        <span>Google+</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="facebook" href="@link.Pinterest">
+                                        <i class="fab fa-pinterest"></i>
+                                        <span>Pinterest</span>
+                                    </a>
+                                </li>
+                                <li class="mx-3">
+                                    <a class="facebook" href="@link.Instagram">
+                                        <i class="fab fa-instagram"></i>
+                                        <span>Instagram</span>
+                                    </a>
+                                </li>
+                                <li class="mx-3">
+                                    <a class="facebook" href="tel:@link.Whatsapp">
+                                        <i class="fab fa-whatsapp"></i>
+                                        <span>WhatsApp (@link.Whatsapp)</span>
+                                    </a>
+                                </li>*@
+                        </ul>
+
+                    </div>
+                </div>
+
+                @if (footer.LastBool == true)
+                {
+                    <div class="w3layouts-agile-copyrightbottom">
+                        <p>
+                            @footer.Last <yazi>
+                                | Design by
+                                <a href="https://www.linkedin.com/in/melih-dursun-523b26271/"> melh </a>
+                            </yazi>
+                        </p>
+                    </div>
+                }@if (footer.LastBool == false)
+                {
+                    <div class="w3layouts-agile-copyrightbottom">
+                        <p>
+                            Design by
+                            <a href="https://www.linkedin.com/in/melih-dursun-523b26271/"> melh </a>
+                        </p>
+                    </div>
+                }
             </div>
         }
     }
