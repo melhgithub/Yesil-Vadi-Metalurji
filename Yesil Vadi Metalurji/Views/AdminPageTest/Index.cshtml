@@ -4,15 +4,45 @@
     Layout = "~/Views/Shared/_AdminTest.cshtml";
 }
 
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+
+            <div class="col-sm-2">
+                <a href="/AdminPageTest/AOlustur" class="btn btn-primary">Ana Sayfa Oluştur</a>
+            </div>
+            <div class="col-sm-2">
+                <a href="/AdminPageTest/HOlustur" class="btn btn-primary">Hakkımızda Oluştur</a>
+            </div>
+            <div class="col-sm-2">
+                <a href="/AdminPageTest/COlustur" class="btn btn-primary">İletişim Oluştur</a>
+            </div>
+            <div class="col-sm-2">
+                <a href="/AdminPageTest/UOlustur" class="btn btn-primary">Ürünler Oluştur</a>
+            </div>
+            <div class="col-sm-2">
+                <a href="/AdminPageTest/BOlustur" class="btn btn-primary">Bağlantılar Oluştur</a>
+            </div>
+            <div class="col-sm-2">
+                <a href="/AdminPageTest/FOlustur" class="btn btn-primary">Footer Oluştur</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div style="text-align: center;">
     <h2>Hoş Geldin, @ViewBag.UserName</h2>
 </div>
 @await Html.PartialAsync("_ScriptImports")
 
+
+
+
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
+
                 <div class="card-header">Profil Bilgileri</div>
                 <div class="card-body">
                     <div class="form-group">
@@ -59,7 +89,7 @@
             }
 
             $.ajax({
-                url: "/AdminPage/UpdateProfile",
+                url: "/AdminPageTest/UpdateProfile",
                 type: "POST",
                 data: {
                     username: "@ViewBag.UserName",

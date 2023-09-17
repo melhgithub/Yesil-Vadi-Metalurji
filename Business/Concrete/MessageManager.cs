@@ -27,7 +27,7 @@ namespace Business.Concrete
 
         public async Task Delete(Message message)
         {
-            await _messageDal.Update(message);
+            await _messageDal.Delete(message);
         }
 
         public async Task Update(Message message)

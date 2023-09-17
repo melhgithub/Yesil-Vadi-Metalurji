@@ -127,6 +127,46 @@ namespace Yesil_Vadi_Metalurji.Controllers
 
             return Json(message);
         }
+        
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteSuggestion(SuggestionApproveDto category)
+        {
+            string message = "";
+
+            if (category != null)
+            {
+                try
+                {
+                    var suggestionToDelete = await suggestionManager.GetByID(category.ID);
+
+                    if (suggestionToDelete != null)
+                    {
+                        suggestionToDelete.Status = (SuggestionStatuses)2;
+                        await suggestionManager.Delete(suggestionToDelete);
+
+                        message = "Öneri/Görüş başarıyla silindi!";
+                    }
+                    else
+                    {
+                        message = "Silinmek istenen öneri/görüş bulunamadı!";
+                    }
+                }
+                catch (Exception)
+                {
+                    message = "Öneri/Görüş silinirken bir sorun oluştu! Lütfen bilgileri kontrol ediniz.";
+                }
+            }
+            else
+            {
+                message = "Hata oluştu!";
+            }
+
+            return Json(message);
+        }
+
+
+
 
         [HttpPost]
         [AllowAnonymous]

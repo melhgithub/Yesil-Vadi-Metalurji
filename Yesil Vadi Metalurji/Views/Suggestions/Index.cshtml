@@ -146,6 +146,8 @@
                             if (rowObject.status === 2) {
                                 var buttons = '<button class="btn btn-success open-approve-modal" ' +
                                     'data-suggestionid="' + rowObject.id + '">Onayla</button>' +
+                                    '<button class="btn btn-warning open-delete-modal" ' +
+                                    'data-suggestionid="' + rowObject.id + '">Sil</button>' +
                                     '<button class="btn btn-warning open-detail-modal" ' +
                                     'data-suggestionid="' + rowObject.id + '">Detaylar</button>';
                             }
@@ -212,6 +214,31 @@
 
 
 
+    function openDeleteSuggestionModal(button) {
+    var data = button.dataset;
+        firstModal = $.dialog({
+        title: 'Sil',
+         content: `
+            <!-- ${JSON.stringify(data)} -->
+            <form method="post" action="@Url.Action("DeleteSuggestion", "Suggestions")">
+
+                <div class="form-group">
+                    <label>Silmek istiyor musunuz ?</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="ID" name="ID" class="form-control" value="${data.suggestionid}" required hidden/>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Sil" class="btn btn-primary w-100" />
+                </div>
+
+            </form>
+        `
+    });
+    }
+
     function openApproveSuggestionModal(button) {
     var data = button.dataset;
         firstModal = $.dialog({
@@ -244,6 +271,10 @@
 
     $(document).on('click', '.open-approve-modal', function () {
         openApproveSuggestionModal(this);
+    });
+
+    $(document).on('click', '.open-delete-modal', function () {
+        openDeleteSuggestionModal(this);
     });
 
 

@@ -27,7 +27,7 @@ namespace Business.Concrete
 
         public async Task Delete(Suggestion suggestion)
         {
-            await _suggestionDal.Update(suggestion);
+            await _suggestionDal.Delete(suggestion);
         }
 
         public async Task Update(Suggestion suggestion)

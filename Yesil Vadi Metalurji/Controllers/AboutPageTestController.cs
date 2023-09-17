@@ -35,6 +35,7 @@ namespace Yesil_Vadi_Metalurji.Controllers
             return View(model);
         }
 
+
         [HttpPost]
         public async Task<IActionResult> Update(AboutEditDto about)
         {

@@ -64,9 +64,12 @@
         });
     });
 
+
     $(document).on('submit', 'form', function (e) {
         e.preventDefault();
         var form = $(this);
+        form.find('input[type="submit"]').prop('disabled', true);
+
         $.ajax({
             url: form.attr('action'),
             type: form.attr('method'),
@@ -83,10 +86,10 @@
             },
             error: function (error) {
                 alert("Başarısız");
+            },
+            complete: function () {
+                form.find('input[type="submit"]').prop('disabled', false);
             }
         });
-
     });
-
-
 </script>

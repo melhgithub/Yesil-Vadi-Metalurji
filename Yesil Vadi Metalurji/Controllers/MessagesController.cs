@@ -138,8 +138,44 @@ namespace Yesil_Vadi_Metalurji.Controllers
             return Json(message);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteMessage(MessageApproveDto messageT)
+        {
+            string message = "";
+
+            if (message != null)
+            {
+                try
+                {
+                    var messageToDelete = await messageManager.GetByID(messageT.ID);
+
+                    if (messageToDelete != null)
+                    {
+                        messageToDelete.Status = (MessageStatuses)1;
+                        await messageManager.Delete(messageToDelete);
+
+                        message = "Mesaj başarıyla silindi!";
+                    }
+                    else
+                    {
+                        message = "Silinmek istenen mesaj bulunamadı!";
+                    }
+                }
+                catch (Exception)
+                {
+                    message = "Mesaj silinirken bir sorun oluştu! Lütfen bilgileri kontrol ediniz.";
+                }
+            }
+            else
+            {
+                message = "Hata oluştu!";
+            }
+
+            return Json(message);
+        }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Add(MessageAddDto sendtoMessage)
         {
             string message;

@@ -74,14 +74,14 @@
 
                 @if (footer.LastBool == true)
                 {
-                <div class="w3layouts-agile-copyrightbottom">
-                    <p>
-                        @footer.Last <yazi>
-                            | Design by
-                            <a href="https://www.linkedin.com/in/melih-dursun-523b26271/"> melh </a>
-                        </yazi>
-                    </p>
-                </div>
+                    <div class="w3layouts-agile-copyrightbottom">
+                        <p>
+                            @footer.Last <yazi>
+                                | Design by
+                                <a href="https://www.linkedin.com/in/melih-dursun-523b26271/"> melh </a>
+                            </yazi>
+                        </p>
+                    </div>
                 }@if (footer.LastBool == false)
                 {
                     <div class="w3layouts-agile-copyrightbottom">
@@ -93,6 +93,26 @@
                 }
             </div>
 
+        }
+        @if (footer.LastBool == true)
+        {
+            <div class="w3layouts-agile-copyrightbottom">
+                <p>
+                    @footer.Last <yazi>
+                        | Design by
+                        <a href="https://www.linkedin.com/in/melih-dursun-523b26271/"> melh </a>
+                    </yazi>
+                </p>
+            </div>
+        }
+        @if (footer.LastBool == false)
+        {
+            <div class="w3layouts-agile-copyrightbottom">
+                <p>
+                    Design by
+                    <a href="https://www.linkedin.com/in/melih-dursun-523b26271/"> melh </a>
+                </p>
+            </div>
         }
     }
 }
